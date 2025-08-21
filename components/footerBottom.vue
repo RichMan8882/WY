@@ -5,67 +5,127 @@ const { isLogin, signout } = useAuthStore()
 <template>
   <footer>
     <div class="footer-bottom">
-      <div class="introduce">
-        <div class="footer-logo">
-          <img :src="siteStore.siteData?.logo" alt=""></img>
-        </div>
-        <div class="footer-info">
-          紅杉資本（ Sequoia Capital ）創始於 1972 年，共有 18 只基金，擁有超過 40 億美元總管理資本。
-        </div>
+      <div class="links">
+        <dl>
+          <dt>關於我們</dt>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">品牌故事</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">公司資訊</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">購買通路</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">異業合作</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">校園贊助</a>
+          </dd>
+        </dl>
       </div>
       <div class="links">
         <dl>
-          <dt>快速連結</dt>
+          <dt>精選推薦</dt>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">OKX</a>
+            <a href="javascript:void(0)" @click="navigateTo('/')">W 專欄</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">HTX</a>
+            <a href="javascript:void(0)" @click="navigateTo('/')">小編來開箱</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">Binance</a>
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >YT 商品介紹</a
+            >
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">maicoin</a>
-          </dd>
-          <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">BitoEX</a>
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >KOL 好評分享</a
+            >
           </dd>
         </dl>
       </div>
-      <div class="connect">
+      <div class="links">
+        <dl>
+          <dt>購物須知</dt>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">會員福利</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">購物說明</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">退換貨政策</a>
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')">隱私權政策</a>
+          </dd>
+        </dl>
+      </div>
+      <div class="links">
         <dl>
           <dt>聯絡我們</dt>
           <dd>
-            <svg t="1746192296536" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8698" width="200" height="200"><path d="M835.6 756H260c-57.4 0-104.1-46.7-104.1-104.2V274.2c0-57.4 46.7-104.1 104.1-104.1h575.6c57.4 0 104.2 46.7 104.2 104.1v377.6c0 57.5-46.8 104.2-104.2 104.2zM260 218.3c-30.8 0-55.8 25-55.8 55.8v377.6c0 30.8 25 55.9 55.8 55.9h575.6c30.8 0 55.9-25.1 55.9-55.9V274.2c0-30.8-25.1-55.8-55.9-55.8H260z" fill="#828282" p-id="8699"></path><path d="M547.8 476.1c-14.6 0-29.1-4.4-41.3-13.3L193 234.1l28.5-39L535 423.8c7.3 5.4 18.3 5.3 25.6 0L874.2 195l28.5 39-313.6 228.8c-12.2 8.9-26.7 13.3-41.3 13.3z" p-id="8700"></path></svg>info@example.com
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >電話 / 0905-400200</a
+            >
           </dd>
           <dd>
-            <svg t="1746192169195" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7490"><path d="M512 64C306.4 64 140 230.4 140 436c0 101.6 40.8 194.4 107.2 261.6L512 960l264-263.2c66.4-67.2 107.2-159.2 107.2-261.6C884 230.4 717.6 64 512 64z m128 331.2c-4.8 62.4-54.4 112-116.8 116.8-75.2 6.4-138.4-53.6-138.4-127.2 0-70.4 57.6-128 128-128 73.6 0 133.6 63.2 127.2 138.4z" p-id="7491"></path></svg>香港 金钟道68 号太古广场1 座3613
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >時間 / 週一至週五 09:30-18:30</a
+            >
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >電郵 / onemoretw321@gmail.com</a
+            >
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >地址 / 高雄市新興區民權一路251號28樓</a
+            >
+          </dd>
+          <dd>
+            <a href="javascript:void(0)" @click="navigateTo('/')"
+              >（僅開放電話預約取貨）</a
+            >
           </dd>
         </dl>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="copyright">
+        <h5>
+          提醒您：WINYI 不會要求提供金融資料或操作
+          ATM，遇可疑來電請勿理會。可洽客服 0905400200 或撥打 165
+          反詐騙專線查證。
+        </h5>
+        <h5>2020 © Winyi Co.,Ltd. All Rights Reserved</h5>
       </div>
     </div>
   </footer>
 </template>
 <style scoped lang="sass">
 footer
-  background: #fff
-  background: #000b22
-  padding-top: 100px
-  padding-bottom: 60px
-  color: #b6b6b6
+  background: #fbf7ef
+  padding-top: 60px
+  color: #333
   @media (max-width:768px)
     padding-top: 40px
     padding-bottom: 30px
   .footer-bottom
     width: 1200px
-    margin: 0 auto
+    margin: 0 auto 30px
     display: flex
+    justify-content: center
+    gap: 100px
     flex-wrap: wrap
     @media (max-width: 1200px)
       width: 100%
       padding: 0 20px
     @media (max-width: 768px)
+      gap: 0px
     .introduce
       max-width: 25%
       padding-inline: 14px
@@ -83,12 +143,15 @@ footer
       padding-inline: 14px
       max-width: 25%
       @media (max-width: 768px)
-        max-width: 50% !important
+        max-width: 100% !important
+        width: 100%
       dl
+        margin-top: 20px
         dt
           font-size: 18px
-          color: #fff
-          margin-bottom: 8px
+          text-align: center
+          color: #333
+          margin-bottom: 28px
         dd
           font-size: 14px
           margin-bottom: 8px
@@ -99,7 +162,19 @@ footer
             height: 16px
             display: inline-block
           a
+            display: inline-block
+            text-align: center
+            width: 100%
             transition: color .3s ease
-            &:hover
-              color: #fff
+            // &:hover
+            //   color: #fff
+  .footer-copyright
+    text-align: center
+    color: #999
+    padding: 32px 12px 0
+    background: #f7f7f7
+    .copyright
+      h5
+        font-size: 12px
+        padding: 0 0 30px
 </style>

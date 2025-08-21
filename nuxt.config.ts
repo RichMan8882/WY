@@ -2,7 +2,11 @@
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
-  css: ['~/assets/sass/stock/main.css', 'vant/lib/index.css'],
+  css: [
+    '~/assets/sass/stock/main.css',
+    'vant/lib/index.css',
+    '~/public/uikit/uikit.min.css'
+  ],
   modules: [
     '@nuxtjs/tailwindcss',
     '@element-plus/nuxt',
@@ -87,6 +91,14 @@ export default defineNuxtConfig({
         {
           src: 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js',
           type: 'text/javascript'
+        },
+        {
+          src: '/uikit/uikit.min.js',
+          tagPosition: 'bodyClose'
+        },
+        {
+          src: '/uikit/uikit-icons.min.js',
+          tagPosition: 'bodyClose'
         }
       ],
       noscript: []
@@ -119,7 +131,7 @@ export default defineNuxtConfig({
       // APIBASE: `https://dev.comethike.com`,
       // APIBASE: `https://localhost.demoto.me`,
       // siteId: '657fef28c02bc92e35075322'
-      siteId: '681b64cc18a106fd458c1597'
+      siteId: '689ef08021e27fd77f120609'
       // APIBASE: 'https://localhost.demoto.me/api',
     }
   },
