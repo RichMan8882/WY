@@ -804,6 +804,9 @@ onUnmounted(() => {
               border-radius: 0.375rem
               &:hover
                 background-color: #9c8b6f
+@media (max-width: 1200px)
+  .index-live
+    margin-top: 110px
 @media (max-width: 768px)
   // 加入會員
   .btns
@@ -839,6 +842,5 @@ onUnmounted(() => {
     width: 100% !important
   .shopping
     display: block !important
-  .index-live
-    margin-top: 110px
+
 </style>

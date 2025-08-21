@@ -60,6 +60,10 @@ const handleClick = (event) => {
     // console.log('关闭语言选择')
     showLang.value = false
   }
+  if (showMask.value) {
+    // console.log('关闭弹窗')
+    showMask.value = false
+  }
 }
 
 onMounted(() => {
@@ -71,6 +75,11 @@ onUnmounted(() => {
 })
 
 const showLang = ref(false)
+
+const showMask = ref(false)
+const onMask = () => {
+  showMask.value = !showMask.value
+}
 </script>
 <template>
   <div>
@@ -99,6 +108,7 @@ const showLang = ref(false)
         </div>
       </div>
       <div class="header-nav">
+        <div class="header-mask" v-if="showMask" @click="onMask"></div>
         <div class="logo" @click="navigateTo('/')">
           <!-- <img :src="siteStore.siteData?.logo" alt="logo" /> -->
           <img src="/assets/images/WY.png" alt="logo" />
@@ -106,8 +116,7 @@ const showLang = ref(false)
         <div class="nav">
           <div class="header-tool">
             <div class="tools">
-              <div class="t-item"></div>
-              <div class="t-item">
+              <div class="t-item hide-mobi">
                 <svg
                   t="1755263678337"
                   class="icon"
@@ -133,7 +142,31 @@ const showLang = ref(false)
               </div>
               <div class="t-item">
                 <div class="search">
-                  <input type="text" placeholder="找商品" />
+                  <div
+                    class="hide-mobi"
+                    :class="showMask ? 'search-input-mobi' : ''"
+                  >
+                    <input type="text" placeholder="找商品" />
+                    <svg
+                      t="1755263667764"
+                      class="icon show-mobi"
+                      viewBox="0 0 1024 1024"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      p-id="1984"
+                      width="20"
+                      height="20"
+                    >
+                      <path
+                        d="M599.04151666 599.04151666a48.54518557 48.54518557 0 0 1 68.64289223 0l266.9985189 266.99851889a48.54518557 48.54518557 0 0 1-68.64289224 68.64289224l-266.99851889-266.9985189a48.54518557 48.54518557 0 0 1 0-68.64289223z"
+                        p-id="1985"
+                      ></path>
+                      <path
+                        d="M414.90963001 172.18370333a242.72592555 242.72592555 0 1 0 0 485.45185222 242.72592555 242.72592555 0 0 0 0-485.45185222z m-339.81629668 242.72592668a339.81629667 339.81629667 0 1 1 679.63259222 0 339.81629667 339.81629667 0 0 1-679.63259222 0z"
+                        p-id="1986"
+                      ></path>
+                    </svg>
+                  </div>
                   <svg
                     t="1755263667764"
                     class="icon"
@@ -143,6 +176,7 @@ const showLang = ref(false)
                     p-id="1984"
                     width="20"
                     height="20"
+                    @click="onMask"
                   >
                     <path
                       d="M599.04151666 599.04151666a48.54518557 48.54518557 0 0 1 68.64289223 0l266.9985189 266.99851889a48.54518557 48.54518557 0 0 1-68.64289224 68.64289224l-266.99851889-266.9985189a48.54518557 48.54518557 0 0 1 0-68.64289223z"
@@ -155,7 +189,7 @@ const showLang = ref(false)
                   </svg>
                 </div>
               </div>
-              <div class="t-item">
+              <div class="t-item hide-mobi">
                 <svg
                   t="1755263638627"
                   class="icon"
@@ -206,6 +240,11 @@ const showLang = ref(false)
                   ></path>
                 </svg>
               </div>
+              <div class="t-item">
+                <div class="sl-menu-panel-toggle" @click="onPopup">
+                  <i></i>
+                </div>
+              </div>
             </div>
           </div>
           <div class="header-logo">
@@ -214,7 +253,7 @@ const showLang = ref(false)
           <div class="header" :style="headerW100">
             <ul class="menu" v-if="menu">
               <li class="has-dropdown active menu-thumb">
-                <a @click="navigateTo('/')">
+                <a>
                   <span>WINYI 當月活動</span>
                   <svg
                     t="1755259222739"
@@ -264,7 +303,7 @@ const showLang = ref(false)
                 </div>
               </li>
               <li class="has-dropdown active menu-thumb">
-                <a @click="navigateTo('/about')">
+                <a>
                   <span>新品上市</span>
                   <svg
                     t="1755259222739"
@@ -320,12 +359,10 @@ const showLang = ref(false)
                 <a @click="navigateTo('/service')">所有商品</a>
               </li>
               <li>
-                <a :href="siteStore.chatbox" target="_blank">
-                  情侶情趣用品專區
-                </a>
+                <a> 情侶情趣用品專區 </a>
               </li>
               <li class="has-dropdown active menu-thumb">
-                <a @click="navigateTo('/about')">
+                <a>
                   <span>男士系列</span>
                   <svg
                     t="1755259222739"
@@ -372,7 +409,7 @@ const showLang = ref(false)
                 </div>
               </li>
               <li class="has-dropdown active menu-thumb">
-                <a @click="navigateTo('/about')">
+                <a>
                   <span>女士系列</span>
                   <svg
                     t="1755259222739"
@@ -425,7 +462,7 @@ const showLang = ref(false)
                 </div>
               </li>
               <li class="has-dropdown active menu-thumb">
-                <a @click="navigateTo('/about')">
+                <a>
                   <span>情趣周邊</span>
                   <svg
                     t="1755259222739"
@@ -472,7 +509,7 @@ const showLang = ref(false)
                 </div>
               </li>
               <li class="has-dropdown active menu-thumb">
-                <a @click="navigateTo('/about')">
+                <a>
                   <span>情趣教科書</span>
                   <svg
                     t="1755259222739"
@@ -566,18 +603,18 @@ const showLang = ref(false)
         </div>
         <div class="popup-menus">
           <ul class="menus" v-if="menu">
-            <li class="menu-thumb">
-              <a @click="navigateTo('/')">
-                <span>首頁</span>
+            <li class="has-dropdown menu-thumb">
+              <a>
+                <span>WINYI 當月活動</span>
                 <svg
                   t="1755259222739"
-                  class="icon"
+                  class="icon icon-aloof"
                   viewBox="0 0 1024 1024"
                   version="1.1"
                   xmlns="http://www.w3.org/2000/svg"
                   p-id="6612"
-                  width="20"
-                  height="20"
+                  width="12"
+                  height="12"
                 >
                   <path
                     d="M458.73 752.56c1 1.06 2.05 2.1 3.13 3.12 14.22 13.34 32.8 20.36 52.35 19.77 19.54-0.59000001 37.67-8.71 51.05999999-22.88l394.66000001-417.48-81.85-86.58L512 635.76l-366.08-387.24-81.85 86.58 394.66 417.46z"
@@ -586,28 +623,206 @@ const showLang = ref(false)
                   ></path>
                 </svg>
               </a>
+              <div class="submenu">
+                <ul>
+                  <li>
+                    <a href="">WINYI 浪漫七夕．探索無限快感</a>
+                  </li>
+                  <li>
+                    <a href="">2025 斷捨離｜情趣玩具汰舊換新 </a>
+                  </li>
+                  <li>
+                    <a href="">會員福利｜每月15號會員日 </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="has-dropdown menu-thumb">
+              <a>
+                <span>新品上市</span>
+                <svg
+                  t="1755259222739"
+                  class="icon icon-aloof"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="6612"
+                  width="12"
+                  height="12"
+                >
+                  <path
+                    d="M458.73 752.56c1 1.06 2.05 2.1 3.13 3.12 14.22 13.34 32.8 20.36 52.35 19.77 19.54-0.59000001 37.67-8.71 51.05999999-22.88l394.66000001-417.48-81.85-86.58L512 635.76l-366.08-387.24-81.85 86.58 394.66 417.46z"
+                    fill="#1F2635"
+                    p-id="6613"
+                  ></path>
+                </svg>
+              </a>
+              <div class="submenu">
+                <ul>
+                  <li>
+                    <a href="">Andy 歐熊雙環震動鎖精環</a>
+                  </li>
+                  <li>
+                    <a href=""> Quinn 海王雙頭震動吸吮器 </a>
+                  </li>
+                  <li>
+                    <a href=""> PINGU 企鵝寶寶換頭吸吮按摩器 </a>
+                  </li>
+                  <li>
+                    <a href=""> TIFFANY 冰藍海豚旋轉伸縮按摩棒 </a>
+                  </li>
+                </ul>
+              </div>
             </li>
             <li>
-              <a @click="navigateTo('/about')"> 關於我們 </a>
+              <a @click="navigateTo('/service')">所有商品</a>
             </li>
             <li>
-              <a @click="navigateTo('/service')">我們的服務</a>
-            </li>
-            <li>
-              <a :href="siteStore.chatbox" target="_blank"> 聯絡我們 </a>
-            </li>
-
-            <li>
-              <a @click="navigateTo('/user/info')"> 會員中心 </a>
-            </li>
-            <li v-if="isLogin()" class="menu-thumb">
-              <a @click="navigateTo('/game')">
-                <span>互動平臺</span>
+              <a :href="siteStore.chatbox" target="_blank">
+                情侶情趣用品專區
               </a>
             </li>
-
-            <li v-if="isLogin()">
-              <a class="logout" @click="signout">Logout</a>
+            <li class="has-dropdown menu-thumb">
+              <a>
+                <span>男士系列</span>
+                <svg
+                  t="1755259222739"
+                  class="icon icon-aloof"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="6612"
+                  width="12"
+                  height="12"
+                >
+                  <path
+                    d="M458.73 752.56c1 1.06 2.05 2.1 3.13 3.12 14.22 13.34 32.8 20.36 52.35 19.77 19.54-0.59000001 37.67-8.71 51.05999999-22.88l394.66000001-417.48-81.85-86.58L512 635.76l-366.08-387.24-81.85 86.58 394.66 417.46z"
+                    fill="#1F2635"
+                    p-id="6613"
+                  ></path>
+                </svg>
+              </a>
+              <div class="submenu">
+                <ul>
+                  <li>
+                    <a href="">自慰蛋</a>
+                  </li>
+                  <li>
+                    <a href="">彩虹玩具</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="has-dropdown menu-thumb">
+              <a>
+                <span>女士系列</span>
+                <svg
+                  t="1755259222739"
+                  class="icon icon-aloof"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="6612"
+                  width="12"
+                  height="12"
+                >
+                  <path
+                    d="M458.73 752.56c1 1.06 2.05 2.1 3.13 3.12 14.22 13.34 32.8 20.36 52.35 19.77 19.54-0.59000001 37.67-8.71 51.05999999-22.88l394.66000001-417.48-81.85-86.58L512 635.76l-366.08-387.24-81.85 86.58 394.66 417.46z"
+                    fill="#1F2635"
+                    p-id="6613"
+                  ></path>
+                </svg>
+              </a>
+              <div class="submenu">
+                <ul>
+                  <li>
+                    <a href=""> 吸吮按摩器 </a>
+                  </li>
+                  <li>
+                    <a href=""> 震動跳蛋 </a>
+                  </li>
+                  <li>
+                    <a href=""> 震動按摩棒 </a>
+                  </li>
+                  <li>
+                    <a href=""> 凱格爾聰明球 </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="has-dropdown menu-thumb">
+              <a>
+                <span>情趣周邊</span>
+                <svg
+                  t="1755259222739"
+                  class="icon icon-aloof"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="6612"
+                  width="12"
+                  height="12"
+                >
+                  <path
+                    d="M458.73 752.56c1 1.06 2.05 2.1 3.13 3.12 14.22 13.34 32.8 20.36 52.35 19.77 19.54-0.59000001 37.67-8.71 51.05999999-22.88l394.66000001-417.48-81.85-86.58L512 635.76l-366.08-387.24-81.85 86.58 394.66 417.46z"
+                    fill="#1F2635"
+                    p-id="6613"
+                  ></path>
+                </svg>
+              </a>
+              <div class="submenu">
+                <ul>
+                  <li>
+                    <a href=""> BDSM項圈 </a>
+                  </li>
+                  <li>
+                    <a href=""> 潤滑液／口交液 </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="has-dropdown menu-thumb">
+              <a>
+                <span>情趣教科書</span>
+                <svg
+                  t="1755259222739"
+                  class="icon icon-aloof"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="6612"
+                  width="12"
+                  height="12"
+                >
+                  <path
+                    d="M458.73 752.56c1 1.06 2.05 2.1 3.13 3.12 14.22 13.34 32.8 20.36 52.35 19.77 19.54-0.59000001 37.67-8.71 51.05999999-22.88l394.66000001-417.48-81.85-86.58L512 635.76l-366.08-387.24-81.85 86.58 394.66 417.46z"
+                    fill="#1F2635"
+                    p-id="6613"
+                  ></path>
+                </svg>
+              </a>
+              <div class="submenu">
+                <ul>
+                  <li>
+                    <a href=""> Ｗ專欄 </a>
+                  </li>
+                  <li>
+                    <a href=""> 小編來開箱 </a>
+                  </li>
+                  <li>
+                    <a href=""> KOL 好評推薦 </a>
+                  </li>
+                  <li>
+                    <a href=""> YT 評測分享 </a>
+                  </li>
+                  <li>
+                    <a href=""> 情慾探索工作坊 </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li>
+              <a @click="navigateTo('/game')">常見問答</a>
             </li>
           </ul>
         </div>
@@ -692,6 +907,8 @@ ul
       &:hover
         background: #7354ff
         color: #fff !important
+  .sl-menu-panel-toggle
+    background: #cccccc33
 .absolute
   position: absolute
   z-index: 9
@@ -759,6 +976,38 @@ header
                 cursor: pointer
                 &:hover
                   color: #bbb
+          .sl-menu-panel-toggle
+            height: 65px
+            width: 65px
+            display: none
+            align-items: center
+            justify-content: center
+
+            i
+              width: 36%
+              height: 2px
+              background: #000
+              box-shadow: 0 0 0 1px #fff
+              border-radius: 1px
+              position: relative
+              &::before
+                content: ""
+                position: absolute
+                top: -6px
+                width: 100%
+                height: 2px
+                background: #000
+                box-shadow: 0 0 0 1px #fff
+                border-radius: 1px
+              &::after
+                content: ""
+                position: absolute
+                bottom: -6px
+                width: 100%
+                height: 2px
+                background: #000
+                box-shadow: 0 0 0 1px #fff
+                border-radius: 1px
           .search
             display: flex
             align-items: center
@@ -934,9 +1183,11 @@ header
     overflow-y: scroll
     position: absolute
     top: 0
+    left: 0
     background-color: #fff
-    width: 100%
-    transform: translateY(-100%)
+    width: 75%
+    height: 100%
+    transform: translateX(-100%)
     transition: all 0.3s ease-in-out
     .popup-title
       display: flex
@@ -964,6 +1215,7 @@ header
           overflow: hidden
           transition: all 0.5s ease-in-out
           font-size: .9rem
+
           &>a
             display: flex
             justify-content: space-between
@@ -974,38 +1226,29 @@ header
             &:hover
               color: #000
             .icon
-              width: 1.5rem
-              height: 1.5rem
+              width: .7rem
+              height: .7rem
               transition: all 0.2s ease-in-out
           .submenu
-            &>li
-              height: 46px
-              line-height: 46px
+            max-height: 0
+            overflow: hidden
+            transition: all 0.4s ease-in-out
+            ul>li
+              height: 40px
+              line-height: 40px
               padding-inline: 15px
               &:hover
                 color: #333333
-        .logout
-          width: 100%
-          border: 1px solid #ccc
-          height: 46px
-          line-height: 46px
-          border-radius: .4rem
-          margin-block: .8rem
-          color: #7354ff99
-          text-align: center
-          justify-content: center
-          font-size: 1.2rem
-          transition: all 0.2s ease-in-out
+        .has-dropdown
           &:hover
-            border: 1px solid #7354ff99
-            background: #7354ff
-            color: #fff
-        .has-dropdown:hover
-          max-height: 999px
-          a .icon
-            transform: rotate(180deg) !important
+            .submenu
+              max-height: 999px !important
+            a .icon
+              transform: rotate(180deg) !important
   .cont-left
     transform: translateX(0%)
+.show-mobi
+  display: none !important
 </style>
 <style lang="sass">
 // 響應式控制
@@ -1014,7 +1257,7 @@ header
     width: 100% !important
 @media (max-width: 1200px)
   header .header-nav
-    padding:0 20px !important
+    padding:0 0 0 20px !important
   .header-logo
     display: none !important
   .header-tool
@@ -1023,4 +1266,31 @@ header
     display: none !important
   header .logo
     display: block !important
+  .sl-menu-panel-toggle
+    display: flex !important
+  .hide-mobi
+    display: none !important
+  .header-mask
+    position: fixed !important
+    top: 45px !important
+    left: 0 !important
+    height: 100vh !important
+    width: 100vw !important
+    z-index: 0 !important
+    background: rgba(0, 0, 0, 0.5)
+  .search-input-mobi
+    background: #fff !important
+    padding: 20px 20px !important
+    position: fixed !important
+    display: flex !important
+    align-items: center !important
+    top: 45px !important
+    left: 0 !important
+    width: 100% !important
+    z-index: 8 !important
+    input
+      width: 100% !important
+  .search
+    .show-mobi
+      display: black !important
 </style>
