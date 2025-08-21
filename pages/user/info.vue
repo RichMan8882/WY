@@ -268,9 +268,7 @@ const sendPasswordChange = async (type: number) => {
     <instruction></instruction>
   </div>
 </template>
-<style scoped lang="sass">
-@import '@/assets/sass/user/model2/coin2.scss'
-</style>
+<style scoped lang="sass"></style>
 <style scoped lang="sass">
 
 .content

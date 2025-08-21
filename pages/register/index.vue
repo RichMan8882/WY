@@ -218,47 +218,7 @@ await onMounted(() => {
 
 <template>
   <div class="layouts-auth">
-    <div class="layouts-auth__video">
-      <div class="up">
-        <div class="bgimg">
-          <img src="@/assets/images/loginbg/image5.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image4.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image3.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image2.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image1.jpg" alt="" />
-        </div>
-        <div class="bgimg">
-          <img src="@/assets/images/loginbg/image5.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image4.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image3.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image2.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image1.jpg" alt="" />
-        </div>
-      </div>
-      <div class="up2">
-        <div class="bgimg">
-          <img src="@/assets/images/loginbg/image1.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image2.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image3.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image4.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image5.jpg" alt="" />
-        </div>
-        <div class="bgimg">
-          <img src="@/assets/images/loginbg/image1.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image2.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image3.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image4.jpg" alt="" />
-          <img src="@/assets/images/loginbg/image5.jpg" alt="" />
-        </div>
-      </div>
-      <!-- <video
-        src="https://telegra.ph/file/80491037e0d106437b6d6.mp4"
-        autoplay
-        muted
-        playsinline
-        loop
-      /> -->
-    </div>
+    <div class="layouts-auth__video"></div>
     <div class="layouts-auth__view">
       <div class="bg-layer">
         <h1>{{ $lang('職員注冊') }}</h1>
@@ -700,7 +660,7 @@ await onMounted(() => {
         // object-fit: cover
 </style>
 <style scoped lang="sass">
-@import '@/assets/sass/register/model4/page.sass'
+
 
 @mixin input-double()
   width: 100%
