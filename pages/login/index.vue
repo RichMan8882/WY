@@ -215,66 +215,7 @@ const openChatBox = () => {
         // object-fit: cover
 </style>
 
-<style scoped lang="sass">
-@import '@/assets/sass/login/model4/page.sass'
-
-.page-login
-  padding-top: 75px
-  &__form
-    @include form-section()
-    margin: 0 auto
-    &-title
-      @include page-font()
-      color: $primary-color
-      text-align: center
-      font-size: 28px
-      margin-bottom: 34px
-    &-fields
-      margin-bottom: 44px
-    &-input
-      &:not(:last-child)
-        margin-bottom: 28px
-      &--text
-        @include form-input(26px, 26px)
-      &--code
-        @include form-input(100px, 44px)
-    &-submit
-      display: flex
-      justify-content: center
-      width: 100%
-      margin-bottom: 20px
-      > button
-        @include page-button-font()
-        width: 100%
-        max-width: 227px
-        line-height: 21px
-        padding: 15px 16px
-        color: $primary-color
-        background-color: rgba(0,0,0,0)
-        border: 1px solid $primary-color
-        outline: none
-    &-actions
-      display: flex
-      flex-direction: column
-      align-items: center
-      margin-bottom: 20px
-      &-wrap
-        display: flex
-        flex-direction: row
-        > *:not(:last-child)
-          margin-right: 20px
-    &-divide
-      width: 100%
-      height: 1px
-      background-color: $primary-color
-      margin: 30px 0 40px
-    &-button
-      font-family: -apple-system, "system-ui", "Microsoft Jheng Hei", PingFang, 蘋方, 微軟正黑體, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
-      font-size: 15px
-      line-height: 22.5px
-      color: $primary-color
-      outline: none
-</style>
+<style scoped lang="sass"></style>
 <style scoped lang="sass">
 .bg-layer
   background: rgba(0, 0, 0, 50%)
