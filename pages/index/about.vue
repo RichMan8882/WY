@@ -66,7 +66,7 @@ onUnmounted(() => {
       <div class="section1-content">
         <div class="section1-content-items">
           <div class="item-img">
-            <img src="@/assets/images/about2-1.jpg" alt="" />
+            <img src="" alt="" />
           </div>
           <div class="item">
             自2005年成立以來，紅杉中國致力於發掘和培育創新和創業力量，在海內外投資了逾1500家企業，其中湧現出許多具有鮮明技術特徵、創新商業模式、具備高成長性和高發展潛力的公司。
@@ -81,7 +81,7 @@ onUnmounted(() => {
             迄今為止，紅杉資本有超過160家成員企業成功上市，超過140家非上市公司已發展成為獨角獸。
           </div>
           <div class="item-img">
-            <img src="@/assets/images/about-2.jpg" alt="" />
+            <img src="" alt="" />
           </div>
           <div class="item item2">
             迄今為止，紅杉資本有超過160家成員企業成功上市，超過140家非上市公司已發展成為獨角獸。
@@ -93,7 +93,7 @@ onUnmounted(() => {
       <div class="section1-content">
         <div class="section1-content-items">
           <div class="item-img">
-            <img src="@/assets/images/about2-2.jpg" alt="" />
+            <img src="" alt="" />
           </div>
           <div class="item">
             20年來，紅杉資本由早期的創投擴展到種子期投資、成長期投資、併購投資、新基建投資、公開市場投資等領域，成為具有全鏈條、全階段及全週期投資能力的投資機構。
@@ -171,8 +171,8 @@ onUnmounted(() => {
       opacity: 0
       transform: scale(1.4)
 .index-bg
-  background: url('@/assets/images/about-hbg.jpg') no-repeat center center  / cover
-  // background: #000
+
+  background: #000
   // background: linear-gradient(60deg, rgb(255,255,255), rgb(255,241,213))
   width: 100%
   display: flex

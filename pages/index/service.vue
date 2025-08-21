@@ -249,21 +249,21 @@ onUnmounted(() => {
         </div>
         <div class="section4-content-items">
           <div class="item">
-            <img src="@/assets/images/1.png" alt="" />
+            <img src="" alt="" />
             <h3>OKX</h3>
             <p>
               在追求全體同事物質和精神幸福的同時，推動區塊鏈和數位資產走進全球億萬用戶的生活。
             </p>
           </div>
           <div class="item">
-            <img src="@/assets/images/2.png" alt="" />
+            <img src="" alt="" />
             <h3>BitoEX</h3>
             <p>
               致力於推廣台灣數位貨幣而產生，為提供顧客全方位的優質服務與品牌承諾而努力。
             </p>
           </div>
           <div class="item">
-            <img src="@/assets/images/3.png" alt="" />
+            <img src="" alt="" />
             <h3>MaiCoin</h3>
             <p>
               MaiCoin 集團成立於 2013
@@ -271,21 +271,21 @@ onUnmounted(() => {
             </p>
           </div>
           <div class="item">
-            <img src="@/assets/images/4.png" alt="" />
+            <img src="" alt="" />
             <h3>MaiCoin-Max</h3>
             <p>
               MaiCoin集團為台灣交易量最大，且唯一具備區塊鏈技術公司之數位資產領導品牌，是台灣虛擬通貨產業之先鋒。
             </p>
           </div>
           <div class="item">
-            <img src="@/assets/images/5.png" alt="" />
+            <img src="" alt="" />
             <h3>Binance</h3>
             <p>
               時至今日，幣安已是世界頂尖的區塊鏈生態系，並擁有最大的數位資產交易所。我們的任務是在未來世界中成為加密貨幣的基礎架構供應商。
             </p>
           </div>
           <div class="item">
-            <img src="@/assets/images/6.png" alt="" />
+            <img src="" alt="" />
             <h3>HTX</h3>
             <p>
               HTX 成立於 2013 年，經過 11
@@ -316,7 +316,7 @@ onUnmounted(() => {
     filter: brightness(1.2)
     box-shadow: 0 0 10px rgba(0,0,0,.2)
 .index-bg
-  background: url('@/assets/images/breadcrumb-bg.png') no-repeat center center  / cover
+  background: #000b22
   width: 100%
   display: flex
   align-items: center
