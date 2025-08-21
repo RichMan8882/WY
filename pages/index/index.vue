@@ -84,15 +84,12 @@ onUnmounted(() => {
 
 <template>
   <div class="cont">
-    <headerTop :opaque="scrollTop > 10"></headerTop>
-    <div class="index-bg">
-      <client-only>
-        <UkSlideshow :options="{ autoplay: true }">
-          <li v-for="(item, index) in slides" :key="index">
-            <img :src="item.image" alt="" uk-cover />
-          </li>
-        </UkSlideshow>
-      </client-only>
+    <headerTop :opaque="scrollTop >= 0"></headerTop>
+    <div class="index-live">
+      <video src="">
+        <source src="" type="video/mp4"></source>
+      </video>
+      <div class="live-cont">暫無直播</div>
     </div>
     <section class="section1" ref="section1">
       <div class="section1-content">
@@ -115,18 +112,18 @@ onUnmounted(() => {
             </p>
           </div>
         </div>
-        <div class="content-swp">
-          <client-only>
-            <UkSlideshow :options="{ autoplay: true }" :ratio="'7:3'">
-              <li v-for="(item, index) in slides2" :key="index">
-                <img :src="item.image" alt="" uk-cover />
-              </li>
-            </UkSlideshow>
-          </client-only>
-        </div>
-        <h3>「每個人都值得擁有專屬的 ME TIME」</h3>
       </div>
     </section>
+    <div class="index-bg">
+      <client-only>
+        <UkSlideshow :options="{ autoplay: true }">
+          <li v-for="(item, index) in slides" :key="index">
+            <img :src="item.image" alt="" uk-cover />
+          </li>
+        </UkSlideshow>
+      </client-only>
+    </div>
+
     <section class="section2" ref="section2">
       <div class="section2-content">
         <div class="section2-content-tit">✦ 精 選 分 類 ✦</div>
@@ -486,9 +483,23 @@ onUnmounted(() => {
     align-items: center
     width: 1200px
     margin: 0 auto
+.index-live
+  margin-top: 146.5px
+  background: #191919
+  height: 70vh
+  position: relative
+  video
+    width: 100%
+    height: 100%
+  .live-cont
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
 
 .section1
   transition: all .6s ease-in-out
+  padding-top: 45px
   .section1-content
     max-width: 1140px
     padding: 15px
@@ -828,4 +839,6 @@ onUnmounted(() => {
     width: 100% !important
   .shopping
     display: block !important
+  .index-live
+    margin-top: 110px
 </style>
