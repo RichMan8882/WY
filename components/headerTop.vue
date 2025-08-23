@@ -498,7 +498,7 @@ const onSearch = () => {
                 <div class="submenu">
                   <ul>
                     <li>
-                      <a href=""> Ｗ專欄 </a>
+                      <a @click="navigateTo('/articlelist')"> Ｗ專欄 </a>
                     </li>
                     <li>
                       <a href=""> 小編來開箱 </a>
@@ -756,7 +756,7 @@ const onSearch = () => {
               <div class="submenu">
                 <ul>
                   <li>
-                    <a href=""> Ｗ專欄 </a>
+                    <a @click="navigateTo('/articlelist')"> Ｗ專欄 </a>
                   </li>
                   <li>
                     <a href=""> 小編來開箱 </a>
