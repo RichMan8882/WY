@@ -153,11 +153,12 @@ const onCurrentCate = (cate: any) => {
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <div class="index-bg">
+    <!-- <div class="index-bg">
       <div class="index-bg-content">
         <img src="@/assets/images/categories-bnr.webp" alt="">
       </div>
-    </div>
+    </div> -->
+    <liveStreaming></liveStreaming>
     <div class="content-nav">
       <div class="navs">
         <div class="nav" @click="onCurrentCate('hots')" :class="currentCategory === 'hots' ? 'nav-active' : ''">
@@ -178,7 +179,7 @@ const onCurrentCate = (cate: any) => {
       <div class="section3-content">
         <div class="tabs">
           <div class="tab">
-            商品描述
+            類型1
           </div>
         </div>
         <div class="section3-content-cont" ref="container">
@@ -252,7 +253,7 @@ const onCurrentCate = (cate: any) => {
   padding: 0 10px
   max-width: 100%
   width: 1170px
-  margin: 0 auto
+  margin: 20px auto 0
   .navs
     height: 45px
     display: flex

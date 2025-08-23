@@ -224,8 +224,7 @@ const onSearch = () => {
       <div class="header-nav">
         <div class="header-mask" v-if="showMask" @click.self="onMask"></div>
         <div class="logo" @click="navigateTo('/')">
-          <!-- <img :src="siteStore.siteData?.logo" alt="logo" /> -->
-          <img src="/assets/images/WY.png" alt="logo" />
+          <img :src="siteStore.siteData?.logo" alt="logo" />
         </div>
         <div class="nav">
           <div class="header-tool">

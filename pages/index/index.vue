@@ -197,13 +197,7 @@ onUnmounted(() => {
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <div class="index-live">
-      <video src="">
-        <source src="" type="video/mp4">
-        </source>
-      </video>
-      <div class="live-cont">暫無直播</div>
-    </div>
+    <liveStreaming></liveStreaming>
     <section class="section1" ref="section1">
       <div class="section1-content">
         <div class="text-block__item">
@@ -397,7 +391,10 @@ onUnmounted(() => {
 <style scoped lang="sass">
 
 .cont
+  padding-top: 146.5px
   background: #fff !important
+  @media (max-width:768px)
+    padding-top: 110px
 .button
   padding: 10px 30px
   margin-inline-end: 15px
@@ -421,20 +418,6 @@ onUnmounted(() => {
     align-items: center
     width: 1200px
     margin: 0 auto
-.index-live
-  margin-top: 146.5px
-  background: #191919
-  height: 70vh
-  position: relative
-  video
-    width: 100%
-    height: 100%
-  .live-cont
-    position: absolute
-    top: 50%
-    left: 50%
-    transform: translate(-50%, -50%)
-
 .section1
   transition: all .6s ease-in-out
   padding-top: 45px

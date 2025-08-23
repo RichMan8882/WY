@@ -248,11 +248,11 @@ onUnmounted(() => {
     <headerTop :opaque="scrollTop >= 0"></headerTop>
     <div class="layouts-auth__view">
       <div class="bg-layer">
+        <div class="main-icon">
+          <img :src="siteStore?.siteData.logo" />
+        </div>
         <h1>{{ $lang('注冊') }}</h1>
         <div class="header-main">
-          <div class="main-icon">
-            <img :src="siteStore?.siteData.logo" />
-          </div>
           <div class="header-left-bottom">
             <div class="icon1">
               <input v-model="signupData.account" v-trim-input type="text" :placeholder="t('請輸入帳號')"
@@ -418,16 +418,26 @@ onUnmounted(() => {
 <style scoped lang="sass">
 .layouts-auth__view
   padding-top: 146.5px
+  @media (max-width:768px)
+    padding-top: 110px
   .bg-layer
     max-width: 460px
-    margin: 50px auto
+    margin: 10px auto 50px
     padding: 20px
+    @media (max-width:768px)
+      margin-top: 0
     h1
       font-family: "Noto Serif TC"
       font-size: 32px
       color: #5d5d5d
       font-weight: 700
       margin-bottom: 20px
+    .main-icon
+      height: 5rem
+      display: flex
+      justify-content: center
+      img
+        height: 100%
     .chakra-text
       font-size: 14px
       padding:0 0 20px
