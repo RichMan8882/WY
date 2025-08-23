@@ -847,9 +847,9 @@ const onSearch = () => {
 }
 
 .announcement__slider {
-  position: absolute;
+  /* position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
   width: 100%;
   display: grid;
   grid-template-rows: repeat(1, 1fr);
