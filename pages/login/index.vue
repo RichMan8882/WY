@@ -6,7 +6,7 @@ const passwordEyes = ref(false)
 const recaptchaCode = ref('')
 const recaptchaCheckFunction = ref(null)
 const { t } = useI18n()
-
+const scrollTop = ref(0)
 const fetchSigninApi = ref({
   account: '',
   password: ''
@@ -60,6 +60,10 @@ await useAsyncData(async () => {
 })
 
 onMounted(async () => {
+  if (window) {
+    console.log('window', window.innerWidth)
+    window.addEventListener('scroll', handleScroll)
+  }
   const queryChatboxPromise = queryChatbox()
   queryChatboxPromise
     .then((queryChatboxRes) => {
@@ -77,238 +81,148 @@ definePageMeta({
 const openChatBox = () => {
   window.open(siteStore.chatbox, '_blank')
 }
+
+const handleScroll = () => {
+  scrollTop.value = window.scrollY
+}
+onUnmounted(() => {
+  if (window) {
+    window.removeEventListener('scroll', handleScroll)
+  }
+})
 </script>
 
 <template>
   <div class="layouts-auth">
-    <div class="layouts-auth__video"></div>
+    <headerTop :opaque="scrollTop >= 0"></headerTop>
     <div class="layouts-auth__view">
       <div class="bg-layer">
-        <h1>{{ $lang('職員登入') }}</h1>
+        <h1>{{ $lang('登入') }}</h1>
         <div class="header-main">
           <div class="main-icon">
             <img :src="siteStore?.siteData.logo" />
           </div>
           <div class="header-left-bottom">
             <div class="icon1">
-              <span style="font-weight: bold">{{ $lang('職員帳號') }}</span>
-              <input
-                v-model="fetchSigninApi.account"
-                v-trim-input
-                type="text"
-                name="acc"
-                :placeholder="t('請輸入職員帳號')"
-                class="inputStyle"
-              />
+              <input v-model="fetchSigninApi.account" v-trim-input type="text" label="電郵或手機號碼"
+                :placeholder="t('請輸入電郵或手機號碼')" errormessage="電郵或手機號碼是必須的" class="chakra-input">
             </div>
-            <div class="icon1">
-              <span style="font-weight: bold">{{ $lang('輸入密碼') }}</span>
-              <input
-                v-model="fetchSigninApi.password"
-                v-trim-input
-                type="password"
-                name="pass"
-                :placeholder="t('請輸入密碼')"
-                class="inputStyle"
-              />
+            <div class="icon1 chakra">
+              <input v-model="fetchSigninApi.password" v-trim-input :type="passwordEyes ? 'text' : 'password'"
+                label="密碼" :placeholder="t('密碼')" class="chakra-input">
+              <svg viewBox="0 0 20 14" focusable="false" class="chakra-icon" @click="showPassword(false)"
+                v-if="passwordEyes">
+                <path
+                  d="M10 3.75C8.20507 3.75 6.75 5.20507 6.75 7C6.75 8.79493 8.20507 10.25 10 10.25C11.7949 10.25 13.25 8.79493 13.25 7C13.25 5.20507 11.7949 3.75 10 3.75ZM8.25 7C8.25 6.0335 9.0335 5.25 10 5.25C10.9665 5.25 11.75 6.0335 11.75 7C11.75 7.9665 10.9665 8.75 10 8.75C9.0335 8.75 8.25 7.9665 8.25 7Z"
+                  fill="currentColor"></path>
+                <path
+                  d="M10 0.25C5.61579 0.25 1.85847 2.92206 0.305875 6.71594C0.231375 6.89799 0.231375 7.10202 0.305875 7.28406C1.85847 11.0779 5.6158 13.75 10 13.75C14.3842 13.75 18.1415 11.0779 19.6941 7.28406C19.7686 7.10202 19.7686 6.89799 19.6941 6.71594C18.1415 2.92206 14.3842 0.25 10 0.25ZM10 12.25C6.3488 12.25 3.21109 10.0915 1.81629 7C3.21109 3.90852 6.34879 1.75 10 1.75C13.6512 1.75 16.7889 3.90852 18.1837 7C16.7889 10.0915 13.6512 12.25 10 12.25Z"
+                  fill="currentColor"></path>
+              </svg>
+              <svg viewBox="0 0 20 14" focusable="false" class="chakra-icon" @click="showPassword(true)"
+                v-if="!passwordEyes">
+                <path
+                  d="M19.5088 1.2089C19.611 1.25074 19.6601 1.36775 19.6163 1.46914C19.1289 2.59656 18.4454 3.62068 17.6082 4.49961L18.9568 5.99878L17.8417 7.00198L16.4985 5.50888C15.5938 6.22036 14.5674 6.7865 13.4555 7.17185L14.1946 9.2714L12.8053 9.72941L12.0394 7.55372C11.3797 7.68288 10.6977 7.75059 9.99978 7.75059C9.32819 7.75059 8.67131 7.68789 8.0348 7.56806L7.31157 9.73778L5.88854 9.26343L6.58145 7.18472C5.46686 6.80317 4.43758 6.24022 3.52977 5.53138L2.03027 7.03088L0.969613 5.97021L2.41524 4.52459C1.56718 3.64011 0.875232 2.60726 0.383259 1.46914C0.339431 1.36775 0.388517 1.25074 0.490744 1.2089L1.50879 0.79228C1.61102 0.750444 1.72764 0.799611 1.7718 0.900853C3.14365 4.04555 6.30943 6.25059 9.99978 6.25059C13.6901 6.25059 16.8559 4.04555 18.2277 0.900854C18.2719 0.799611 18.3885 0.750444 18.4907 0.79228L19.5088 1.2089Z"
+                  fill="currentColor"></path>
+              </svg>
             </div>
-
             <div class="icon1">
               <recaptcha @check-hepler="checkHepler"></recaptcha>
-            </div>
-            <div class="icon1">
-              <span style="font-weight: bold">{{ $lang('驗證碼') }}</span>
-              <input
-                v-model="recaptchaCode"
-                v-trim-input
-                type="text"
-                :placeholder="t('請輸入驗證碼')"
-                class="inputStyle"
-                @keyup.enter="setLogin"
-              />
-            </div>
-
-            <input
-              id="captcha_result"
-              type="hidden"
-              name="captcha_result"
-              value="12"
-            />
-
-            <div>
-              <div class="btn" @click="setLogin">{{ $lang('登入') }}</div>
-              <div
-                class="btn"
-                style="background-color: rgb(233, 126, 54)"
-                @click="navigateTo('/register')"
-              >
-                {{ $lang('註冊') }}
-              </div>
+              <input v-model="recaptchaCode" v-trim-input type="text" :placeholder="t('請輸入驗證碼')" class="inputStyle"
+                @keyup.enter="setLogin" />
             </div>
             <div class="links">
-              <p>
-                <a @click="navigateTo('/')">{{ $lang('返回首頁') }}</a>
-              </p>
               <p class="right">
                 <a @click="openChatBox()">{{ $lang('忘記密碼?') }}</a>
               </p>
               <div class="clear"></div>
             </div>
+            <div>
+              <div class="btn sub-btn" @click="setLogin">{{ $lang('開始購物吧！') }}</div>
+            </div>
+          </div>
+          <h1>{{ $lang('還不是會員？') }}</h1>
+          <div>
+            <div class="btn reg-btn" style="background-color: rgb(233, 126, 54)" @click="navigateTo('/register')">
+              {{ $lang('註冊會員') }}
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <footerBottom />
   </div>
 </template>
 
 <style scoped lang="sass">
-@keyframes backgroundSwitch
-  from
-    transform: translateX(0)
-  to
-    transform: translateX(-100%)
-.layouts-auth
-  position: relative
-  width: 100%
-  min-height: 100dvh
-  &__video
-    // position: absolute
-    // top: 0
-    height: 100vh
-    // right: 0
-    // bottom: 0
-    // left: 0
-
-    width: auto
-
-    overflow: hidden
-    // display: flex
-    //background-position: center
-    //background-size: cover
-    //filter: grayscale(1)
-    //> video
-    //  width: 100%
-    //  height: 100%
-    //  object-fit: cover
-    //  object-position: center
-  &__view
-    position: absolute
-    top: 0
-    right: 0
-    bottom: 0
-    left: 0
-    overflow-x: hidden
-    overflow-y: auto
-  .up,.up2
-    height: 50vh
-    display: flex
-    flex-wrap: nowrap
-    .bgimg
+.layouts-auth__view
+  padding-top: 146.5px
+  .bg-layer
+    max-width: 460px
+    margin: 50px auto
+    padding: 20px
+    h1
+      font-family: "Noto Serif TC"
+      font-size: 32px
+      color: #5d5d5d
+      font-weight: 700
+      margin-bottom: 20px
+    .header-left-bottom
+      font-family: "Noto Serif TC"
+      margin-bottom: 50px
+      .icon1
+        margin-block-start: 15px
+        height: 45px
+        width: 100%
+        border-block-end: 1px solid #e5e5e5
+        display: flex
+        align-items: center
+        .chakra-input,.inputStyle
+          width: 100%
+          height: 100%
+          border: none
+          outline: none
+          padding: 0 10px
+      .chakra
+        position: relative
+        .chakra-input
+          padding-right: 40px
+        .chakra-icon
+          position: absolute
+          z-index: 1
+          right: 8px
+          top: 50%
+          transform: translateY(-50%)
+          width: 20px
+          height: 20px
+          cursor: pointer
+    .links
       display: flex
-      flex-wrap: nowrap
-      animation: backgroundSwitch 35s linear infinite
-      img
-        width: auto
-        max-width: 99999px
-        height: 50vh
-        flex-shrink: 0
-        // object-fit: cover
-</style>
+      justify-content: space-between
+      padding: 10px 5px 20px
+      font-size: 14px
+      a
+        &:hover
+          color: #111
+    .btn
+      width: 100%
+      padding: 10px 0
+      display: flex
+      justify-content: center
+      align-items: center
+      background:  #baa38f
+      color: #fff
+      border-radius: 5px
+      border: 1px solid  #baa38f
+      cursor: pointer
+      transition: all .3s ease-in-out
+      &:hover
+        background:  #fff
+        color:  #baa38f
+    .reg-btn
+      background:  #fff !important
+      color:  #baa38f !important
+      &:hover
+        background:  #baa38f11 !important
 
-<style scoped lang="sass"></style>
-<style scoped lang="sass">
-.bg-layer
-  background: rgba(0, 0, 0, 50%)
-  min-height: 100vh
-
-h1
-  font-size: 45px
-  color: #fff
-  font-weight: 800
-  text-transform: uppercase
-  letter-spacing: 4px
-  text-align: center
-  padding: 1em 0 0.4em 0
-
-.header-main
-  width: 374px
-  margin: 0 auto
-  position: relative
-  z-index: 999
-  padding: 3em 2em
-  background: rgba(255, 255, 255, 75%)
-  -webkit-box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.75)
-  -moz-box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.75)
-  box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.75)
-
-.main-icon
-  text-align: center
-  margin: 0 auto 20px
-
-  img
-    width: 80px
-img
-  max-width: 100%
-
-.icon1
-  margin: 0 0 1em
-  padding: .8em 1em
-  background: rgba(255, 255, 255, 30%)
-  color: black
-  display: flex
-  align-items: center
-  span
-    min-width: 64px !important
-    // white-space: nowrap
-
-.bottom
-  margin: 1em 0 0
-
-.header-left-bottom .btn
-  background: #007cc0
-  color: #fff
-  font-size: 18px
-  font-weight: bold
-  text-transform: uppercase
-  padding: .8em 2em
-  letter-spacing: 1px
-  transition: 0.5s all
-  -webkit-transition: 0.5s all
-  -moz-transition: 0.5s all
-  -o-transition: 0.5s all
-  display: inline-block
-  cursor: pointer
-  outline: none
-  border: none
-  width: 100%
-
-a
-  color: #585858
-  margin: 0em
-
-.header-left-bottom p
-  font-size: 17px
-  color: #000
-  display: inline-block
-  width: 50%
-  margin: 20px 0 0
-  letter-spacing: 1px
-  float: left
-
-  a
-    font-size: 16px
-    font-weight: bold
-    color: #000000
-    text-transform: uppercase
-.links
-  height: 57px
-  cursor: pointer
-  .right
-    text-align: right
-.inputStyle
-  width:100%
-  padding: 8px
-  margin-left: 10px
-  border: 1px solid black
-  opacity: 0.4
 </style>

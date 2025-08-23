@@ -35,14 +35,10 @@ const { isLogin, signout } = useAuthStore()
             <a href="javascript:void(0)" @click="navigateTo('/')">小編來開箱</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >YT 商品介紹</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">YT 商品介紹</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >KOL 好評分享</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">KOL 好評分享</a>
           </dd>
         </dl>
       </div>
@@ -67,29 +63,19 @@ const { isLogin, signout } = useAuthStore()
         <dl>
           <dt>聯絡我們</dt>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >電話 / 0905-400200</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">電話 / 0905-400200</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >時間 / 週一至週五 09:30-18:30</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">時間 / 週一至週五 09:30-18:30</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >電郵 / onemoretw321@gmail.com</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">電郵 / onemoretw321@gmail.com</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >地址 / 高雄市新興區民權一路251號28樓</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">地址 / 高雄市新興區民權一路251號28樓</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')"
-              >（僅開放電話預約取貨）</a
-            >
+            <a href="javascript:void(0)" @click="navigateTo('/')">（僅開放電話預約取貨）</a>
           </dd>
         </dl>
       </div>
@@ -113,10 +99,9 @@ footer
   color: #333
   @media (max-width:768px)
     padding-top: 40px
-    padding-bottom: 30px
   .footer-bottom
     width: 1200px
-    margin: 0 auto 30px
+    margin: 0 auto 60px
     display: flex
     justify-content: center
     gap: 100px
@@ -126,6 +111,7 @@ footer
       padding: 0 20px
     @media (max-width: 768px)
       gap: 0px
+      padding-bottom: 30px
     .introduce
       max-width: 25%
       padding-inline: 14px

@@ -45,7 +45,7 @@ await onMounted(() => {
   } else {
     console.log(`Debug mode env : `, process.env.NODE_ENV)
     if (process.env.NODE_ENV !== 'development') {
-      console.log = () => {}
+      console.log = () => { }
     }
   }
 
@@ -199,7 +199,7 @@ body {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  font-family: '-apple-system', 'BlinkMacSystemFont', 'sans-serif',
+  font-family: "Noto Serif TC", '-apple-system', 'BlinkMacSystemFont', 'sans-serif',
     'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica', 'Arial',
     'sans-serif';
   /* background-color: #e9fdd8; */
@@ -215,6 +215,7 @@ html {
   /* overflow: -moz-hidden-unscrollable; */
   /* background-color: rgb(250 250 250); */
 }
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 
 ::-webkit-scrollbar {
@@ -223,6 +224,7 @@ html {
   background: transparent;
   /* make scrollbar transparent */
 }
+
 /* Hide scrollbar for IE, Edge and Firefox */
 
 /* *:not(input) { */
@@ -256,6 +258,7 @@ html {
   position: relative;
   margin: 0;
 }
+
 a {
   text-decoration: none;
 }

@@ -36,9 +36,120 @@ const slides2 = ref([
   { image: swp2to4, title: 'Slide 3' }
 ])
 
+import scroll1to1 from '@/assets/images/scroll-1.webp'
+import scroll1to2 from '@/assets/images/scroll-2.webp'
+import scroll1to3 from '@/assets/images/scroll-3.webp'
+import scroll1to4 from '@/assets/images/scroll-4.webp'
+import scroll1to5 from '@/assets/images/scroll-5.webp'
+import scroll1to6 from '@/assets/images/scroll-6.webp'
+import scroll1to1hover from '@/assets/images/scroll-1-hover.webp'
+import scroll1to2hover from '@/assets/images/scroll-2-hover.webp'
+import scroll1to3hover from '@/assets/images/scroll-3-hover.webp'
+import scroll1to4hover from '@/assets/images/scroll-4-hover.webp'
+import scroll1to5hover from '@/assets/images/scroll-5-hover.webp'
+import scroll1to6hover from '@/assets/images/scroll-6-hover.webp'
+
+const scroll1 = ref([
+  {
+    title: "【WINYI】海馬寶寶吸吮按摩器",
+    image: scroll1to1,
+    image2: scroll1to1hover,
+    price: 3888,
+    oldPrice: 1888,
+    stock: 50,
+    link: '/',
+    id: 1
+  },
+  {
+    title: "【WINYI】企鵝寶寶換頭吸吮按摩器",
+    image: scroll1to2,
+    image2: scroll1to2hover,
+    price: 3888,
+    oldPrice: 1888,
+    stock: 50,
+    link: '/',
+    id: 2
+  },
+  {
+    title: "【WINYI】小黑鵝仿真手指按摩棒",
+    image: scroll1to3,
+    image2: scroll1to3hover,
+    price: 3888,
+    oldPrice: 1888,
+    stock: 50,
+    link: '/',
+    id: 3
+  },
+  {
+    title: "【WINYI】海后雙頭震動按摩棒",
+    image: scroll1to4,
+    image2: scroll1to4hover,
+    price: 3888,
+    oldPrice: 1888,
+    stock: 50,
+    link: '/',
+    id: 4
+  },
+  {
+    title: "【WINYI】冰藍海豚旋轉伸縮按摩棒",
+    image: scroll1to5,
+    image2: scroll1to5hover,
+    price: 3888,
+    oldPrice: 1888,
+    stock: 50,
+    link: '/',
+    id: 5
+  },
+  {
+    title: "【WINYI】海王雙頭震動吸吮器(預購)",
+    image: scroll1to6,
+    image2: scroll1to6hover,
+    price: 3888,
+    oldPrice: 1888,
+    stock: 50,
+    link: '/',
+    id: 6
+  }
+])
+
+import article1 from '@/assets/images/column1.jpg'
+import article2 from '@/assets/images/column2.jpg'
+import article3 from '@/assets/images/column3.jpg'
+
+const article = ref([
+  {
+    title: '誰說泡泡浴是男生的特權？女性私房景點',
+    image: article1,
+    id: 1,
+    introduction: '說到日本的風俗文化，第一個想到的可能是以男性客群為主的泡泡浴。但近年專為女性設計的風俗店正悄悄興起，今天就帶大家一起探索，看看她們的專屬女性向體驗吧！',
+    link: '/',
+    time: '2025-07-05'
+  },
+  {
+    title: '情趣用品能帶出國嗎？帶你了解',
+    image: article2,
+    id: 1,
+    introduction: '小編常常遇到 ig粉絲詢問想帶情趣玩具出國，但要放手提行李還是托運呢？這篇就來幫大家好好分析情趣玩具到底該怎麼放，以及推薦幾款帶出國不容易造成尷尬的情趣玩具！',
+    link: '/',
+    time: '2025-07-05'
+  },
+  {
+    title: '情趣用品清潔指南',
+    image: article3,
+    id: 1,
+    introduction: '常常遇到客人詢問情趣用品清潔相關問題，小編特別幫大家整理情趣用品防水等級、清洗等注意事項給大家～讓你不在擔心錯誤的使用習慣導致玩具壽命縮短！',
+    link: '/',
+    time: '2025-07-05'
+  }
+])
+
+const itemData = ref(0)
+const addCart = (item?: any) => {
+  itemData.value = item.id
+}
+
 const container = ref(null)
 const items = ref([])
-
 const prev = () => {
   if (container.value) {
     container.value.scrollBy({
@@ -58,7 +169,7 @@ const next = () => {
 }
 
 onMounted(() => {
-  document.documentElement.scrollTop = 0
+  // document.documentElement.scrollTop = 0
   if (window) {
     console.log('window', window.innerWidth)
     window.addEventListener('scroll', handleScroll)
@@ -80,14 +191,17 @@ onUnmounted(() => {
     window.removeEventListener('scroll', handleScroll)
   }
 })
+
+
 </script>
 
 <template>
   <div class="cont">
-    <headerTop :opaque="scrollTop >= 0"></headerTop>
+    <headerTop :opaque="scrollTop >= 0" :itemData="itemData"></headerTop>
     <div class="index-live">
       <video src="">
-        <source src="" type="video/mp4"></source>
+        <source src="" type="video/mp4">
+        </source>
       </video>
       <div class="live-cont">暫無直播</div>
     </div>
@@ -105,8 +219,7 @@ onUnmounted(() => {
             <p>若有產品保固等相關問題</p>
             <p>
               請改由LINE帳號
-              <span style="color: #3598db"
-                ><strong><a href="" target="_blank">@630hrrid</a></strong>
+              <span style="color: #3598db"><strong><a href="" target="_blank">@630hrrid</a></strong>
               </span>
               處理，造成不便敬請見諒🙏
             </p>
@@ -123,7 +236,6 @@ onUnmounted(() => {
         </UkSlideshow>
       </client-only>
     </div>
-
     <section class="section2" ref="section2">
       <div class="section2-content">
         <div class="section2-content-tit">✦ 精 選 分 類 ✦</div>
@@ -183,196 +295,51 @@ onUnmounted(() => {
       <div class="section3-content">
         <div class="section3-content-tit">✦ 熱 銷 排 行 ✦</div>
         <div class="section3-content-cont" ref="container">
-          <div class="section3-cont-item">
+          <div class="section3-cont-item" v-for="(item, index) in scroll1" :key="index"
+            @click="navigateTo('/details?id=' + item.id)">
             <div class="shop-img">
-              <img
-                src="/assets/images/scroll-1.webp"
-                alt=""
-                class="img-normal"
-              />
+              <img :src="item.image" alt="" class="img-normal" />
 
               <div class="shop-img-hover">
-                <img src="/assets/images/scroll-1-hover.webp" alt="" class="" />
-                <div class="shop-hover-btn">加入購物車</div>
+                <img :src="item.image2" alt="" class="" />
+                <div class="shop-hover-btn" @click="addCart(item)">加入購物車</div>
               </div>
             </div>
-            <h4>【WINYI】紅鶴遙控震動跳蛋</h4>
+            <h4>{{ item.title }}</h4>
             <div class="section3-cont-item-price">
-              <p class="section3-cont-item-price-new">NT$ 1,500</p>
-              <p class="section3-cont-item-price-old">NT$ 1,500</p>
+              <p class="section3-cont-item-price-new">NT$ {{ item.price }}</p>
+              <p class="section3-cont-item-price-old">NT$ {{ item.oldPrice }}</p>
             </div>
             <span class="shopping">
               <i class="fa fa-shopping-cart"></i>
             </span>
           </div>
-          <div class="section3-cont-item">
-            <div class="shop-img">
-              <img
-                src="/assets/images/scroll-2.webp"
-                alt=""
-                class="img-normal"
-              />
 
-              <div class="shop-img-hover">
-                <img src="/assets/images/scroll-2-hover.webp" alt="" class="" />
-                <div class="shop-hover-btn">加入購物車</div>
-              </div>
-            </div>
-            <h4>【WINYI】紅鶴遙控震動跳蛋</h4>
-            <div class="section3-cont-item-price">
-              <p class="section3-cont-item-price-new">NT$ 1,500</p>
-              <p class="section3-cont-item-price-old">NT$ 1,500</p>
-            </div>
-            <span class="shopping">
-              <i class="fa fa-shopping-cart"></i>
-            </span>
-          </div>
-          <div class="section3-cont-item">
-            <div class="shop-img">
-              <img
-                src="/assets/images/scroll-3.webp"
-                alt=""
-                class="img-normal"
-              />
-              <div class="shop-img-hover">
-                <img src="/assets/images/scroll-3-hover.webp" alt="" class="" />
-                <div class="shop-hover-btn">加入購物車</div>
-              </div>
-            </div>
-            <h4>【WINYI】紅鶴遙控震動跳蛋</h4>
-            <div class="section3-cont-item-price">
-              <p class="section3-cont-item-price-new">NT$ 1,500</p>
-              <p class="section3-cont-item-price-old">NT$ 1,500</p>
-            </div>
-            <span class="shopping">
-              <i class="fa fa-shopping-cart"></i>
-            </span>
-          </div>
-          <div class="section3-cont-item">
-            <div class="shop-img">
-              <img
-                src="/assets/images/scroll-4.webp"
-                alt=""
-                class="img-normal"
-              />
-
-              <div class="shop-img-hover">
-                <img src="/assets/images/scroll-4-hover.webp" alt="" class="" />
-                <div class="shop-hover-btn">加入購物車</div>
-              </div>
-            </div>
-            <h4>【WINYI】紅鶴遙控震動跳蛋</h4>
-            <div class="section3-cont-item-price">
-              <p class="section3-cont-item-price-new">NT$ 1,500</p>
-              <p class="section3-cont-item-price-old">NT$ 1,500</p>
-            </div>
-            <span class="shopping">
-              <i class="fa fa-shopping-cart"></i>
-            </span>
-          </div>
-          <div class="section3-cont-item">
-            <div class="shop-img">
-              <img
-                src="/assets/images/scroll-5.webp"
-                alt=""
-                class="img-normal"
-              />
-
-              <div class="shop-img-hover">
-                <img src="/assets/images/scroll-5-hover.webp" alt="" class="" />
-                <div class="shop-hover-btn">加入購物車</div>
-              </div>
-            </div>
-            <h4>【WINYI】紅鶴遙控震動跳蛋</h4>
-            <div class="section3-cont-item-price">
-              <p class="section3-cont-item-price-new">NT$ 1,500</p>
-              <p class="section3-cont-item-price-old">NT$ 1,500</p>
-            </div>
-            <span class="shopping">
-              <i class="fa fa-shopping-cart"></i>
-            </span>
-          </div>
-          <div class="section3-cont-item">
-            <div class="shop-img">
-              <img
-                src="/assets/images/scroll-6.webp"
-                alt=""
-                class="img-normal"
-              />
-
-              <div class="shop-img-hover">
-                <img src="/assets/images/scroll-6-hover.webp" alt="" class="" />
-                <div class="shop-hover-btn">加入購物車</div>
-              </div>
-            </div>
-            <h4>【WINYI】紅鶴遙控震動跳蛋</h4>
-            <div class="section3-cont-item-price">
-              <p class="section3-cont-item-price-new">NT$ 1,500</p>
-              <p class="section3-cont-item-price-old">NT$ 1,500</p>
-            </div>
-            <span class="shopping">
-              <i class="fa fa-shopping-cart"></i>
-            </span>
-          </div>
         </div>
         <div class="owl-prev" @click="prev">
-          <svg
-            class="slider-svg-prev-icon"
-            viewBox="0 0 24 24"
-            fill="#596480"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M16.8154 13.35L13.3578 16.8077C12.9472 17.2182 12.9472 17.8818 13.3578 18.2924C13.7683 18.7029 14.4319 18.7029 14.8425 18.2924L20.0925 13.0424C20.503 12.6318 20.503 11.9682 20.0925 11.5577L14.8425 6.30765C14.6377 6.1029 14.3689 6 14.1001 6C13.8313 6 13.5625 6.1029 13.3578 6.30765C12.9472 6.7182 12.9472 7.3818 13.3578 7.79235L16.8154 11.25L4.65009 11.25C4.06944 11.25 3.60009 11.7194 3.60009 12.3C3.60009 12.8807 4.06944 13.35 4.65009 13.35L16.8154 13.35Z"
-            ></path>
-            <mask
-              id="mask0_3488_15764"
-              style="mask-type: alpha"
-              maskUnits="userSpaceOnUse"
-              x="3"
-              y="6"
-              width="18"
-              height="13"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+          <svg class="slider-svg-prev-icon" viewBox="0 0 24 24" fill="#596480" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M16.8154 13.35L13.3578 16.8077C12.9472 17.2182 12.9472 17.8818 13.3578 18.2924C13.7683 18.7029 14.4319 18.7029 14.8425 18.2924L20.0925 13.0424C20.503 12.6318 20.503 11.9682 20.0925 11.5577L14.8425 6.30765C14.6377 6.1029 14.3689 6 14.1001 6C13.8313 6 13.5625 6.1029 13.3578 6.30765C12.9472 6.7182 12.9472 7.3818 13.3578 7.79235L16.8154 11.25L4.65009 11.25C4.06944 11.25 3.60009 11.7194 3.60009 12.3C3.60009 12.8807 4.06944 13.35 4.65009 13.35L16.8154 13.35Z">
+            </path>
+            <mask id="mask0_3488_15764" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="3" y="6" width="18"
+              height="13">
+              <path fill-rule="evenodd" clip-rule="evenodd"
                 d="M16.8154 13.35L13.3578 16.8077C12.9472 17.2182 12.9472 17.8818 13.3578 18.2924C13.7683 18.7029 14.4319 18.7029 14.8425 18.2924L20.0925 13.0424C20.503 12.6318 20.503 11.9682 20.0925 11.5577L14.8425 6.30765C14.6377 6.1029 14.3689 6 14.1001 6C13.8313 6 13.5625 6.1029 13.3578 6.30765C12.9472 6.7182 12.9472 7.3818 13.3578 7.79235L16.8154 11.25L4.65009 11.25C4.06944 11.25 3.60009 11.7194 3.60009 12.3C3.60009 12.8807 4.06944 13.35 4.65009 13.35L16.8154 13.35Z"
-                fill="white"
-              ></path>
+                fill="white"></path>
             </mask>
             <g mask="url(#mask0_3488_15764)"></g>
           </svg>
         </div>
         <div class="owl-next" @click="next">
-          <svg
-            class="slider-svg-next-icon"
-            viewBox="0 0 24 24"
-            fill="#596480"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              clip-rule="evenodd"
-              d="M16.8154 13.35L13.3578 16.8077C12.9472 17.2182 12.9472 17.8818 13.3578 18.2924C13.7683 18.7029 14.4319 18.7029 14.8425 18.2924L20.0925 13.0424C20.503 12.6318 20.503 11.9682 20.0925 11.5577L14.8425 6.30765C14.6377 6.1029 14.3689 6 14.1001 6C13.8313 6 13.5625 6.1029 13.3578 6.30765C12.9472 6.7182 12.9472 7.3818 13.3578 7.79235L16.8154 11.25L4.65009 11.25C4.06944 11.25 3.60009 11.7194 3.60009 12.3C3.60009 12.8807 4.06944 13.35 4.65009 13.35L16.8154 13.35Z"
-            ></path>
-            <mask
-              id="mask0_3488_15764"
-              style="mask-type: alpha"
-              maskUnits="userSpaceOnUse"
-              x="3"
-              y="6"
-              width="18"
-              height="13"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
+          <svg class="slider-svg-next-icon" viewBox="0 0 24 24" fill="#596480" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M16.8154 13.35L13.3578 16.8077C12.9472 17.2182 12.9472 17.8818 13.3578 18.2924C13.7683 18.7029 14.4319 18.7029 14.8425 18.2924L20.0925 13.0424C20.503 12.6318 20.503 11.9682 20.0925 11.5577L14.8425 6.30765C14.6377 6.1029 14.3689 6 14.1001 6C13.8313 6 13.5625 6.1029 13.3578 6.30765C12.9472 6.7182 12.9472 7.3818 13.3578 7.79235L16.8154 11.25L4.65009 11.25C4.06944 11.25 3.60009 11.7194 3.60009 12.3C3.60009 12.8807 4.06944 13.35 4.65009 13.35L16.8154 13.35Z">
+            </path>
+            <mask id="mask0_3488_15764" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="3" y="6" width="18"
+              height="13">
+              <path fill-rule="evenodd" clip-rule="evenodd"
                 d="M16.8154 13.35L13.3578 16.8077C12.9472 17.2182 12.9472 17.8818 13.3578 18.2924C13.7683 18.7029 14.4319 18.7029 14.8425 18.2924L20.0925 13.0424C20.503 12.6318 20.503 11.9682 20.0925 11.5577L14.8425 6.30765C14.6377 6.1029 14.3689 6 14.1001 6C13.8313 6 13.5625 6.1029 13.3578 6.30765C12.9472 6.7182 12.9472 7.3818 13.3578 7.79235L16.8154 11.25L4.65009 11.25C4.06944 11.25 3.60009 11.7194 3.60009 12.3C3.60009 12.8807 4.06944 13.35 4.65009 13.35L16.8154 13.35Z"
-                fill="white"
-              ></path>
+                fill="white"></path>
             </mask>
             <g mask="url(#mask0_3488_15764)"></g>
           </svg>
@@ -404,48 +371,20 @@ onUnmounted(() => {
       <div class="section5-content">
         <div class="section5-content-tit">✦ W 專 欄 ✦</div>
         <div class="section5-content-cont">
-          <div class="section5-content-cont-item">
-            <img src="/assets/images/column1.jpg" alt="" />
+          <div class="section5-content-cont-item" v-for="(item, index) in article" :key="index">
+            <img :src="item.image" alt="" />
             <div class="section5-content-cont-item-text">
-              <h3>誰說泡泡浴是男生的特權？女性私房景點</h3>
+              <h3>{{ item.title }}</h3>
               <p>
-                說到日本的風俗文化，第一個想到的可能是以男性客群為主的泡泡浴。但近年專為女性設計的風俗店正悄悄興起，今天就帶大家一起探索，看看她們的專屬女性向體驗吧！
+                {{ item.introduction }}
               </p>
-              <div class="section5-content-item-time">2023-07-05</div>
+              <div class="section5-content-item-time">{{ item.time }}</div>
               <div class="section5-content-cont-item-btn">
                 <a href="" class="btn"> 閲讀全文 </a>
               </div>
             </div>
           </div>
-          <div class="section5-content-cont-item">
-            <img src="/assets/images/column2.jpg" alt="" />
-            <div class="section5-content-cont-item-text">
-              <h3>情趣用品能帶出國嗎？帶你了解</h3>
-              <p>
-                小編常常遇到 ig
-                粉絲詢問想帶情趣玩具出國，但要放手提行李還是托運呢？
-                這篇就來幫大家好好分析情趣玩具到底該怎麼放，以及推薦幾款帶出國不容易造成尷尬的情趣玩具！
-              </p>
-              <div class="section5-content-item-time">2023-07-05</div>
-              <div class="section5-content-cont-item-btn">
-                <a href="" class="btn"> 閲讀全文 </a>
-              </div>
-            </div>
-          </div>
-          <div class="section5-content-cont-item">
-            <img src="/assets/images/column3.jpg" alt="" />
-            <div class="section5-content-cont-item-text">
-              <h3>情趣用品清潔指南</h3>
-              <p>
-                常常遇到客人詢問情趣用品清潔相關問題，小編特別幫大家整理情趣用品防水等級、清洗等
-                注意事項給大家～讓你不在擔心錯誤的使用習慣導致玩具壽命縮短！
-              </p>
-              <div class="section5-content-item-time">2025-01-16</div>
-              <div class="section5-content-cont-item-btn">
-                <a href="" class="btn"> 閲讀全文 </a>
-              </div>
-            </div>
-          </div>
+
           <div class="more">
             <a href="" class="more-btn"> 更多文章 </a>
           </div>
@@ -808,6 +747,10 @@ onUnmounted(() => {
   .index-live
     margin-top: 110px
 @media (max-width: 768px)
+  .shop-img
+    .shop-img-hover
+      .shop-hover-btn
+        display: none
   // 加入會員
   .btns
     .button
@@ -840,7 +783,120 @@ onUnmounted(() => {
   .more-btn
     margin: 0 !important
     width: 100% !important
+  // 購物車-mobile
   .shopping
     display: block !important
+  .shopping-cart-container
+    background: rgba(0,0,0,0.1) !important
+  .shopping-cart-conts
+    overflow-y: auto !important 
+    max-height: 100dvh !important
+    padding-block-end: 65px
+  .shopping-cart
+    top: 0 !important
+    left: -100% !important
+    right: auto !important
+    width: 60% !important
+    height: 100vh !important
+    min-height: 100vh !important
+    max-height: 100vh !important
+    overflow: hidden !important
+    border: none !important
+    .checkout
+      position: absolute !important
+      width: 100% !important
+  .shopping-cart-active
+    top: 0 !important
+    right: auto !important
+    left: 0 !important
+    width: 60% !important
+
+// 購物車
+.shopping-cart-container
+  position: fixed
+  top: 0
+  right: 0
+  width: 100%
+  height: 100vh
+  background: rgba(0,0,0,0)
+  transition: all .1s ease-in-out
+  z-index: 67
+.shopping-cart
+  position: fixed
+  top: 150px
+  right: -280px
+  width: 250px
+  z-index: 68
+  background: #ffffff
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
+  border: 1px solid #f7f7f7
+  transition: all 0.3s ease-in-out
+  overflow-y: auto
+  max-height: calc(100vh - 170px)
+  .shopping-cart-conts
+    .shopping-cart-cont
+      position: relative
+      padding: 15px 15px 40px
+      display: flex
+      justify-content: space-between
+      border-bottom: 1px solid #f6f6f6
+      &:last-child
+        border-bottom: none
+      img
+        width: 50px
+        height: 50px
+        object-fit: cover
+        margin-right: 15px
+      h5
+        color: #999
+        font-size: 13px
+        padding-bottom: 2px
+        flex: 1
+      .specification
+        position: absolute
+        bottom: 0
+        left: 0
+        font-size: 14px
+        width: 100%
+        .price
+          padding: 0 15px 10px 80px
+          display: flex
+          justify-content: space-between
+          .price-text
+            padding: 0 3px
+          .delete
+            color: #999
+            fill: #999
+            cursor: pointer
+            transition: all .25s ease
+            &:hover
+              color: #666
+              transform: scale(1.05)
+  .checkout
+    padding: 10px 15px 15px
+    position: sticky
+    bottom: 0
+    background: #fff
+    .ck-btn
+      width: 100%
+      background: #baa38f
+      padding: 6px 12px
+      border-radius: 4px
+      color: #ffffff
+      border: 1px solid #baa38f
+      cursor: pointer
+      text-align: center
+      &:hover
+        background: #ffffff
+        color: #baa38f
+  .empty
+    padding: 40px 15px
+    text-align: center
+    font-size: 14px
+.shopping-cart-active
+  top: 150px
+  right: 5%
+  width: 300px
+
 
 </style>
