@@ -31,6 +31,11 @@ const showPassword = (type: boolean) => {
   passwordEyes.value = type
 }
 
+const timer = ref(new Date().getTime())
+const addCart = (item?: any) => {
+  timer.value = new Date().getTime()
+}
+
 
 onMounted(async () => {
   if (window) {
@@ -99,14 +104,14 @@ const toggle = ref(false)
 
 // 
 const onAddToCart = () => {
-
+  addCart()
 }
 const addItemQuantity = ref(1)
 </script>
 
 <template>
   <div class="cont" :style="{ overflowY: showImageViewer ? 'hidden' : 'auto' }">
-    <headerTop :opaque="scrollTop >= 0"></headerTop>
+    <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
     <div class="nav-lis">
       <div class="nav">
         <a href="/">全部商品 </a><span> / </span><a> 熱銷商品</a>

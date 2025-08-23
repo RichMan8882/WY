@@ -143,11 +143,10 @@ const article = ref([
   }
 ])
 
-const itemData = ref(0)
+const timer = ref(new Date().getTime())
 const addCart = (item?: any) => {
-  itemData.value = item.id
+  timer.value = new Date().getTime()
 }
-
 const container = ref(null)
 const items = ref([])
 const prev = () => {
@@ -197,7 +196,7 @@ onUnmounted(() => {
 
 <template>
   <div class="cont">
-    <headerTop :opaque="scrollTop >= 0" :itemData="itemData"></headerTop>
+    <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
     <div class="index-live">
       <video src="">
         <source src="" type="video/mp4">
@@ -302,7 +301,7 @@ onUnmounted(() => {
 
               <div class="shop-img-hover">
                 <img :src="item.image2" alt="" class="" />
-                <div class="shop-hover-btn" @click="addCart(item)">加入購物車</div>
+                <div class="shop-hover-btn" @click.stop="addCart(item)">加入購物車</div>
               </div>
             </div>
             <h4>{{ item.title }}</h4>
@@ -767,7 +766,7 @@ onUnmounted(() => {
     min-width: calc( 50% - 15px ) !important
   // 精選分類
   .section2-content-cont
-    padding: 15px !important
+    padding: 0 !important
     grid-template-columns: repeat(3, 1fr) !important
     gap: 15px
     h4

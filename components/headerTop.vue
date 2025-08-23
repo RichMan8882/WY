@@ -11,7 +11,7 @@ const props = defineProps({
   styles: { type: String, default: '' },
   routerCrt: { type: String, default: '/' },
   headerW100: { type: String, default: '' },
-  itemData: { type: Number, default: 0 }
+  timer: { type: Number, default: 0 }
 })
 const playerWalletBalance = computed(() => {
   if (!isLogin()) {
@@ -137,7 +137,7 @@ const triggerAnimation = () => {
       isAnimating.value = false
       status.value = '动画完成，等待下一次'
     }, 1000)
-  }, 3000)
+  }, 1200)
 }
 
 const deleteItem = (item: any, index?: number) => {
@@ -148,21 +148,20 @@ const deleteItem = (item: any, index?: number) => {
   // }
 }
 watch(
-  () => props.itemData,
+  () => props.timer,
   (newVal) => {
+    console.log(newVal);
     const num = shoppingLis.value.length
-    if (Math.random() > 0.5) {
-      shoppingLis.value.push({
-        title: "【WINYI】海后雙頭震動按摩棒",
-        image: scroll1to4,
-        amount: 1,
-        price: 3888,
-        oldPrice: 1888,
-        stock: 50,
-        createTime: '2025-07-05',
-        id: 4
-      })
-    }
+    shoppingLis.value.push({
+      title: "【WINYI】海后雙頭震動按摩棒",
+      image: scroll1to4,
+      amount: 1,
+      price: 3888,
+      oldPrice: 1888,
+      stock: 50,
+      createTime: '2025-07-05',
+      id: 4
+    })
     if (num < shoppingLis.value.length) {
       triggerAnimation()
     }
@@ -374,7 +373,7 @@ const onNavInfo = () => {
                 </div>
               </li>
               <li>
-                <a @click="navigateTo('/service')">所有商品</a>
+                <a @click="navigateTo('/productcategories')">所有商品</a>
               </li>
               <li>
                 <a> 情侶情趣用品專區 </a>
@@ -654,7 +653,7 @@ const onNavInfo = () => {
               </div>
             </li>
             <li>
-              <a @click="navigateTo('/service')">所有商品</a>
+              <a @click="navigateTo('/productcategories')">所有商品</a>
             </li>
             <li>
               <a :href="siteStore.chatbox" target="_blank">
@@ -1364,7 +1363,7 @@ header
   background: #ffffff
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1)
   border: 1px solid #f7f7f7
-  transition: all 0.3s ease-in-out
+  transition: all 0.5s ease-in-out
   overflow-y: auto
   max-height: calc(100vh - 170px)
   .shopping-cart-conts
