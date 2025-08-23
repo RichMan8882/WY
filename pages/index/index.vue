@@ -364,7 +364,8 @@ onUnmounted(() => {
       <div class="section5-content">
         <div class="section5-content-tit">✦ W 專 欄 ✦</div>
         <div class="section5-content-cont">
-          <div class="section5-content-cont-item" v-for="(item, index) in article" :key="index">
+          <div class="section5-content-cont-item" v-for="(item, index) in article" :key="index"
+            @click="navigateTo('/articledetails')">
             <img :src="item.image" alt="" />
             <div class="section5-content-cont-item-text">
               <h3>{{ item.title }}</h3>
@@ -379,7 +380,7 @@ onUnmounted(() => {
           </div>
 
           <div class="more">
-            <a href="" class="more-btn"> 更多文章 </a>
+            <a href="" class="more-btn" @click="navigateTo('/articlelist')"> 更多文章 </a>
           </div>
         </div>
       </div>
@@ -644,7 +645,6 @@ onUnmounted(() => {
           font-size: 16px
           text-decoration: line-through
           opacity: .8
-
 .section4
   .section4-content
     max-width: 1170px
@@ -725,9 +725,6 @@ onUnmounted(() => {
               border-radius: 0.375rem
               &:hover
                 background-color: #9c8b6f
-@media (max-width: 1200px)
-  .index-live
-    margin-top: 110px
 @media (max-width: 768px)
   .shop-img
     .shop-img-hover

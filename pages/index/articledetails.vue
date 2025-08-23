@@ -89,26 +89,6 @@ const scroll1 = ref([
     stock: 50,
     link: '/',
     id: 4
-  },
-  {
-    title: "【WINYI】冰藍海豚旋轉伸縮按摩棒",
-    image: scroll1to5,
-    image2: scroll1to5hover,
-    price: 3888,
-    oldPrice: 1888,
-    stock: 50,
-    link: '/',
-    id: 5
-  },
-  {
-    title: "【WINYI】海王雙頭震動吸吮器(預購)",
-    image: scroll1to6,
-    image2: scroll1to6hover,
-    price: 3888,
-    oldPrice: 1888,
-    stock: 50,
-    link: '/',
-    id: 6
   }
 ])
 
@@ -174,25 +154,62 @@ const onCurrentCate = (cate: any) => {
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <!-- <div class="index-bg">
-      <div class="index-bg-content">
-        <img src="@/assets/images/categories-bnr.webp" alt="">
+    <div class="index-bg">
+      <div class="title-h1 title-color text-center">
+        誰說泡泡浴是男生的特權？女生的私房景點：東京秘密基地
       </div>
-    </div> -->
-    <liveStreaming></liveStreaming>
-    <div class="content-nav">
-      <div class="navs">
-        <div class="nav" @click="onCurrentCate(item.id)" :class="currentCategory === item.id ? 'nav-active' : ''"
-          v-for="item in categorys" :key="item.id">
-          {{ item.name }}
-        </div>
+      <div class="part">說到日本的風俗文化，許多人第一個想到的可能是以男性客群為主的泡泡浴、牛郎店或是AV文化。但妳知道嗎？近年來，專為女性設計的風俗店正在悄悄興起，讓女生也能享受極致的身心放鬆體驗。
+        如果妳曾經好奇「女生可以去的風俗店有什麼？」或是「日本女生都怎麼放鬆？」那麼這篇文章就是為妳而寫的！今天就帶大家一起探索東京女生的私房秘密基地，看看她們的專屬女性向體驗吧！ </div>
+      <img src="@/assets/images/categories-bnr.webp" alt="">
+      <div class="title-h2 title-color title-color-after">
+        女生專屬的日本風俗店大揭密！你一定要知道這些關鍵字
       </div>
+      <div class="part">在東京，有不少為女性客人量身打造的風俗店，日本最有名的女性用風俗店「東京秘密基地」在全國有60家分店。這些店家不只環境講究，服務內容也貼心細緻，讓妳完全不會有不自在的感覺，想了解更仔細的話
+        可以在 dcard 或 google 搜尋：東京秘密基地、女性用風俗、秘密基地、女風 都可以找到相關資訊。</div>
+      <img src="@/assets/images/categories-bnr.webp" alt="">
+      <div class="title-h2 title-color title-color-after">
+        女性風俗店基本服務
+      </div>
+      <div class="part">
+        服務內容主要為男性店員以按摩的方式為中心滿足躺在床上的顧客，會幫你洗泡泡浴、在床上全身按摩、聊天挑逗、全身親舔、各種做前戲（愛撫、親吻、甚至是舔妹妹、手指愛撫及指交），有些還會問你要不要愛愛，又稱本番。</div>
+      <div class="part">
+        事實上，無論是男性風俗還是女性風俗，日本法律都明文禁止店家提供本番行為（即性行為）。然而，在女性風俗店內，仍有不少店員與客人發生過本番行為。根據媒體的問卷調查顯示，曾經光顧女性風俗店的顧客中，高達 65%
+        的人表示曾與店員發生過本番行為。
+        雖然日本法律嚴格禁止風俗店提供本番服務，但泡泡浴店卻能夠合法經營。這是因為店家聲稱泡泡浴店只是單純的洗浴設施，而若與客人因相處產生戀愛感情，進而發生性行為，那麼這就被視為「自願發生的親密行為」，而非店方提供的服務內容。因此，泡泡浴店便能在這種法律灰色地帶中運作，成功躲過法律的制裁。
+      </div>
+      <img src="@/assets/images/categories-bnr.webp" alt="">
+      <div class="title-h2 title-color title-color-after">
+        女性風俗店 基本ＱＡ
+      </div>
+      <div class="part">
+        <p>Ｑ1:外國人可以使用嗎？</p>
+        <p>A:完全可以。</p>
+      </div>
+      <div class="part">
+        <p>Q2:需要提供身份證明嗎？</p>
+        <p>A:不用，預約的時候可以用假名，施術前請你填寫的同意書也可以簽假名。</p>
+      </div>
+      <div class="part">
+        <p>Q3:需要會日文嗎？</p>
+        <p>A:不太會也沒關係，男生會現場使用翻譯機跟你溝通。會日文的話更好，跟男生可以談論的話題會更廣，樂趣更多，體驗會更完整。（他在你耳邊說色色的話會更有感覺）</p>
+      </div>
+      <div class="part">
+        <p>Q4:需要日本手機號碼嗎？</p>
+        <p>A:沒有的話可以用電子信箱，有的話更好。</p>
+      </div>
+      <div class="title-h2 title-color title-color-after">
+        聽說可以使用情趣用品？
+      </div>
+      <div class="part">
+        有些男生甚至會貼心地準備全新的情趣用品，細心挑選適合的款式，確保能讓妳更放鬆、更享受。如果妳有特別喜歡的玩具，也可以自己準備，讓這場體驗更加貼近自己的需求與喜好，小編超推薦可以帶小海螺吸吮器或者紅鶴跳蛋！在前戲讓男生操控絕對濕到不行
+        還會叫很大聲</div>
     </div>
+
     <section class="section3" ref="section3">
       <div class="section3-content">
         <div class="tabs">
           <div class="tab">
-            類型1
+            推薦
           </div>
         </div>
         <div class="section3-content-cont" ref="container">
@@ -249,42 +266,40 @@ const onCurrentCate = (cate: any) => {
   max-width: 100%
   width: 1170px
   padding: 0 15px
-  margin: 20px auto
-  display: flex
-  align-items: center
-  .index-bg-content
-    display: flex
-    align-items: center
-    width: 1200px
-    margin: 0 auto
-    img
-      max-width: 100%
-      width: 100%
-      aspect-ratio: 7/3
-      object-fit: cover
-.content-nav
-  padding: 0 10px
-  max-width: 100%
-  width: 1170px
-  margin: 20px auto 0
-  .navs
-    height: 45px
-    display: flex
-    justify-content: center
-    background: #dbc2ab
-    gap: 10px
-    .nav
-      color: #ffffff
-      max-width: 25%
-      width: 100px
-      padding: 0 10px
-      height: 100%
-      line-height: 45px
-      text-align: center
-      &:hover
-        background: #ad845e
-    .nav-active   
-      background: #ad845e !important
+  margin: 60px auto 20px
+  .title-h1
+    font-size: 26px
+    padding: 10px 0
+    margin: 10px auto 20px
+  .title-h2
+    padding-top: 20px
+    font-size: 24px
+  .title-color
+    color: #7c93b7
+  .title-color-after
+    padding-block-end: 30px
+    position: relative
+    &::after
+      content: ''
+      position: absolute
+      left: 0
+      bottom: 10px
+      width: 25px
+      border-bottom-width: 3px
+      border-bottom-style: solid
+      border-bottom-color: #baa38f
+  .part
+    font-size: 18px
+    color: #5d5d5d
+    margin:30px 0
+    p
+      margin: 15px
+  img
+    max-width: 100%
+    width: 100%
+    aspect-ratio: 6/3
+    object-fit: cover
+    margin: 40px 0
 
 .section3
   transition: all .6s ease-in-out
@@ -292,7 +307,7 @@ const onCurrentCate = (cate: any) => {
     position: relative
     max-width: 1170px
     margin: 0 auto
-    padding: 30px
+    padding: 60px 30px
     .tabs
       display: flex
       justify-content: center
