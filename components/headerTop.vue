@@ -78,7 +78,7 @@ const showLang = ref(false)
 const showMask = ref(false)
 const onMask = () => {
   showMask.value = !showMask.value
-  console.log('showMask', showMask.value);
+  searchVal.value = ''
 
 }
 import scroll1to1 from '@/assets/images/scroll-1.webp'
@@ -184,6 +184,19 @@ const onNavInfo = () => {
 
 }
 
+const searchVal = ref('')
+const onSearch = () => {
+  if (searchVal.value.length == 0) {
+    onMask()
+    return
+  }
+  ElMessage({
+    message: searchVal.value,
+    type: 'success'
+  })
+}
+
+
 </script>
 <template>
   <div>
@@ -236,9 +249,9 @@ const onNavInfo = () => {
               <div class="t-item">
                 <div class="search">
                   <div class="hide-mobi" :class="showMask ? 'search-input-mobi' : ''">
-                    <input type="text" :placeholder="$lang('找商品')" />
+                    <input type="text" :placeholder="$lang('找商品')" v-model="searchVal" />
                     <svg t="1755263667764" class="icon show-mobi" viewBox="0 0 1024 1024" version="1.1"
-                      xmlns="http://www.w3.org/2000/svg" p-id="1984" width="20" height="20">
+                      xmlns="http://www.w3.org/2000/svg" p-id="1984" width="20" height="20" @click.stop="onSearch">
                       <path
                         d="M599.04151666 599.04151666a48.54518557 48.54518557 0 0 1 68.64289223 0l266.9985189 266.99851889a48.54518557 48.54518557 0 0 1-68.64289224 68.64289224l-266.99851889-266.9985189a48.54518557 48.54518557 0 0 1 0-68.64289223z"
                         p-id="1985"></path>
@@ -248,7 +261,7 @@ const onNavInfo = () => {
                     </svg>
                   </div>
                   <svg t="1755263667764" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                    xmlns="http://www.w3.org/2000/svg" p-id="1984" width="20" height="20" @click="onMask">
+                    xmlns="http://www.w3.org/2000/svg" p-id="1984" width="20" height="20" @click.stop="onSearch">
                     <path
                       d="M599.04151666 599.04151666a48.54518557 48.54518557 0 0 1 68.64289223 0l266.9985189 266.99851889a48.54518557 48.54518557 0 0 1-68.64289224 68.64289224l-266.99851889-266.9985189a48.54518557 48.54518557 0 0 1 0-68.64289223z"
                       p-id="1985"></path>
