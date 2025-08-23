@@ -903,8 +903,8 @@ header
   .header-bulletin
     background: #baa38f
     font-size: 14px
-    height: 45px
-    overflow: hidden
+    height: 45px !important
+    overflow: hidden !important
     h4
       font-size: 14px
       line-height: 25px
