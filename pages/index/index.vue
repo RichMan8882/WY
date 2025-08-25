@@ -229,61 +229,6 @@ onUnmounted(() => {
         </UkSlideshow>
       </client-only>
     </div>
-    <section class="section2" ref="section2">
-      <div class="section2-content">
-        <div class="section2-content-tit">✦ 精 選 分 類 ✦</div>
-        <div class="section2-content-cont">
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-1.webp" alt="" />
-            </div>
-            <h4>新品搶先看</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-2.webp" alt="" />
-            </div>
-            <h4>初學者嚐鮮</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-3.webp" alt="" />
-            </div>
-            <h4>進階老司機</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-4.webp" alt="" />
-            </div>
-            <h4>情侶互動推薦</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-5.webp" alt="" />
-            </div>
-            <h4>吸吮按摩器</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-6.webp" alt="" />
-            </div>
-            <h4>震動跳蛋</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-7.webp" alt="" />
-            </div>
-            <h4>震動按摩棒</h4>
-          </a>
-          <a class="section2-cont-item">
-            <div class="section2-cont-item-img">
-              <img src="/assets/images/nav-8.webp" alt="" />
-            </div>
-            <h4>凱格爾聰明球</h4>
-          </a>
-        </div>
-      </div>
-    </section>
     <section class="section3" ref="section3">
       <div class="section3-content">
         <div class="section3-content-tit">✦ 熱 銷 排 行 ✦</div>
@@ -337,11 +282,88 @@ onUnmounted(() => {
             <g mask="url(#mask0_3488_15764)"></g>
           </svg>
         </div>
-        <div class="more">
+        <!-- <div class="more">
           <a class="more-btn"> 查看更多 </a>
+        </div> -->
+      </div>
+    </section>
+    <section class="section2" ref="section2">
+      <div class="section2-content">
+        <div class="section2-content-tit">✦ 所 有 商 品 ✦</div>
+        <div class="section2-content-cont">
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-man.png" alt="" />
+            </div>
+            <h4>男生</h4>
+          </a>
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-woman.png" alt="" />
+            </div>
+            <h4>女生</h4>
+          </a>
+          <!-- <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-3.webp" alt="" />
+            </div>
+            <h4>進階老司機</h4>
+          </a>
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-4.webp" alt="" />
+            </div>
+            <h4>情侶互動推薦</h4>
+          </a>
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-5.webp" alt="" />
+            </div>
+            <h4>吸吮按摩器</h4>
+          </a>
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-6.webp" alt="" />
+            </div>
+            <h4>震動跳蛋</h4>
+          </a>
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-7.webp" alt="" />
+            </div>
+            <h4>震動按摩棒</h4>
+          </a>
+          <a class="section2-cont-item">
+            <div class="section2-cont-item-img">
+              <img src="/assets/images/nav-8.webp" alt="" />
+            </div>
+            <h4>凱格爾聰明球</h4>
+          </a> -->
+        </div>
+        <div class="section2-content-lis">
+          <div class="section3-cont-item" v-for="(item, index) in scroll1" :key="index"
+            @click="navigateTo('/details?id=' + item.id)">
+            <div class="shop-img">
+              <img :src="item.image" alt="" class="img-normal" />
+
+              <div class="shop-img-hover">
+                <img :src="item.image2" alt="" class="" />
+                <div class="shop-hover-btn" @click.stop="addCart(item)">加入購物車</div>
+              </div>
+            </div>
+            <h4>{{ item.title }}</h4>
+            <div class="section3-cont-item-price">
+              <p class="section3-cont-item-price-new">NT$ {{ item.price }}</p>
+              <p class="section3-cont-item-price-old">NT$ {{ item.oldPrice }}</p>
+            </div>
+            <span class="shopping">
+              <i class="fa fa-shopping-cart"></i>
+            </span>
+          </div>
         </div>
       </div>
     </section>
+
     <section class="section4" ref="section4">
       <div class="section4-content">
         <div class="section4-content-tit">
@@ -456,39 +478,52 @@ onUnmounted(() => {
       padding: 15px
       line-height: 36px
       text-align: center
-    .section2-content-cont
-      padding: 30px
+    .section2-content-lis
       display: grid
       grid-template-columns: repeat(4, 1fr)
       grid-gap: 20px
+    .section2-content-cont
+      padding: 30px  60px
+      display: grid
+      grid-template-columns: repeat(2, 1fr)
+      justify-content: center
+      grid-gap: 20px
       .section2-cont-item
         display: flex
-        flex-direction: column
         align-items: center
         justify-content: center
+        background: #f5f5f5
+        border-radius: 15px
+        overflow: hidden
+        &::before
+          content: ''
+          position: absolute
+          left: 0
+          top: 0
+          width: 100%
+          height: 100%
+          background: rgba(0,0,0,.4)
+          opacity: 0
+          z-index: 1
+          transition: all .3s ease-in-out
         &:hover
-          .section2-cont-item-img
-            &::before
-              opacity: 1 !important
-        .section2-cont-item-img
           &::before
-            content: ''
-            position: absolute
-            left: 0
-            top: 0
-            width: 100%
+            opacity: 1 !important
+        .section2-cont-item-img
+          height: 100px
+          overflow: hidden
+          border-radius: 15px
+          padding: 20px
+          img
             height: 100%
-            background: rgba(0,0,0,.4)
-            opacity: 0
-            z-index: 1
-            transition: all .3s ease-in-out
+          
           img
             width: 100%
         h4
-          font-size: 16px
-          line-height: 34px
-          padding-top: 15px
+          text-align: center
+          font-size: 46px
           font-weight: 600
+          padding: 15px
 // 查看更多
 .more
   display: flex
@@ -516,7 +551,7 @@ onUnmounted(() => {
   .section3-content
     position: relative
     max-width: 1170px
-    margin: 0 auto
+    margin: 40px auto 0
     padding: 30px
     .slider-svg-prev-icon,.slider-svg-next-icon
       width: 18px
@@ -527,7 +562,7 @@ onUnmounted(() => {
       cursor: pointer
       position: absolute
       bottom: 50%
-      transform: translateY(calc( 50% - 3.2rem  ))
+      transform: translateY(calc( 50%  ))
       z-index: 3
       width: 50px
       height: 50px
@@ -548,7 +583,7 @@ onUnmounted(() => {
     .section3-content-tit
       font-size: 24px
       font-weight: 600
-      padding: 15px
+      padding: 15px 15px 35px
       line-height: 36px
       text-align: center
     .section3-content-cont
@@ -558,93 +593,93 @@ onUnmounted(() => {
       scroll-snap-type: x mandatory
       scroll-behavior: smooth
       cursor: grab
-      .section3-cont-item
-        min-width: calc(25% - 12px)
-        display: flex
-        flex-direction: column
-        align-items: center
-        // justify-content: center
+.section3-cont-item
+  min-width: calc(25% - 12px)
+  display: flex
+  flex-direction: column
+  align-items: center
+  // justify-content: center
+  &:hover
+    .shop-img-hover
+      opacity: 1 !important
+      img
+        opacity: 1 !important
+  .shopping
+    width: 100%
+    background: #f5f5f5
+    border: #f0f0f0
+    border-radius: 3px
+    color: #baa38f
+    text-align: center
+    padding: 5px 0
+    margin-top: 10px
+    display: none
+    &:hover
+      background:#baa38f
+      color: #f5f5f5
+  .shop-img
+    width: 100%
+    .img-normal
+      width: 100%
+      object-fit: cover
+    .shop-img-hover
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      opacity: 0
+      transition: all .1s ease
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        z-index: 1
+        width: 100%
+        height: 100%
+        background: rgba(0,0,0,.3)
+
+      img
+        width: 100%
+        object-fit: cover
+        transition: all .25s ease
+        opacity: 0
+
+      .shop-hover-btn
+        position: absolute
+        left: 10px
+        right: 10px
+        bottom: 10px
+        width: auto
+        z-index: 2
+        height: 40px
+        border-radius: 3px
+        font-size: 14px
+        background: #fff
+        padding: 10px 0
+        min-height: 40px
+        text-align: center
+        transition: all .25s ease
         &:hover
-          .shop-img-hover
-            opacity: 1 !important
-            img
-              opacity: 1 !important
-        .shopping
-          width: 100%
-          background: #f5f5f5
-          border: #f0f0f0
-          border-radius: 3px
-          color: #baa38f
-          text-align: center
-          padding: 5px 0
-          margin-top: 10px
-          display: none
-          &:hover
-            background:#baa38f
-            color: #f5f5f5
-        .shop-img
-          width: 100%
-          .img-normal
-            width: 100%
-            object-fit: cover
-          .shop-img-hover
-            position: absolute
-            top: 0
-            left: 0
-            width: 100%
-            height: 100%
-            opacity: 0
-            transition: all .1s ease
-            &::before
-              content: ''
-              position: absolute
-              top: 0
-              left: 0
-              z-index: 1
-              width: 100%
-              height: 100%
-              background: rgba(0,0,0,.3)
-
-            img
-              width: 100%
-              object-fit: cover
-              transition: all .25s ease
-              opacity: 0
-
-            .shop-hover-btn
-              position: absolute
-              left: 10px
-              right: 10px
-              bottom: 10px
-              width: auto
-              z-index: 2
-              height: 40px
-              border-radius: 3px
-              font-size: 14px
-              background: #fff
-              padding: 10px 0
-              min-height: 40px
-              text-align: center
-              transition: all .25s ease
-              &:hover
-                background: #baa38f
-                color: #fff
-        h4
-          font-size: 14px
-          line-height: 20px
-          min-height: 40px
-          color: #5d5d5d
-          opacity: .8
-        .section3-cont-item-price
-          text-align: center
-          font-weight: 600
-        .section3-cont-item-price-new
-          font-size: 16px
-          color: #baa38f
-        .section3-cont-item-price-old
-          font-size: 16px
-          text-decoration: line-through
-          opacity: .8
+          background: #baa38f
+          color: #fff
+  h4
+    font-size: 14px
+    line-height: 20px
+    min-height: 40px
+    color: #5d5d5d
+    opacity: .8
+  .section3-cont-item-price
+    text-align: center
+    font-weight: 600
+  .section3-cont-item-price-new
+    font-size: 16px
+    color: #baa38f
+  .section3-cont-item-price-old
+    font-size: 16px
+    text-decoration: line-through
+    opacity: .8
 .section4
   .section4-content
     max-width: 1170px
@@ -745,12 +780,25 @@ onUnmounted(() => {
   .section3-content-cont .section3-cont-item
     min-width: calc( 50% - 15px ) !important
   // 精選分類
+  .section2-content-lis
+    padding: 30px 0 0 !important
+    grid-template-columns: repeat(2, 1fr) !important
+    gap: 15px
   .section2-content-cont
     padding: 0 !important
-    grid-template-columns: repeat(3, 1fr) !important
+    grid-template-columns: repeat(2, 1fr) !important
     gap: 15px
+    .section2-cont-item
+      border-radius: 7px !important
+    .section2-cont-item-img
+      // display: none
+      height: 65px !important
+      padding: 10px !important
     h4
+      display: none
       white-space: nowrap
+      font-size: 20px !important
+      color: #baa38f
   // banner1
   .content-swp
     padding: 0 !important
