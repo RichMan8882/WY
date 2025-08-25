@@ -186,10 +186,10 @@ const onNavInfo = () => {
 
 const searchVal = ref('')
 const onSearch = () => {
-  if (searchVal.value.length == 0) {
-    onMask()
-    return
-  }
+  // if (searchVal.value.length == 0) {
+  //   return
+  // }
+  onMask()
   ElMessage({
     message: searchVal.value,
     type: 'success'

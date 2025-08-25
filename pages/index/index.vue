@@ -212,7 +212,7 @@ onUnmounted(() => {
             <p>若有產品保固等相關問題</p>
             <p>
               請改由LINE帳號
-              <span style="color: #3598db"><strong><a href="" target="_blank">@630hrrid</a></strong>
+              <span style="color: #3598db"><strong><a target="_blank">@630hrrid</a></strong>
               </span>
               處理，造成不便敬請見諒🙏
             </p>
@@ -338,7 +338,7 @@ onUnmounted(() => {
           </svg>
         </div>
         <div class="more">
-          <a href="" class="more-btn"> 查看更多 </a>
+          <a class="more-btn"> 查看更多 </a>
         </div>
       </div>
     </section>
@@ -354,8 +354,8 @@ onUnmounted(() => {
             <img src="/assets/images/member-mbi.webp" alt="" class="img-mbi" />
           </div>
           <div class="btns">
-            <a href="" class="button"> 立即加入 </a>
-            <a href="" class="button"> 會員説明 </a>
+            <a class="button"> 立即加入 </a>
+            <a class="button"> 會員説明 </a>
           </div>
         </div>
       </div>
@@ -374,13 +374,13 @@ onUnmounted(() => {
               </p>
               <div class="section5-content-item-time">{{ item.time }}</div>
               <div class="section5-content-cont-item-btn">
-                <a href="" class="btn"> 閲讀全文 </a>
+                <a class="btn"> 閲讀全文 </a>
               </div>
             </div>
           </div>
 
           <div class="more">
-            <a href="" class="more-btn" @click="navigateTo('/articlelist')"> 更多文章 </a>
+            <a class="more-btn" @click="navigateTo('/articlelist')"> 更多文章 </a>
           </div>
         </div>
       </div>
