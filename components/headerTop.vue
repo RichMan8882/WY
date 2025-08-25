@@ -127,7 +127,6 @@ const triggerAnimation = () => {
   isAnimating.value = true
   status.value = '飞入中'
   showShoppingCart.value = true
-
   // 3秒后触发飞出动画
   setTimeout(() => {
     status.value = '飞出中'
@@ -137,7 +136,7 @@ const triggerAnimation = () => {
       isAnimating.value = false
       status.value = '动画完成，等待下一次'
     }, 1000)
-  }, 1200)
+  }, 1000)
 }
 
 const deleteItem = (item: any, index?: number) => {
@@ -160,7 +159,7 @@ watch(
       oldPrice: 1888,
       stock: 50,
       createTime: '2025-07-05',
-      id: 4
+      id: Math.floor(Math.random() * 100)
     })
     if (num < shoppingLis.value.length) {
       triggerAnimation()
@@ -427,30 +426,30 @@ const changeLanguage = (lang: string) => {
       </div>
     </header>
     <!-- 購物車彈出 -->
-    <div :class="showShoppingCart ? 'shopping-cart-container' : ''" @click.self="onShoppingCart">
-      <div class="shopping-cart" :class="showShoppingCart ? 'shopping-cart-active' : ''">
-        <div class="shopping-cart-conts" v-if="shoppingLis.length">
-          <div class="shopping-cart-cont" v-for="(item, index) in shoppingLis" :key="index">
-            <img :src="scroll1to2" alt="">
-            <h5>{{ item.title }}</h5>
-            <div class="specification">
-              <div class="price">
-                <span class="price-text">{{ item.amount }} <span> x </span> HK$ {{ item.price }}</span>
-                <a @click="deleteItem(item, index)">
-                  <i class="fa-solid fa-trash-can delete"></i>
-                </a>
-              </div>
+    <div :class="showShoppingCart && !isAnimating ? 'shopping-cart-container' : ''" @click.self="onShoppingCart"></div>
+    <div class="shopping-cart" :class="showShoppingCart ? 'shopping-cart-active' : ''">
+      <div class="shopping-cart-conts" v-if="shoppingLis.length">
+        <div class="shopping-cart-cont" v-for="(item, index) in shoppingLis" :key="index">
+          <img :src="scroll1to2" alt="">
+          <h5>{{ item.title }}</h5>
+          <div class="specification">
+            <div class="price">
+              <span class="price-text">{{ item.amount }} <span> x </span> HK$ {{ item.price }}</span>
+              <a @click="deleteItem(item, index)">
+                <i class="fa-solid fa-trash-can delete"></i>
+              </a>
             </div>
           </div>
         </div>
-        <div class="checkout" v-if="shoppingLis.length">
-          <div class="ck-btn">訂單結帳</div>
-        </div>
-        <div class="empty" v-else>
-          <div class="empty-text">你的購物車是空的</div>
-        </div>
+      </div>
+      <div class="checkout" v-if="shoppingLis.length">
+        <div class="ck-btn">訂單結帳</div>
+      </div>
+      <div class="empty" v-else>
+        <div class="empty-text">你的購物車是空的</div>
       </div>
     </div>
+
     <!-- 聯絡我們彈出 -->
     <div :class="showMssage ? 'popup-contact' : ''" @click.self="onShowMessage">
       <!-- 表單提交 -->

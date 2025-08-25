@@ -683,7 +683,7 @@ onUnmounted(() => {
 .section4
   .section4-content
     max-width: 1170px
-    margin: 0 auto
+    margin: 40px auto
     .section4-content-tit
       font-weight: 600
       padding: 15px

@@ -9,19 +9,19 @@ const { isLogin, signout } = useAuthStore()
         <dl>
           <dt>關於我們</dt>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">品牌故事</a>
+            <a @click="navigateTo('/')">品牌故事</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">公司資訊</a>
+            <a @click="navigateTo('/')">公司資訊</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">購買通路</a>
+            <a @click="navigateTo('/')">購買通路</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">異業合作</a>
+            <a @click="navigateTo('/')">異業合作</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">校園贊助</a>
+            <a @click="navigateTo('/')">校園贊助</a>
           </dd>
         </dl>
       </div>
@@ -29,16 +29,16 @@ const { isLogin, signout } = useAuthStore()
         <dl>
           <dt>精選推薦</dt>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">W 專欄</a>
+            <a @click="navigateTo('/')">W 專欄</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">小編來開箱</a>
+            <a @click="navigateTo('/')">小編來開箱</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">YT 商品介紹</a>
+            <a @click="navigateTo('/')">YT 商品介紹</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">KOL 好評分享</a>
+            <a @click="navigateTo('/')">KOL 好評分享</a>
           </dd>
         </dl>
       </div>
@@ -46,16 +46,16 @@ const { isLogin, signout } = useAuthStore()
         <dl>
           <dt>購物須知</dt>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">會員福利</a>
+            <a @click="navigateTo('/')">會員福利</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">購物說明</a>
+            <a @click="navigateTo('/')">購物說明</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">退換貨政策</a>
+            <a @click="navigateTo('/')">退換貨政策</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">隱私權政策</a>
+            <a @click="navigateTo('/')">隱私權政策</a>
           </dd>
         </dl>
       </div>
@@ -63,19 +63,19 @@ const { isLogin, signout } = useAuthStore()
         <dl>
           <dt>聯絡我們</dt>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">電話 / 0905-400200</a>
+            <a @click="navigateTo('/')">電話 / 0905-400200</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">時間 / 週一至週五 09:30-18:30</a>
+            <a @click="navigateTo('/')">時間 / 週一至週五 09:30-18:30</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">電郵 / onemoretw321@gmail.com</a>
+            <a @click="navigateTo('/')">電郵 / onemoretw321@gmail.com</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">地址 / 高雄市新興區民權一路251號28樓</a>
+            <a @click="navigateTo('/')">地址 / 高雄市新興區民權一路251號28樓</a>
           </dd>
           <dd>
-            <a href="javascript:void(0)" @click="navigateTo('/')">（僅開放電話預約取貨）</a>
+            <a @click="navigateTo('/')">（僅開放電話預約取貨）</a>
           </dd>
         </dl>
       </div>

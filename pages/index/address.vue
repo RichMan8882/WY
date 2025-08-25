@@ -114,9 +114,8 @@ onUnmounted(() => {
     margin-bottom: 60px
     .section1-content-items
       border-block: 1px solid #e5e5e5
-      padding: 0 20px
       .content-item
-        padding: 15px 0
+        padding: 15px 20px
         border-block-end: 1px solid #e5e5e5
         display: flex
         justify-content: space-between
@@ -153,7 +152,11 @@ onUnmounted(() => {
               fill: #baa38f
               color: #baa38f !important
           .delete .icon
-            fill: #a94442 !important
+            fill: #af3349 !important
         .item-tit
           font-weight: 700
+@media (max-width: 768px)
+  .content-item
+    flex-direction: column
+    align-items: flex-start !important
 </style>
