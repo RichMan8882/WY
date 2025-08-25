@@ -186,14 +186,13 @@ const onNavInfo = () => {
 
 const searchVal = ref('')
 const onSearch = () => {
-  // if (searchVal.value.length == 0) {
-  //   return
-  // }
+  if (searchVal.value.length != 0) {
+    ElMessage({
+      message: searchVal.value,
+      type: 'success'
+    })
+  }
   onMask()
-  ElMessage({
-    message: searchVal.value,
-    type: 'success'
-  })
 }
 
 const Language = ref('zh-TW')
