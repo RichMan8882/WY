@@ -292,7 +292,8 @@ const changeLanguage = (lang: string) => {
                 <div :class="showInfo ? 'sele-mask' : ''" @click="showLang = false"> </div>
                 <div class="t-item-sele" v-if="showInfo" style="width: 150px;">
                   <ul>
-                    <div style="padding: 0 10px 10px;" v-if="isLogin()">{{ PlayerStore.playerInfo?.account }}</div>
+                    <div style="padding: 0 10px 10px;" v-if="isLogin()" @click="navigateTo('/user/info')">{{
+                      PlayerStore.playerInfo?.account }}</div>
                     <li v-if="isLogin()" @click="navigateTo('/address')">{{ $lang('地址管理') }}</li>
                     <li @click="signout" v-if="isLogin()">{{ $lang('登出') }}</li>
                     <li @click="navigateTo('/login')" v-if="!isLogin()">{{ $lang('會員登入') }}</li>
@@ -604,7 +605,7 @@ const changeLanguage = (lang: string) => {
             <h3>{{ $lang('帳戶') }}</h3>
             <a @click="navigateTo('/login')" v-if="!isLogin()">{{ $lang('會員登入') }}</a>
             <a @click="navigateTo('/register')" v-if="!isLogin()">{{ $lang('新用戶注冊') }}</a>
-            <a v-if="isLogin()">
+            <a v-if="isLogin()" @click="navigateTo('/user/info')">
               <span> {{ PlayerStore.playerInfo?.account }}</span>
               <svg t="1756115863973" class="icon" viewBox="0 0 1024 1024" version="1.1"
                 xmlns="http://www.w3.org/2000/svg" p-id="16483" width="18" height="18">
