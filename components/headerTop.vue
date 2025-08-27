@@ -292,8 +292,9 @@ const changeLanguage = (lang: string) => {
                 <div :class="showInfo ? 'sele-mask' : ''" @click="showLang = false"> </div>
                 <div class="t-item-sele" v-if="showInfo" style="width: 150px;">
                   <ul>
-                    <div style="padding: 0 10px 10px;" v-if="isLogin()" @click="navigateTo('/user/info')">{{
-                      PlayerStore.playerInfo?.account }}</div>
+                    <div style="padding: 0 10px 10px;" class="user-name" v-if="isLogin()"
+                      @click="navigateTo('/user/info')">{{
+                        PlayerStore.playerInfo?.account }}</div>
                     <li v-if="isLogin()" @click="navigateTo('/address')">{{ $lang('地址管理') }}</li>
                     <li @click="signout" v-if="isLogin()">{{ $lang('登出') }}</li>
                     <li @click="navigateTo('/login')" v-if="!isLogin()">{{ $lang('會員登入') }}</li>
@@ -839,6 +840,10 @@ header
             left: 50%
             transform: translateX(-50%)
             font-size: 14px
+            .user-name
+              font-size: 16px
+              &:hover
+                color: #baa38f
             ul
               background: #fff
               position: relative
