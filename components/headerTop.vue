@@ -842,8 +842,11 @@ header
             font-size: 14px
             .user-name
               font-size: 16px
+              line-height: 26px
+              color: #baa38f
+              transition: all 0.2s ease-in-out
               &:hover
-                color: #baa38f
+                font-size: 17px
             ul
               background: #fff
               position: relative
