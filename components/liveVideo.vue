@@ -6,10 +6,9 @@
 </template>
 
 <script>
-// 在组件内部引入video.js，确保仅在客户端使用
+// 在组件内部引入video.js和flvjs插件
 import videojs from 'video.js'
-// 如果需要在组件级别引入HLS等插件，也可以在这里import
-// import 'videojs-contrib-hls'
+import 'videojs-flvjs-es6' // 这会自动注册flvjs技术
 
 export default {
   name: 'VideoPlayer',
@@ -29,11 +28,9 @@ export default {
     }
   },
   mounted() {
-    // 确保在mounted钩子中初始化，因为此时DOM已挂载且只在客户端执行
     this.initializePlayer()
   },
   beforeDestroy() {
-    // 组件销毁前，务必销毁播放器实例，释放资源
     if (this.player) {
       this.player.dispose()
     }
@@ -43,27 +40,29 @@ export default {
       // 合并默认选项和传入的选项
       const mergedOptions = {
         controls: true,
-        autoplay: false,
+        autoplay: false, // 建议先设为false，让用户交互后播放，避免浏览器策略限制
         preload: 'auto',
-        fluid: true, // 使播放器自适应容器大小
-        playbackRates: [0.5, 1, 1.5, 2], // 播放速率选项
-        sources: [], // 视频源
-        ...this.options
+        fluid: true,
+        playbackRates: [0.5, 1, 1.5, 2],
+        sources: [],
+        // ！！！ 关键配置：指定使用flvjs技术来播放 ！！！
+        techOrder: ['html5', 'flvjs'], // 优先尝试使用flvjs，如果不支持再回退到其他技术
+        flvjs: {
+          // flv.js的配置选项，例如：
+          // mediaDataSource: {
+          //   hasAudio: true,
+          //   hasVideo: true
+          // }
+        },
+        ...this.options // 你的配置（如sources）会覆盖上面的默认值
       }
 
       // 初始化Video.js播放器
       this.player = videojs(this.$refs.videoPlayer, mergedOptions, function onPlayerReady() {
-        console.log('播放器已准备就绪')
-        // 你可以在这里监听播放器事件
-        this.on('play', () => {
-          console.log('视频开始播放')
-        })
-        this.on('pause', () => {
-          console.log('视频已暂停')
-        })
-        this.on('ended', () => {
-          console.log('视频播放结束')
-        })
+        console.log('播放器已准备就绪，使用技术:', this.techName_); // 这里应该会输出 'flvjs'
+        this.on('error', () => {
+          console.error('播放器错误:', this.error());
+        });
       })
     }
   }

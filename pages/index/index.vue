@@ -194,20 +194,14 @@ onUnmounted(() => {
 const videoOptions = {
   sources: [
     {
-      src: 'http://www.xindong.monster:8080/live/streamname.flv', // 替换为你的视频URL
-      type: 'video/flv' // 根据视频格式调整
+      src: 'http://www.xindong.monster:8080/live/livestream.flv', // 你的FLV流地址
+      type: 'video/flv' // 这个类型现在会被flvjs插件识别并处理
     }
   ],
-  poster: '', // 视频封面图
-  autoplay: true, // 是否自动播放
-  muted: false    // 是否静音
-  // controlBar: {
-  //   timeDivider: true,
-  //   durationDisplay: true,
-  //   remainingTimeDisplay: false,
-  //   volumePanel: { inline: false }
-  //   // 可以进一步自定义控制条
-  // }
+  poster: '',
+  autoplay: true,   // 尝试自动播放
+  muted: true,      // 静音，以提高自动播放的成功率
+  techOrder: ['html5', 'flvjs'] // 确保这里指定了techOrder
 }
 </script>
 
