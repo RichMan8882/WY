@@ -191,13 +191,31 @@ onUnmounted(() => {
   }
 })
 
-
+const videoOptions = {
+  sources: [
+    {
+      src: 'http://www.xindong.monster:8080/live/streamname.flv', // 替换为你的视频URL
+      type: 'video/flv' // 根据视频格式调整
+    }
+  ],
+  poster: '', // 视频封面图
+  autoplay: true, // 是否自动播放
+  muted: false    // 是否静音
+  // controlBar: {
+  //   timeDivider: true,
+  //   durationDisplay: true,
+  //   remainingTimeDisplay: false,
+  //   volumePanel: { inline: false }
+  //   // 可以进一步自定义控制条
+  // }
+}
 </script>
 
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <liveStreaming></liveStreaming>
+    <!-- <liveStreaming></liveStreaming> -->
+    <liveVideo :options="videoOptions" />
     <section class="section1" ref="section1">
       <div class="section1-content">
         <div class="text-block__item">
@@ -924,6 +942,4 @@ onUnmounted(() => {
   top: 150px
   right: 5%
   width: 300px
-
-
 </style>

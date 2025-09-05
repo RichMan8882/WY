@@ -5,7 +5,8 @@ export default defineNuxtConfig({
   css: [
     '~/assets/sass/stock/main.css',
     'vant/lib/index.css',
-    '~/public/uikit/uikit.min.css'
+    '~/public/uikit/uikit.min.css',
+    'video.js/dist/video-js.css'
   ],
   modules: [
     '@nuxtjs/tailwindcss',
@@ -35,7 +36,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  plugins: ['~/plugins/silent.js', `~/plugins/v-trim-input.js`],
+  plugins: ['~/plugins/silent.js', `~/plugins/v-trim-input.js`,{ src: '~/plugins/live-video.js', ssr: false } ],
   elementPlus: {
     /** Options */
   },
