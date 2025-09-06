@@ -192,17 +192,13 @@ onUnmounted(() => {
 })
 
 const videoOptions = {
-  sources: [
-    {
-      src: 'http://47.115.56.47:8080/live/livestream.flv', // 你的FLV流地址
-      // src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', // 你的FLV流地址
-      type: 'video/flv' // 这个类型现在会被flvjs插件识别并处理
-    }
-  ],
-  poster: '',
-  autoplay: true,   // 尝试自动播放
-  muted: true,      // 静音，以提高自动播放的成功率
-  techOrder: ['html5', 'flvjs'] // 确保这里指定了techOrder
+  sources: [{
+    src: 'http://47.115.56.47:8080/live/livestream.flv',
+    type: 'video/flv' // 类型必须正确
+  }],
+  autoplay: true,   // 是否自动播放
+  muted: true,      // 自动播放时必须为true
+  techOrder: ['flvjs'] // 明确指定使用flvjs技术
 }
 </script>
 

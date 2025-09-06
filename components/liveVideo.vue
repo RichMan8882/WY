@@ -1,14 +1,18 @@
+<!-- components/VideoPlayer.vue -->
 <template>
-  <div data-vjs-player> <!-- 这个容器有助于防止潜在布局问题 -->
+  <div data-vjs-player>
     <video ref="videoPlayer" class="video-js vjs-big-play-centered vjs-fluid" :playsinline="playsinline" preload="auto"
       controls></video>
   </div>
 </template>
 
 <script>
-// 在组件内部引入video.js和flvjs插件
-import videojs from 'video.js'
-import 'videojs-flvjs-es6' // 这会自动注册flvjs技术
+// 1. 引入video.js和flvjs插件
+import videojs from 'video.js';
+import 'videojs-flvjs-es6'; // 这会自动注册flvjs技术
+
+// 引入Video.js的CSS（也可在nuxt.config.js中全局引入）
+import 'video.js/dist/video-js.css';
 
 export default {
   name: 'VideoPlayer',
@@ -28,48 +32,92 @@ export default {
     }
   },
   mounted() {
-    this.initializePlayer()
+    this.initializePlayer();
   },
   beforeDestroy() {
     if (this.player) {
-      this.player.dispose()
+      this.player.dispose();
     }
   },
   methods: {
     initializePlayer() {
-      // 合并默认选项和传入的选项
-      const mergedOptions = {
+      // 2. 采用更安全的配置合并策略
+      const defaultOptions = {
         controls: true,
-        autoplay: false, // 建议先设为false，让用户交互后播放，避免浏览器策略限制
+        autoplay: false, // 默认不自动播放，避免浏览器策略限制
+        muted: true,     // 如果需要自动播放，必须设置为true
         preload: 'auto',
-        fluid: true,
+        fluid: true,     // 自适应布局
         playbackRates: [0.5, 1, 1.5, 2],
-        sources: [],
-        // ！！！ 关键配置：指定使用flvjs技术来播放 ！！！
-        techOrder: ['html5', 'flvjs'], // 优先尝试使用flvjs，如果不支持再回退到其他技术
+        sources: [],     // 默认空源，由父组件传入
+        techOrder: ['html5', 'flvjs'], // 关键：指定使用flvjs技术
         flvjs: {
-          // flv.js的配置选项，例如：
+          // flv.js的配置选项
+          enableWorker: true, // 启用worker提升性能
+          enableStashBuffer: false, // 禁用stash buffer
           // mediaDataSource: {
           //   hasAudio: true,
           //   hasVideo: true
           // }
-        },
-        ...this.options // 你的配置（如sources）会覆盖上面的默认值
-      }
+        }
+      };
 
-      // 初始化Video.js播放器
-      this.player = videojs(this.$refs.videoPlayer, mergedOptions, function onPlayerReady() {
-        console.log('播放器已准备就绪，使用技术:', this.techName_); // 这里应该会输出 'flvjs'
-        this.on('error', () => {
-          console.error('播放器错误:', this.error());
+      // 深度合并配置，确保数组不被覆盖
+      const mergedOptions = {
+        ...defaultOptions,
+        ...this.options,
+        // 确保techOrder不会被父组件的空配置覆盖
+        techOrder: this.options.techOrder || defaultOptions.techOrder,
+        // 确保sources不会被父组件的空配置覆盖
+        sources: this.options.sources && this.options.sources.length > 0
+          ? this.options.sources
+          : defaultOptions.sources
+      };
+
+      // 3. 打印最终配置用于调试（完成后可删除）
+      console.log('[VideoPlayer] 最终配置:', mergedOptions);
+
+      try {
+        // 4. 初始化Video.js播放器
+        this.player = videojs(this.$refs.videoPlayer, mergedOptions, () => {
+          console.log('[VideoPlayer] 播放器已准备就绪');
+
+          // 5. 添加详细的错误事件监听
+          this.player.on('error', () => {
+            const error = this.player.error();
+            console.error('[VideoPlayer] 播放错误:');
+            console.error('- 代码:', error.code);
+            console.error('- 消息:', error.message);
+            console.error('- 详细:', error);
+          });
+
+          // 监听其他有用的事件
+          this.player.on('play', () => console.log('[VideoPlayer] 开始播放'));
+          this.player.on('pause', () => console.log('[VideoPlayer] 暂停'));
+          this.player.on('ended', () => console.log('[VideoPlayer] 播放结束'));
         });
-      })
+
+      } catch (error) {
+        console.error('[VideoPlayer] 初始化失败:', error);
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-/* 你可以在这里添加一些组件作用域的样式 */
-/* 如果需要覆盖Video.js默认样式，可以考虑使用深度选择器 >>> 或 /deep/ 或 ::v-deep，但要谨慎 */
+/* 组件作用域样式 */
+/* 确保播放器容器有基本尺寸 */
+.video-js {
+  width: 100%;
+  max-width: 800px;
+  height: 450px;
+  background-color: #000;
+}
+
+/* 深度选择器修改Video.js默认样式（如果需要） */
+::v-deep .vjs-big-play-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+}
 </style>
