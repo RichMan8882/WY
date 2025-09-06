@@ -194,9 +194,9 @@ onUnmounted(() => {
 const videoOptions = {
   sources: [
     {
-      // src: 'http://www.xindong.monster:8080/live/livestream.flv', // 你的FLV流地址
-      src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', // 你的FLV流地址
-      type: 'video/m3u8' // 这个类型现在会被flvjs插件识别并处理
+      src: 'http://www.xindong.monster:8080/live/livestream.flv', // 你的FLV流地址
+      // src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8', // 你的FLV流地址
+      type: 'video/flv' // 这个类型现在会被flvjs插件识别并处理
     }
   ],
   poster: '',
@@ -210,7 +210,8 @@ const videoOptions = {
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
     <!-- <liveStreaming></liveStreaming> -->
-    <liveVideo :options="videoOptions" />
+    <!-- <liveVideo :options="videoOptions" /> -->
+    <TestVideo />
     <section class="section1" ref="section1">
       <div class="section1-content">
         <div class="text-block__item">
