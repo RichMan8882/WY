@@ -9,6 +9,7 @@
 <script>
 // 1. 引入video.js和flvjs插件
 import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 import 'videojs-flvjs-es6'; // 这会自动注册flvjs技术
 
 // 引入Video.js的CSS（也可在nuxt.config.js中全局引入）
