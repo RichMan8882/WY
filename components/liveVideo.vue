@@ -111,7 +111,6 @@ export default {
 /* 确保播放器容器有基本尺寸 */
 .video-js {
   width: 100%;
-  max-width: 800px;
   height: 450px;
   background-color: #000;
 }
