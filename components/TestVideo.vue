@@ -1,41 +1,72 @@
 <template>
   <div>
-    <h3>Video.js 测试组件</h3>
-    <video ref="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls playsinline preload="auto"
-      width="640" height="360"></video>
+    <h3>Video.js FLV直播测试</h3>
+    <video ref="videoPlayer" class="video-js vjs-default-skin vjs-big-play-centered" controls playsinline
+      preload="auto"></video>
   </div>
 </template>
 
 <script>
-// 1. 直接引入，避免任何插件配置问题
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 
 export default {
   name: 'TestVideo',
   mounted() {
-    // 2. 使用一个绝对可靠的公共测试流（HLS）
-    // 在mounted或适当的生命周期钩子中
-    this.player = videojs(this.$refs.videoPlayer, {
-      sources: [{
-        src: 'http://synaptiqh.com:8080/live/livestream.flv',
-        type: 'video/x-flv'
-      }],
-      fluid: true,
-      controls: true,
-      autoplay: false,
-      muted: false,
-      liveui: true,
-      flvjs: {
-        mediaDataSource: {
-          isLive: true
-        }
+    // 动态加载CDN资源
+    this.loadFLVJS();
+  },
+  methods: {
+    loadFLVJS() {
+      // 检查是否已加载
+      if (window.videojsFlvjs) {
+        this.initPlayer();
+        return;
       }
-    });
 
-    this.player.ready(() => {
-      console.log('FLV直播播放器已准备就绪！');
-    });
+      // 加载CSS
+      const cssLink = document.createElement('link');
+      cssLink.rel = 'stylesheet';
+      cssLink.href = 'https://unpkg.com/videojs-flvjs-es6/dist/videojs-flvjs.css';
+      document.head.appendChild(cssLink);
+
+      // 加载JS
+      const script = document.createElement('script');
+      script.src = 'https://unpkg.com/videojs-flvjs-es6/dist/videojs-flvjs.js';
+      script.onload = () => {
+        window.videojsFlvjs = true;
+        this.initPlayer();
+      };
+      document.body.appendChild(script);
+    },
+    initPlayer() {
+      this.player = videojs(this.$refs.videoPlayer, {
+        sources: [{
+          src: 'http://synaptiqh.com:8080/live/livestream.flv',
+          type: 'video/x-flv'
+        }],
+        fluid: true,
+        controls: true,
+        autoplay: false,
+        muted: false,
+        liveui: true,
+        flvjs: {
+          mediaDataSource: {
+            isLive: true,
+            cors: true,
+            withCredentials: false
+          }
+        }
+      });
+
+      this.player.ready(() => {
+        console.log('FLV直播播放器已准备就绪！');
+      });
+
+      this.player.on('error', (e) => {
+        console.error('播放错误:', e);
+      });
+    }
   },
   beforeDestroy() {
     if (this.player) {
