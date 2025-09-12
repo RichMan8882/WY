@@ -193,7 +193,7 @@ onUnmounted(() => {
 
 const videoOptions = {
   sources: [{
-    src: 'http://synaptiqh.com:8080/live/livestream.flv',
+    src: 'https://synaptiqh.com:8080/live/livestream.flv',
     type: 'video/flv' // 类型必须正确
   }],
   autoplay: true,   // 是否自动播放
