@@ -15,21 +15,26 @@ export default {
   name: 'TestVideo',
   mounted() {
     // 2. 使用一个绝对可靠的公共测试流（HLS）
+    // 在mounted或适当的生命周期钩子中
     this.player = videojs(this.$refs.videoPlayer, {
       sources: [{
-        src: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-        type: 'application/x-mpegURL'
+        src: 'http://synaptiqh.com:8080/live/livestream.flv',
+        type: 'video/x-flv'
       }],
       fluid: true,
       controls: true,
       autoplay: false,
-      muted: false
-    }, () => {
-      console.log('测试播放器已准备就绪！');
+      muted: false,
+      liveui: true,
+      flvjs: {
+        mediaDataSource: {
+          isLive: true
+        }
+      }
     });
 
-    this.player.on('error', (e) => {
-      console.error('测试播放器错误: ', this.player.error().message);
+    this.player.ready(() => {
+      console.log('FLV直播播放器已准备就绪！');
     });
   },
   beforeDestroy() {
