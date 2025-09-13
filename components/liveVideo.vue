@@ -431,6 +431,7 @@ export default {
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
+  height: 100vh
 }
 
 .video-player-container-wrapper::before {

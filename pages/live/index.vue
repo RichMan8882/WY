@@ -25,4 +25,7 @@ const streamUrl = siteStore.siteData?.logo || ''
     <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
   </div>
 </template>
-<style scoped lang="sass"></style>
+<style scoped lang="sass">
+.cont
+  height: 100vh
+</style>
