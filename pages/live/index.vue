@@ -42,7 +42,7 @@ const streamUrl = siteStore.siteData?.logo || ''
             </div>
           </div>
           <div class="chat-input">
-            <input type="text" placeholder="請輸入聊天內容"></input>
+            <input type="text" maxlength="100" placeholder="請輸入聊天內容"></input>
           </div>
         </div>
       </div>
@@ -82,6 +82,7 @@ const streamUrl = siteStore.siteData?.logo || ''
         .chat-item
           display: flex
           padding: 10px
+          align-items: flex-start
           .chat-item-img
             width: 50px
             height: 50px
