@@ -22,7 +22,7 @@ const streamUrl = siteStore.siteData?.logo || ''
 </script>
 <template>
   <div class="cont">
-    <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
+
     <section class="chatlayer" ref="section1">
       <div class="chat">
         <div class="goback">
@@ -48,6 +48,7 @@ const streamUrl = siteStore.siteData?.logo || ''
         </div>
       </div>
     </section>
+    <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
   </div>
 </template>
 <style scoped lang="sass">
@@ -60,7 +61,7 @@ const streamUrl = siteStore.siteData?.logo || ''
     left: 0
     width: 100%
     height: 100%
-    z-index: 40
+    z-index: 50
     .chat
       max-width: 400px
       height: 100%
@@ -85,6 +86,8 @@ const streamUrl = siteStore.siteData?.logo || ''
       .chat-lis
         position: absolute
         bottom: 0
+        left: 0
+        right: 0
         padding: 20px 20px 45px
         max-height: calc(100vh - 145px)
         overflow-y: auto
