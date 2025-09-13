@@ -193,7 +193,7 @@ onUnmounted(() => {
 
 const videoOptions = {
   sources: [{
-    src: 'https://synaptiqh.com:8080/live/livestream.flv',
+    src: 'https://synaptiqh.com/live/livestream.flv',
     type: 'video/flv' // 类型必须正确
   }],
   autoplay: true,   // 是否自动播放
@@ -206,8 +206,8 @@ const videoOptions = {
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
     <!-- <liveStreaming></liveStreaming> -->
-    <!-- <liveVideo :options="videoOptions" /> -->
-    <TestVideo />
+    <liveVideo :options="videoOptions" />
+    <!-- <TestVideo /> -->
     <section class="section1" ref="section1">
       <div class="section1-content">
         <div class="text-block__item">
