@@ -40,6 +40,7 @@ const streamUrl = siteStore.siteData?.logo || ''
     left: 0
     width: 100%
     height: 100%
+    z-index: 99
     .chat
       max-width: 400px
       height: 100%
