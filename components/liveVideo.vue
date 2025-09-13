@@ -392,7 +392,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 51;
 }
 
 .loading-spinner {
@@ -433,7 +433,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 51;
   padding: 20px;
 }
 
@@ -512,7 +512,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 1001;
+  z-index: 50;
 }
 
 .sound-button {
