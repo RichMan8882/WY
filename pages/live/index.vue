@@ -76,5 +76,19 @@ const streamUrl = siteStore.siteData?.logo || ''
         border: 1px solid rgba(255,255,255,0.6)
         &:hover
           background: rgba(0,0,0,0.7)
-        
+      .chat-lis
+        height: calc(100% - 200px)
+        overflow-y: auto
+        .chat-item
+          display: flex
+          padding: 10px
+          .chat-item-img
+            width: 50px
+            height: 50px
+            border-radius: 50%
+            overflow: hidden
+            img
+              width: 100%
+              height: 100%
+              object-fit: cover
 </style>
