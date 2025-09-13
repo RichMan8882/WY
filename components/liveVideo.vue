@@ -202,6 +202,7 @@ export default {
 
       this.player.on('ended', () => {
         console.log('[VideoPlayer] 播放结束');
+        this.handleStreamEnd();
       });
 
       this.player.on('loadstart', () => {
@@ -229,6 +230,24 @@ export default {
       this.player.on('timeout', () => {
         console.log('[VideoPlayer] 连接超时');
         this.handleError('连接超时');
+      });
+
+      // 监听直播断开事件
+      this.player.on('disconnect', () => {
+        console.log('[VideoPlayer] 直播断开');
+        this.handleStreamDisconnect();
+      });
+
+      // 监听网络状态变化
+      this.player.on('loaderror', () => {
+        console.log('[VideoPlayer] 加载错误');
+        this.handleError('网络连接失败');
+      });
+
+      // 监听播放器状态变化
+      this.player.on('emptied', () => {
+        console.log('[VideoPlayer] 媒体资源清空');
+        this.handleStreamDisconnect();
       });
     },
 
@@ -261,14 +280,29 @@ export default {
       }
     },
 
-    // 安排重连
+    // 检查网络状态
+    checkNetworkStatus() {
+      if (navigator.onLine === false) {
+        this.handleError('网络连接已断开，请检查网络设置');
+        return false;
+      }
+      return true;
+    },
+
+    // 增强的重连机制
     scheduleReconnect() {
+      // 检查网络状态
+      if (!this.checkNetworkStatus()) {
+        return;
+      }
+
       this.reconnectAttempts++;
-      console.log(`[VideoPlayer] 第${this.reconnectAttempts}次重连尝试，${this.reconnectInterval / 1000}秒后重试`);
+      const delay = Math.min(this.reconnectInterval * Math.pow(1.5, this.reconnectAttempts - 1), 30000);
+      console.log(`[VideoPlayer] 第${this.reconnectAttempts}次重连尝试，${delay / 1000}秒后重试`);
 
       this.reconnectTimer = setTimeout(() => {
         this.retryConnection();
-      }, this.reconnectInterval);
+      }, delay);
     },
 
     // 重试连接
@@ -337,6 +371,33 @@ export default {
       }
     },
 
+    // 处理直播结束
+    handleStreamEnd() {
+      this.isLoading = false;
+      this.hasError = true;
+      this.errorMessage = '直播已结束';
+      console.log('[VideoPlayer] 直播已结束');
+
+      // 直播结束后不自动重连
+      this.clearConnectionTimeout();
+      this.clearReconnectTimer();
+    },
+
+    // 处理直播断开
+    handleStreamDisconnect() {
+      this.isLoading = false;
+      this.hasError = true;
+      this.errorMessage = '直播连接断开，正在重连...';
+      console.log('[VideoPlayer] 直播连接断开');
+
+      // 直播断开时尝试重连
+      if (this.reconnectAttempts < this.maxReconnectAttempts) {
+        this.scheduleReconnect();
+      } else {
+        this.errorMessage = '直播连接失败，请检查网络或稍后重试';
+      }
+    },
+
     // 清理资源
     cleanup() {
       // 清理页面可见性监听
@@ -395,6 +456,7 @@ export default {
   pointer-events: none;
   z-index: 1;
 }
+
 
 /* 组件作用域样式 */
 .video-player-container {

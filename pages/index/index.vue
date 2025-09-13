@@ -205,7 +205,7 @@ const videoOptions = {
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <!-- <liveStreaming></liveStreaming> -->
+    <liveStreaming></liveStreaming>
     <liveVideo :options="videoOptions" />
     <section class="section1" ref="section1">
       <div class="section1-content">
