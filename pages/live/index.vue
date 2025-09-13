@@ -34,10 +34,10 @@ const streamUrl = siteStore.siteData?.logo || ''
               <img src="https://picsum.photos/200/300" alt="">
             </div>
             <div class="chat-item-text">
-              <div class="chat-item-text-name">
-                <div class="chat-item-text-name-img">
-                  <img src="https://picsum.photos/200/300" alt=""></img>
-                </div>
+              <div class="chat-text">
+              </div>
+              <div class="chat-text-img">
+                <img src="https://picsum.photos/200/300" alt=""></img>
               </div>
             </div>
           </div>
@@ -92,4 +92,6 @@ const streamUrl = siteStore.siteData?.logo || ''
               width: 100%
               height: 100%
               object-fit: cover
+          .chat-item-text
+            padding-top: 10px
 </style>
