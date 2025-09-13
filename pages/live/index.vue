@@ -23,7 +23,7 @@ const streamUrl = siteStore.siteData?.logo || ''
 <template>
   <div class="cont">
     <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
-    <section class="chat-layer" ref="section1">
+    <section class="chatlayer" ref="section1">
       <div class="chat">
 
       </div>
@@ -34,7 +34,7 @@ const streamUrl = siteStore.siteData?.logo || ''
 .cont
   height: 100vh
   position: relative
-  .chat-layer
+  .chatlayer
     position: absolute
     top: 0
     left: 0
