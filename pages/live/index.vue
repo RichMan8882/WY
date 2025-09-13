@@ -43,7 +43,7 @@ const streamUrl = siteStore.siteData?.logo || ''
             </div>
           </div>
           <div class="chat-input">
-            <input type="text" maxlength="100" placeholder="請輸入聊天內容"></input>
+            <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
           </div>
         </div>
       </div>
@@ -85,7 +85,7 @@ const streamUrl = siteStore.siteData?.logo || ''
       .chat-lis
         position: absolute
         bottom: 0
-        padding: 20px 60px 20px 20px
+        padding: 20px 20px 60px
         max-height: calc(100vh - 145px)
         overflow-y: auto
         .chat-item
