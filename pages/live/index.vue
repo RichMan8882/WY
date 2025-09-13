@@ -34,9 +34,10 @@ const streamUrl = siteStore.siteData?.logo || ''
               <img src="https://picsum.photos/200/300" alt="">
             </div>
             <div class="chat-item-text">
-              <div class="chat-text">
+              <div class="chat-text" v-if="true">
+                {{ '哈哈哈，早知道' }}
               </div>
-              <div class="chat-text-img">
+              <div class="chat-text-img" v-else>
                 <img src="https://picsum.photos/200/300" alt=""></img>
               </div>
             </div>
@@ -97,4 +98,10 @@ const streamUrl = siteStore.siteData?.logo || ''
               object-fit: cover
           .chat-item-text
             padding-top: 10px
+          .chat-text-img
+            height: 100px
+            max-width: 60%
+            img
+              object-fit: contain
+              height: 100%
 </style>
