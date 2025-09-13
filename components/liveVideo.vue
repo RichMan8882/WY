@@ -461,13 +461,6 @@ export default {
   z-index: 1;
 }
 
-.video-player-container-wrapper:hover::before {
-  background:
-    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
-  transition: background 0.3s ease;
-}
-
 /* 组件作用域样式 */
 .video-player-container {
   position: relative;
