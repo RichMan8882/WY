@@ -85,7 +85,7 @@ const streamUrl = siteStore.siteData?.logo || ''
       .chat-lis
         position: absolute
         bottom: 0
-        padding: 20px 20px 60px
+        padding: 20px 20px 45px
         max-height: calc(100vh - 145px)
         overflow-y: auto
         .chat-item
