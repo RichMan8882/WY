@@ -65,6 +65,7 @@ const streamUrl = siteStore.siteData?.logo || ''
       max-width: 400px
       height: 100%
       margin: 0 auto
+      position: relative
       .goback
         height: 45px
         padding: 15px 15px
@@ -82,6 +83,9 @@ const streamUrl = siteStore.siteData?.logo || ''
           &:hover
             background: rgba(0,0,0,0.7)
       .chat-lis
+        position: absolute
+        bottom: 0
+        padding: 120px
         height: calc(100vh - 45px)
         overflow-y: auto
         .chat-item
