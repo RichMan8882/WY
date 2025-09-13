@@ -134,7 +134,6 @@ export default {
 }
 
 ::v-deep .vjs-big-play-button .vjs-icon-placeholder::before {
-  content: "點擊進入";
   font-size: 12px;
 }
 </style>
