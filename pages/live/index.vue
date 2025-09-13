@@ -26,7 +26,7 @@ const streamUrl = siteStore.siteData?.logo || ''
     <section class="chatlayer" ref="section1">
       <div class="chat">
         <div class="goback">
-          {{ '返回主頁' }}
+          <div class="back">{{ '返回主頁' }}</div>
         </div>
         <div class="chat-lis">
           <div class="chat-item">
@@ -69,17 +69,18 @@ const streamUrl = siteStore.siteData?.logo || ''
         position: absolute
         top: 0
         left: 0
+        width: 100%
         padding: 5px 15px
-        font-size: 16px
-        line-height: 45px
-        text-align: center
-        color: #fff
-        background: rgba(0,0,0,0.5)
-        cursor: pointer
-        transition: all .3s ease
-        border: 1px solid rgba(255,255,255,0.6)
-        &:hover
-          background: rgba(0,0,0,0.7)
+        .back
+          font-size: 16px
+          text-align: center
+          color: #fff
+          background: rgba(0,0,0,0.5)
+          cursor: pointer
+          transition: all .3s ease
+          border: 1px solid rgba(255,255,255,0.6)
+          &:hover
+            background: rgba(0,0,0,0.7)
       .chat-lis
         height: calc(100% - 200px)
         overflow-y: auto
