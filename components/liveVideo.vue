@@ -362,8 +362,6 @@ export default {
 .video-player-container-wrapper {
   /* 模仿抖音/TikTok/YouTube的深色背景风格 */
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-  border-radius: 12px;
-  padding: 8px;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     0 4px 16px rgba(0, 0, 0, 0.2),
@@ -398,16 +396,6 @@ export default {
   z-index: 1;
 }
 
-/* 悬停效果 */
-.video-player-container-wrapper:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.4),
-    0 6px 20px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
 .video-player-container-wrapper:hover::before {
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
@@ -421,7 +409,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #000;
-  border-radius: 8px;
   overflow: hidden;
   z-index: 2;
   /* 确保在装饰层之上 */
@@ -595,8 +582,8 @@ export default {
   background-color: rgba(0, 0, 0, 0.6);
   border: none;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -619,8 +606,8 @@ export default {
 }
 
 .sound-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   color: #fff;
   transition: color 0.3s ease;
 }
