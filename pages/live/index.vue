@@ -65,7 +65,10 @@ const streamUrl = siteStore.siteData?.logo || ''
       height: 100%
       margin: 0 auto
       .goback
-        height: 45px
+        position: absolute
+        top: 0
+        left: 0
+        padding: 5px 15px
         font-size: 16px
         line-height: 45px
         text-align: center
