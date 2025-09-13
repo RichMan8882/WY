@@ -197,7 +197,12 @@ onUnmounted(() => {
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <liveStreaming></liveStreaming>
+    <div class="index-live">
+
+      <div class="live-cont">
+        <img src="@/assets/images/live-to.jpg" alt="">
+      </div>
+    </div>
 
     <section class="section1" ref="section1">
       <div class="section1-content">
@@ -442,6 +447,18 @@ onUnmounted(() => {
     align-items: center
     width: 1200px
     margin: 0 auto
+.index-live
+  background: #191919
+  height: 70vh
+  position: relative
+  video
+    width: 100%
+    height: 100%
+  .live-cont
+    max-width: 400px
+    margin: 0 auto
+    img
+      width: 100%
 .section1
   transition: all .6s ease-in-out
   padding-top: 45px
