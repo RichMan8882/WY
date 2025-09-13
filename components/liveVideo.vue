@@ -1,8 +1,10 @@
 <!-- components/VideoPlayer.vue -->
 <template>
-  <div data-vjs-player>
-    <video ref="videoPlayer" class="video-js vjs-big-play-centered vjs-fluid" :playsinline="playsinline" preload="auto"
-      controls></video>
+  <div>
+    <div data-vjs-player>
+      <video ref="videoPlayer" class="video-js vjs-big-play-centered vjs-fluid" :playsinline="playsinline"
+        preload="auto" controls></video>
+    </div>
   </div>
 </template>
 
@@ -127,9 +129,12 @@ export default {
 
 ::v-deep .vjs-big-play-button .vjs-icon-placeholder {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 ::v-deep .vjs-big-play-button .vjs-icon-placeholder::before {
   content: "點擊進入";
+  font-size: 12px;
 }
 </style>
