@@ -111,8 +111,11 @@ export default {
 /* 确保播放器容器有基本尺寸 */
 .video-js {
   width: 100%;
-  height: 450px;
   background-color: #000;
+}
+
+.video-js .vjs-tech {
+  width: 100%;
 }
 
 /* 深度选择器修改Video.js默认样式（如果需要） */

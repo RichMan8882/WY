@@ -207,7 +207,6 @@ const videoOptions = {
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
     <!-- <liveStreaming></liveStreaming> -->
     <liveVideo :options="videoOptions" />
-    <!-- <TestVideo /> -->
     <section class="section1" ref="section1">
       <div class="section1-content">
         <div class="text-block__item">
