@@ -120,7 +120,16 @@ export default {
 
 /* 深度选择器修改Video.js默认样式（如果需要） */
 ::v-deep .vjs-big-play-button {
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+::v-deep .vjs-big-play-button .vjs-icon-placeholder {
+  position: relative;
+}
+
+::v-deep .vjs-big-play-button .vjs-icon-placeholder::before {
+  content: "點擊進入";
 }
 </style>
