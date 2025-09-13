@@ -25,7 +25,26 @@ const streamUrl = siteStore.siteData?.logo || ''
     <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
     <section class="chatlayer" ref="section1">
       <div class="chat">
-
+        <div class="goback">
+          {{ '返回主頁' }}
+        </div>
+        <div class="chat-lis">
+          <div class="chat-item">
+            <div class="chat-item-img">
+              <img src="https://picsum.photos/200/300" alt="">
+            </div>
+            <div class="chat-item-text">
+              <div class="chat-item-text-name">
+                <div class="chat-item-text-name-img">
+                  <img src="https://picsum.photos/200/300" alt=""></img>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="請輸入聊天內容"></input>
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -45,4 +64,17 @@ const streamUrl = siteStore.siteData?.logo || ''
       max-width: 400px
       height: 100%
       margin: 0 auto
+      .goback
+        height: 45px
+        font-size: 16px
+        line-height: 45px
+        text-align: center
+        color: #fff
+        background: rgba(0,0,0,0.5)
+        cursor: pointer
+        transition: all .3s ease
+        border: 1px solid rgba(255,255,255,0.6)
+        &:hover
+          background: rgba(0,0,0,0.7)
+        
 </style>
