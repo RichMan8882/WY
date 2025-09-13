@@ -472,6 +472,8 @@ onUnmounted(() => {
       left: 50%
       transform: translate(-50%,-50%)
       border: 1px solid #fff
+      border-radius: 20px
+      padding: 5px 15px
       color: #fff
       background: rgba(0,0,0,.3)
 
