@@ -66,10 +66,7 @@ const streamUrl = siteStore.siteData?.logo || ''
       height: 100%
       margin: 0 auto
       .goback
-        position: absolute
-        top: 0
-        left: 0
-        width: 100%
+        height: 45px
         padding: 5px 15px
         .back
           font-size: 16px
@@ -83,7 +80,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           &:hover
             background: rgba(0,0,0,0.7)
       .chat-lis
-        height: calc(100% - 200px)
+        height: calc(100vh - 45px)
         overflow-y: auto
         .chat-item
           display: flex
