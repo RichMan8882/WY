@@ -111,5 +111,14 @@ const streamUrl = siteStore.siteData?.logo || ''
             max-width: 50%
             img
               object-fit: contain
-              height: 100%
+              height: 100%s
+        .chat-input
+          input
+            width: 100%
+            height: 40px
+            line-height: 40px
+            background: rgba(0,0,0,0.5)
+            border-radius: 25px
+            border: 1px solid rgba(255,255,255,0.6)
+            padding: 10px
 </style>
