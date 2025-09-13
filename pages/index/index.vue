@@ -201,6 +201,9 @@ onUnmounted(() => {
 
       <div class="live-cont">
         <img src="@/assets/images/live-to.jpg" alt="">
+        <div class="live-btn">
+          點擊進入直播
+        </div>
       </div>
     </div>
 
@@ -458,10 +461,20 @@ onUnmounted(() => {
     max-width: 400px
     height: 100%
     margin: 0 auto
+    position: relative
     img
       width: 100%
       height: 100%
       object-fit: cover
+    .live-btn
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%,-50%)
+      border: 1px solid #fff
+      color: #fff
+      background: rgba(0,0,0,.3)
+
 .section1
   transition: all .6s ease-in-out
   padding-top: 45px
