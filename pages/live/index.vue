@@ -67,9 +67,12 @@ const streamUrl = siteStore.siteData?.logo || ''
       margin: 0 auto
       .goback
         height: 45px
-        padding: 5px 15px
+        padding: 15px 15px
         .back
-          font-size: 16px
+          display: inline-block
+          font-size: 12px
+          border-radius: 25px
+          padding: 2px 10px
           text-align: center
           color: #fff
           background: rgba(0,0,0,0.5)
