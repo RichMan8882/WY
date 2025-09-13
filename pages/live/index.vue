@@ -23,9 +23,25 @@ const streamUrl = siteStore.siteData?.logo || ''
 <template>
   <div class="cont">
     <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
+    <section class="chat-layer" ref="section1">
+      <div class="chat">
+
+      </div>
+    </section>
   </div>
 </template>
 <style scoped lang="sass">
 .cont
   height: 100vh
+  position: relative
+  .chat-layer
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    .chat
+      max-width: 400px
+      height: 100%
+      margin: 0 auto
 </style>
