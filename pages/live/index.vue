@@ -87,8 +87,8 @@ const streamUrl = siteStore.siteData?.logo || ''
           padding: 10px
           align-items: flex-start
           .chat-item-img
-            width: 50px
-            height: 50px
+            width: 40px
+            height: 40px
             border-radius: 50%
             overflow: hidden
             img
@@ -96,10 +96,10 @@ const streamUrl = siteStore.siteData?.logo || ''
               height: 100%
               object-fit: cover
           .chat-item-text
-            padding-top: 10px
+            padding: 10px
           .chat-text-img
-            height: 100px
-            max-width: 60%
+            height: 80px
+            max-width: 50%
             img
               object-fit: contain
               height: 100%
