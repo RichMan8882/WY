@@ -441,6 +441,7 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+  transition: all .2s ease;
   background:
     radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
     radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
