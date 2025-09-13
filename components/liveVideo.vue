@@ -127,6 +127,10 @@ export default {
   justify-content: center;
 }
 
+::v-deep .vjs-has-started .vjs-control-bar {
+  height: 40px;
+}
+
 ::v-deep .vjs-big-play-button .vjs-icon-placeholder {
   position: relative;
   width: 100%;
@@ -134,6 +138,6 @@ export default {
 }
 
 ::v-deep .vjs-big-play-button .vjs-icon-placeholder::before {
-  font-size: 12px;
+  font-size: 26px;
 }
 </style>
