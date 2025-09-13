@@ -1,6 +1,6 @@
 <!-- components/VideoPlayer.vue -->
 <template>
-  <div class="video-player-container">
+  <div class="video-player-container" :class="{ 'portrait-mode': portraitMode }">
     <div class="video-wrapper" data-vjs-player>
       <video ref="videoPlayer" class="video-js vjs-big-play-centered vjs-fluid" :playsinline="playsinline"
         preload="auto" controls :poster="poster"></video>
@@ -68,6 +68,10 @@ export default {
     maxReconnectAttempts: {
       type: Number,
       default: 5
+    },
+    portraitMode: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -362,6 +366,17 @@ export default {
   overflow: hidden;
 }
 
+/* 竖屏直播模式样式 */
+.video-player-container.portrait-mode {
+  /* 电脑端竖屏显示 */
+  max-width: 400px;
+  /* 电脑端最大宽度限制 */
+  margin: 0 auto;
+  /* 电脑端居中显示 */
+  aspect-ratio: 9/16;
+  /* 竖屏比例 9:16 */
+}
+
 .video-wrapper {
   position: relative;
   width: 100%;
@@ -392,7 +407,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 51;
+  z-index: 1000;
 }
 
 .loading-spinner {
@@ -433,7 +448,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 51;
+  z-index: 1000;
   padding: 20px;
 }
 
@@ -512,7 +527,7 @@ export default {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 50;
+  z-index: 1001;
 }
 
 .sound-button {
@@ -572,6 +587,22 @@ export default {
   .sound-icon {
     width: 20px;
     height: 20px;
+  }
+}
+
+/* 竖屏直播响应式优化 */
+@media (max-width: 768px) {
+  .video-player-container.portrait-mode {
+    max-width: 100%;
+    /* 手机端占满屏幕宽度 */
+    margin: 0;
+    /* 手机端取消居中 */
+    border-radius: 0;
+    /* 手机端取消圆角 */
+    height: 100vh;
+    /* 手机端占满屏幕高度 */
+    aspect-ratio: unset;
+    /* 手机端取消固定比例 */
   }
 }
 
