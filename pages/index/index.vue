@@ -456,9 +456,12 @@ onUnmounted(() => {
     height: 100%
   .live-cont
     max-width: 400px
+    height: 100%
     margin: 0 auto
     img
       width: 100%
+      height: 100%
+      object-fit: cover
 .section1
   transition: all .6s ease-in-out
   padding-top: 45px
