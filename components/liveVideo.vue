@@ -16,6 +16,20 @@
       <div class="error-text">{{ errorMessage }}</div>
       <button @click="retryConnection" class="retry-button">重新连接</button>
     </div>
+
+    <!-- 自定义声音控制按钮 -->
+    <div class="custom-sound-control">
+      <button @click="toggleMute" class="sound-button" :class="{ 'muted': isMuted }" :title="isMuted ? '打开声音' : '关闭声音'">
+        <svg v-if="isMuted" class="sound-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+        </svg>
+        <svg v-else class="sound-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+        </svg>
+      </button>
+    </div>
   </div>
 </template>
 
@@ -65,7 +79,8 @@ export default {
       reconnectAttempts: 0,
       reconnectTimer: null,
       isPageVisible: true,
-      connectionTimeout: null
+      connectionTimeout: null,
+      isMuted: true // 默认静音状态
     }
   },
   mounted() {
@@ -92,7 +107,7 @@ export default {
 
       // 2. 采用更安全的配置合并策略
       const defaultOptions = {
-        controls: true,
+        controls: false, // 隐藏控制栏
         autoplay: true, // 默认自动播放，与您的配置保持一致
         muted: true,     // 如果需要自动播放，必须设置为true
         preload: 'auto',
@@ -306,6 +321,15 @@ export default {
       this.visibilityChangeHandler = handleVisibilityChange;
     },
 
+    // 切换静音状态
+    toggleMute() {
+      if (this.player) {
+        this.isMuted = !this.isMuted;
+        this.player.muted(this.isMuted);
+        console.log(`[VideoPlayer] 声音${this.isMuted ? '关闭' : '打开'}`);
+      }
+    },
+
     // 清理资源
     cleanup() {
       // 清理页面可见性监听
@@ -447,88 +471,108 @@ export default {
   background-color: #004085;
 }
 
-/* 深度选择器修改Video.js默认样式（如果需要） */
+/* 隐藏大播放按钮 */
 ::v-deep .vjs-big-play-button {
+  display: none !important;
+}
+
+/* 隐藏控制栏 */
+::v-deep .vjs-control-bar {
+  display: none !important;
+}
+
+/* 隐藏默认加载圈圈 */
+::v-deep .vjs-loading-spinner {
+  display: none !important;
+}
+
+::v-deep .vjs-loading-spinner:before {
+  display: none !important;
+}
+
+::v-deep .vjs-loading-spinner:after {
+  display: none !important;
+}
+
+/* 隐藏其他加载相关元素 */
+::v-deep .vjs-waiting {
+  display: none !important;
+}
+
+::v-deep .vjs-seeking {
+  display: none !important;
+}
+
+::v-deep .vjs-loading {
+  display: none !important;
+}
+
+/* 自定义声音控制按钮 */
+.custom-sound-control {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+}
+
+.sound-button {
+  background-color: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  border: none;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-::v-deep .vjs-big-play-button:hover {
+.sound-button:hover {
   background-color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
 }
 
-::v-deep .vjs-has-started .vjs-control-bar {
-  height: 40px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+.sound-button.muted {
+  background-color: rgba(255, 0, 0, 0.6);
 }
 
-::v-deep .vjs-big-play-button .vjs-icon-placeholder {
-  position: relative;
-  width: 100%;
-  height: 100%;
+.sound-button.muted:hover {
+  background-color: rgba(255, 0, 0, 0.8);
 }
 
-::v-deep .vjs-big-play-button .vjs-icon-placeholder::before {
-  font-size: 26px;
+.sound-icon {
+  width: 24px;
+  height: 24px;
   color: #fff;
+  transition: color 0.3s ease;
 }
 
-/* 控制栏样式优化 */
-::v-deep .vjs-control-bar {
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
-}
-
-::v-deep .vjs-control-bar .vjs-button {
-  color: #fff;
-}
-
-::v-deep .vjs-control-bar .vjs-button:hover {
+.sound-button:hover .sound-icon {
   color: #007bff;
 }
 
-/* 进度条样式 */
-::v-deep .vjs-progress-control {
-  height: 6px;
+.sound-button.muted:hover .sound-icon {
+  color: #fff;
 }
 
-::v-deep .vjs-progress-holder {
-  height: 6px;
-  background-color: rgba(255, 255, 255, 0.3);
-}
+/* 响应式设计 - 声音按钮 */
+@media (max-width: 768px) {
+  .custom-sound-control {
+    top: 15px;
+    right: 15px;
+  }
 
-::v-deep .vjs-load-progress {
-  background-color: rgba(255, 255, 255, 0.5);
-}
+  .sound-button {
+    width: 45px;
+    height: 45px;
+  }
 
-::v-deep .vjs-play-progress {
-  background-color: #007bff;
-}
-
-/* 音量控制样式 */
-::v-deep .vjs-volume-panel {
-  width: auto;
-}
-
-::v-deep .vjs-volume-bar {
-  background-color: rgba(255, 255, 255, 0.3);
-}
-
-::v-deep .vjs-volume-level {
-  background-color: #007bff;
-}
-
-/* 全屏按钮样式 */
-::v-deep .vjs-fullscreen-control {
-  cursor: pointer;
+  .sound-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* 响应式设计 */
