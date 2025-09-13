@@ -197,8 +197,7 @@ onUnmounted(() => {
 <template>
   <div class="cont">
     <headerTop :opaque="scrollTop >= 0" :timer="timer"></headerTop>
-    <div class="index-live">
-
+    <div class="index-live" @click="navigateTo('/live')">
       <div class="live-cont">
         <img src="@/assets/images/live-to.jpg" alt="">
         <div class="live-btn">
@@ -476,6 +475,9 @@ onUnmounted(() => {
       padding: 5px 15px
       color: #fff
       background: rgba(0,0,0,.3)
+    .live-btn:hover
+      background: #ffffff88
+      color: #000
 
 .section1
   transition: all .6s ease-in-out
