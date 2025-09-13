@@ -26,7 +26,7 @@ const streamUrl = siteStore.siteData?.logo || ''
     <section class="chatlayer" ref="section1">
       <div class="chat">
         <div class="goback">
-          <div class="back">{{ '返回主頁' }}</div>
+          <div class="back">{{ '主頁' }}</div>
         </div>
         <div class="chat-lis">
           <div class="chat-item">
@@ -77,7 +77,6 @@ const streamUrl = siteStore.siteData?.logo || ''
           color: #fff
           background: rgba(0,0,0,0.5)
           cursor: pointer
-          border-radius: 15px
           transition: all .3s ease
           border: 1px solid rgba(255,255,255,0.6)
           &:hover
