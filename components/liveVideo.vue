@@ -182,6 +182,12 @@ export default {
       }
     },
 
+    clearConnectionTimeout() {
+      if (this.connectionTimeout) {
+        clearTimeout(this.connectionTimeout);
+        this.connectionTimeout = null;
+      }
+    },
     /**
      * 绑定播放器事件（优化版）
      */
