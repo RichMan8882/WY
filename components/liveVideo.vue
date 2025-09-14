@@ -171,13 +171,16 @@ const initializePlayer = async () => {
 
   // 安全合并配置
   const myMergedOptions = {
-    ...defaultOptions,
-    ...props.options,
-    techOrder: props.options.techOrder || defaultOptions.techOrder,
-    sources: props.options.sources?.length
-      ? props.options.sources
-      : defaultOptions.sources,
-    flvjs: { ...defaultOptions.flvjs, ...props.options.flvjs }
+    merge: {
+      ...defaultOptions,
+      ...props.options,
+      techOrder: props.options.techOrder || defaultOptions.techOrder,
+      sources: props.options.sources?.length
+        ? props.options.sources
+        : defaultOptions.sources,
+      flvjs: { ...defaultOptions.flvjs, ...props.options.flvjs }
+    }
+
   };
 
   try {
@@ -199,8 +202,6 @@ const setupPlayerEvents = () => {
 
   // 延迟检查 flvjs 实例（解决 "flvjs 实例未找到" 警告）
   setTimeout(() => {
-
-
     const flvjsInstance = player.value.tech_?.flvjs_;
     if (!flvjsInstance) {
       console.log(player.value.tech_?.flvjs_ + '202');
