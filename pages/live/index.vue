@@ -27,7 +27,7 @@ const streamUrl = siteStore.siteData?.logo || ''
         <div class="goback">
           <div class="back">{{ '主頁' }}</div>
         </div>
-        <div class="chat-btm">
+        <div class="chat-btm" v-for="item in 9">
           <div class="chat-lis">
             <div class="chat-item">
               <div class="chat-title">
