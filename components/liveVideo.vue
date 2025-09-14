@@ -711,15 +711,6 @@ export default {
     right: 15px;
   }
 
-  .sound-button {
-    width: 45px;
-    height: 45px;
-  }
-
-  .sound-icon {
-    width: 20px;
-    height: 20px;
-  }
 }
 
 /* 竖屏直播响应式优化 */
