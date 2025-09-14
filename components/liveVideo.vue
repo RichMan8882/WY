@@ -199,7 +199,6 @@ export default {
         const flvjsInstance = this.player.tech_?.flvjs_;
         if (!flvjsInstance) {
           console.error('[VideoPlayer] flvjs实例未找到');
-          this.setupPlayerEvents();
           return;
         }
 
