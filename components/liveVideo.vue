@@ -831,7 +831,7 @@ export default {
         max-width: 100%
         .chat-title
           color: #00ffff
-          max-width: 40%
+          max-width: 35%
           min-width: 70px
           flex-shrink: 0
           display: flex
