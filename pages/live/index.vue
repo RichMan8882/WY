@@ -103,7 +103,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           background: rgba(0, 0, 0, .4)
           borrder-radius: 10px
           .chat-title
-            color:
+            color: #00ffff
           .chat-item-img
             width: 40px
             min-width: 40px
