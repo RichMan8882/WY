@@ -120,6 +120,7 @@ const streamUrl = siteStore.siteData?.logo || ''
             white-space: nowrap
             text-overflow: ellipsis
             color: #00ffff
+            flex-shrink: 0
           .chat-item-img
             width: 40px
             min-width: 40px
