@@ -109,6 +109,10 @@ const streamUrl = siteStore.siteData?.logo || ''
           background: rgba(0, 0, 0, .4)
           border-radius: 10px
           .chat-title
+            max-width: 40%
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
             color: #00ffff
           .chat-item-img
             width: 40px
