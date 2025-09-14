@@ -663,7 +663,7 @@ export default {
 }
 
 .sound-button {
-  background-color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.6);
   border: none;
   border-radius: 50%;
   width: 30px;
@@ -677,16 +677,16 @@ export default {
 }
 
 .sound-button:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   transform: scale(1.1);
 }
 
 .sound-button.muted {
-  background-color: rgba(255, 0, 0, 0.6);
+  color: rgba(255, 0, 0, 0.6);
 }
 
 .sound-button.muted:hover {
-  background-color: rgba(255, 0, 0, 0.8);
+  color: rgba(255, 0, 0, 0.8);
 }
 
 .sound-icon {
