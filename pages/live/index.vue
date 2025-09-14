@@ -96,7 +96,7 @@ const streamUrl = siteStore.siteData?.logo || ''
         bottom: 0
         left: 0
         right: 0
-        padding: 20px 20px 45px
+        padding: 20px 10px 45px
         overflow-y: auto
       .chat-lis
         display: flex
@@ -104,6 +104,9 @@ const streamUrl = siteStore.siteData?.logo || ''
         align-items: self-start
         margin: 10px 0
         max-height: calc(360px)
+        overflow-y: auto
+        mask-image: -webkit-gradient(linear, left 10%, left top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+        -webkit-mask-image: -webkit-gradient(linear, left 10%, left top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
         .chat-item
           display: flex
           padding: 3px 10px
@@ -113,6 +116,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           font-size: 12px
           background: rgba(0, 0, 0, .4)
           border-radius: 10px
+          max-width: 100%
           .chat-title
             max-width: 40%
             flex-shrink: 0
