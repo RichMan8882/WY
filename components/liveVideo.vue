@@ -199,7 +199,7 @@ const setupPlayerEvents = () => {
 
   // 延迟检查 flvjs 实例（解决 "flvjs 实例未找到" 警告）
   setTimeout(() => {
-    console.log(player, '202');
+    console.log(player.value.tech_?.flvjs_ + '202');
 
     const flvjsInstance = player.value.tech_?.flvjs_;
     if (!flvjsInstance) {
