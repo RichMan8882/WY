@@ -27,9 +27,9 @@ const streamUrl = siteStore.siteData?.logo || ''
         <div class="goback">
           <div class="back">{{ '主頁' }}</div>
         </div>
-        <div class="chat-btm" v-for="item in 9">
+        <div class="chat-btm">
           <div class="chat-lis">
-            <div class="chat-item">
+            <div class="chat-item" v-for="item in 9">
               <div class="chat-title">
                 <div class="title-user">
                   {{ '用戶656516' }}
@@ -41,7 +41,7 @@ const streamUrl = siteStore.siteData?.logo || ''
             </div> -->
               <div class="chat-item-text">
                 <div class="chat-text" v-if="true">
-                  {{ '哈哈哈，早知道' }}
+                  {{ '哈哈哈，早知道' + item }}
                 </div>
                 <div class="chat-text-img" v-else>
                   <img src="https://picsum.photos/200/300" alt=""></img>
