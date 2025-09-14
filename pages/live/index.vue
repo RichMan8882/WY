@@ -31,8 +31,8 @@ const streamUrl = siteStore.siteData?.logo || ''
           <div class="chat-lis">
             <div class="chat-item">
               <div class="chat-title">
-                {{ '用戶656516' }}:
-              </div>
+                {{ '用戶656516' }}
+              </div>:
               <!-- <div class="chat-item-img">
               <img src="https://picsum.photos/200/300" alt="">
             </div> -->
