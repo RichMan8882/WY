@@ -208,7 +208,11 @@ const clearConnectionTimeout = () => {
 
 const setupPlayerEvents = () => {
   if (!player.value) return;
-
+  // 添加错误事件监听
+  player.value.on('error', (e) => {
+    console.error('[VideoPlayer] 播放器错误:', e);
+    handleError('播放错误', e);
+  });
   // 延迟检查flvjs实例
   setTimeout(() => {
     // 监听直播断开
@@ -255,7 +259,7 @@ const setupPlayerEvents = () => {
     disconnect: () => handleStreamDisconnect(),
     loaderror: () => handleError('网络连接失败'),
     emptied: () => handleStreamDisconnect(),
-    error: () => handleError('直播已結束')
+    // error: () => handleError('直播已結束')
   };
 
   // 批量绑定事件
@@ -320,6 +324,22 @@ const handleError = (message, error = null) => {
 
   if (error) {
     console.error('[VideoPlayer] 错误详情:', error);
+
+    // 检测特定错误类型
+    if (error.message && (
+      error.message.includes('Early-EOF') ||
+      error.message.includes('HTTP2_PROTOCOL_ERROR') ||
+      error.message.includes('UnrecoverableEarlyEof')
+    )) {
+      console.log('[VideoPlayer] 检测到OBS断开错误，触发重连');
+      // 立即清理并重连
+      if (player.value) {
+        cleanup();
+        player.value = null;
+      }
+      scheduleReconnect();
+      return;
+    }
   }
 
   // 触发重连（未超过最大次数时）
@@ -338,13 +358,12 @@ const scheduleReconnect = () => {
   }
 
   reconnectAttempts.value++;
-  const baseDelay = reconnectAttempts.value <= 3 ? 2000 : 5000;
-  const delay = Math.min(baseDelay * Math.pow(1.5, reconnectAttempts.value - 1), 30000);
+  const baseDelay = Math.min(1000 * Math.pow(2, reconnectAttempts.value), 10000);
 
-  console.log(`[VideoPlayer] 第${reconnectAttempts.value}次重连，${delay / 1000}秒后尝试`);
+  console.log(`[VideoPlayer] 第${reconnectAttempts.value}次重连，${baseDelay / 1000}秒后尝试`);
   reconnectTimer.value = setTimeout(() => {
     initializePlayer();
-  }, delay);
+  }, baseDelay);
 };
 
 const setupPageVisibilityListener = () => {
