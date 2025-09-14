@@ -170,22 +170,19 @@ const initializePlayer = async () => {
   };
 
   // 安全合并配置
-  const obj = {
-    merge: {
-      ...defaultOptions,
-      ...props.options,
-      techOrder: props.options.techOrder || defaultOptions.techOrder,
-      sources: props.options.sources?.length
-        ? props.options.sources
-        : defaultOptions.sources,
-      flvjs: { ...defaultOptions.flvjs, ...props.options.flvjs }
-    }
-
+  const mergedOptions = {
+    ...defaultOptions,
+    ...props.options,
+    techOrder: props.options.techOrder || defaultOptions.techOrder,
+    sources: props.options.sources?.length
+      ? props.options.sources
+      : defaultOptions.sources,
+    flvjs: { ...defaultOptions.flvjs, ...props.options.flvjs }
   };
 
   try {
     // 初始化播放器（Vue3 需确保 DOM 已挂载）
-    player.value = videojs(videoPlayer.value, obj.merge, () => {
+    player.value = videojs(videoPlayer.value, mergedOptions, () => {
       console.log('[VideoPlayer] 播放器初始化完成');
       player.value.ready(() => {
         setupPlayerEvents(); // 绑定事件
@@ -202,13 +199,14 @@ const setupPlayerEvents = () => {
 
   // 延迟检查 flvjs 实例（解决 "flvjs 实例未找到" 警告）
   setTimeout(() => {
+
+
     const flvjsInstance = player.value.tech_?.flvjs_;
-    if (!flvjsInstance) {
-      console.log(player.value.tech_?.flvjs_ + '202');
-      console.warn('[VideoPlayer] flvjs 实例未找到');
-      // handleError('播放器初始化失败：flvjs 不可用');
-      return;
-    }
+    // if (!flvjsInstance) {
+    //   console.warn('[VideoPlayer] flvjs 实例未找到');
+    //   // handleError('播放器初始化失败：flvjs 不可用');
+    //   return;
+    // }
 
     // 监听 flv.js 核心错误
     flvjsInstance.on(flvjs.Events.ERROR, (errType, errDetail) => {
