@@ -82,6 +82,8 @@ export default {
   data() {
     return {
       player: null,
+      videojs: null, // 存储动态导入的video.js实例
+      flvjs: null,   // 存储动态导入的flvjs实例
       isLoading: false,
       hasError: false,
       errorMessage: '',
@@ -93,21 +95,39 @@ export default {
       visibilityChangeHandler: null
     }
   },
-  mounted() {
-    // Nuxt.js中使用$nextTick确保DOM完全渲染
-    this.$nextTick(() => {
-      this.setupPageVisibilityListener()
-      this.initializePlayer()
-    })
+  async mounted() {
+    // 仅在客户端执行初始化
+    if (process.client) {
+      try {
+        // 动态导入video.js及其CSS
+        const videojsModule = await import('video.js');
+        this.videojs = videojsModule.default;
+        // 导入CSS（使用import或确保构建工具处理）
+        require('video.js/dist/video-js.css');
+
+        // 动态导入flvjs插件
+        const flvjsModule = await import('videojs-flvjs-es6');
+        this.flvjs = flvjsModule.default;
+
+        // 初始化播放器
+        this.$nextTick(() => {
+          this.setupPageVisibilityListener();
+          this.initializePlayer();
+        });
+      } catch (error) {
+        console.error('[VideoPlayer] 客户端库加载失败:', error);
+        this.handleError('播放器库加载失败', error);
+      }
+    }
   },
   beforeDestroy() {
-    this.cleanup()
+    this.cleanup();
   },
   watch: {
     streamUrl: {
       handler(newUrl) {
         if (newUrl && this.player) {
-          this.retryConnection()
+          this.retryConnection();
         }
       },
       immediate: false
@@ -115,16 +135,14 @@ export default {
   },
   methods: {
     initializePlayer() {
-      // 确保在客户端环境
-      if (!process.client || !videojs) {
-        console.warn('[VideoPlayer] 仅在客户端环境运行')
-        return
+      if (!this.videojs) {
+        console.warn('[VideoPlayer] video.js未正确加载');
+        return;
       }
 
-      this.isLoading = true
-      this.hasError = false
+      this.isLoading = true;
+      this.hasError = false;
 
-      // 优化的FLV配置，解决HTTP2和Early-EOF错误
       const defaultOptions = {
         controls: false,
         autoplay: true,
@@ -132,61 +150,35 @@ export default {
         preload: 'auto',
         fluid: true,
         playbackRates: [0.5, 1, 1.5, 2],
-        sources: this.options.sources && this.options.sources.length > 0
-          ? this.options.sources
-          : [{
-            src: this.streamUrl,
-            type: 'video/flv'
-          }],
+        sources: this.options.sources?.length ? this.options.sources : [{ src: this.streamUrl, type: 'video/flv' }],
         techOrder: ['flvjs', 'html5'],
         flvjs: {
-          // 解决HTTP2和Early-EOF错误的配置
-          enableWorker: false, // 禁用Worker避免兼容性问题
-          enableStashBuffer: true, // 启用缓冲区
-          stashInitialSize: 128, // 减小初始缓冲区
+          enableWorker: false,
+          enableStashBuffer: true,
+          stashInitialSize: 128,
           autoCleanupSourceBuffer: true,
           autoCleanupMaxBackwardDuration: 30,
           autoCleanupMinBackwardDuration: 10,
           isLive: true,
           cors: true,
           withCredentials: false,
-          // 添加重试配置
-          enableWorker: false,
-          enableStashBuffer: true,
-          stashInitialSize: 128,
-          // 解决Early-EOF的配置
           fixAudioTimestampGap: true,
           accurateSeek: false,
-          seekType: 'range',
-          // 网络配置
-          rangeLoadZeroStart: false,
-          customSeekHandler: undefined,
-          // 错误处理
-          enableWorker: false,
-          enableStashBuffer: true,
-          stashInitialSize: 128
+          seekType: 'range'
         }
-      }
+      };
 
-      const mergedOptions = {
-        ...defaultOptions,
-        ...this.options,
-        techOrder: this.options.techOrder || defaultOptions.techOrder,
-        sources: this.options.sources && this.options.sources.length > 0
-          ? this.options.sources
-          : defaultOptions.sources
-      }
-
-      console.log('[VideoPlayer] 初始化播放器，配置:', mergedOptions)
+      const mergedOptions = { ...defaultOptions, ...this.options };
 
       try {
-        this.player = videojs(this.$refs.videoPlayer, mergedOptions, () => {
-          console.log('[VideoPlayer] 播放器已准备就绪')
-          this.setupPlayerEvents()
-        })
+        // 使用动态导入的videojs实例初始化播放器
+        this.player = this.videojs(this.$refs.videoPlayer, mergedOptions, () => {
+          console.log('[VideoPlayer] 播放器已准备就绪');
+          this.setupPlayerEvents();
+        });
       } catch (error) {
-        console.error('[VideoPlayer] 初始化失败:', error)
-        this.handleError('播放器初始化失败', error)
+        console.error('[VideoPlayer] 初始化失败:', error);
+        this.handleError('播放器初始化失败', error);
       }
     },
 
