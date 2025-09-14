@@ -170,7 +170,7 @@ const initializePlayer = async () => {
   };
 
   // 安全合并配置
-  const mergedOptions = {
+  const myMergedOptions = {
     ...defaultOptions,
     ...props.options,
     techOrder: props.options.techOrder || defaultOptions.techOrder,
@@ -182,7 +182,7 @@ const initializePlayer = async () => {
 
   try {
     // 初始化播放器（Vue3 需确保 DOM 已挂载）
-    player.value = videojs(videoPlayer.value, mergedOptions, () => {
+    player.value = videojs(videoPlayer.value, myMergedOptions, () => {
       console.log('[VideoPlayer] 播放器初始化完成');
       player.value.ready(() => {
         setupPlayerEvents(); // 绑定事件
