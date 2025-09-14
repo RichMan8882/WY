@@ -200,7 +200,6 @@ export default {
         const flvjsInstance = this.player.tech_?.flvjs_;
         if (!flvjsInstance) {
           console.warn('[VideoPlayer] flvjs实例未找到，无备用方案');
-          this.handleError('播放器初始化失败：flvjs不可用');
           return;
         }
 
