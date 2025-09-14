@@ -198,8 +198,8 @@ export default {
       setTimeout(() => {
         const flvjsInstance = this.player.tech_?.flvjs_;
         if (!flvjsInstance) {
-          console.warn('[VideoPlayer] flvjs实例未找到，启用HTML5备用方案');
-          this.handleFallbackToHtml5(); // 切换HTML5技术
+          console.error('[VideoPlayer] flvjs实例未找到');
+          this.setupPlayerEvents();
           return;
         }
 
