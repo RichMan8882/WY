@@ -2,19 +2,14 @@
   <div class="video-player-container-wrapper">
     <div class="video-player-container" :class="{ 'portrait-mode': portraitMode }">
       <div class="video-wrapper" data-vjs-player>
-        <!-- 使用动态组件避免 SSR 服务端渲染错误 -->
-        <client-only>
-          <video ref="videoPlayer" class="video-js vjs-big-play-centered vjs-fluid" :playsinline="playsinline"
-            preload="auto" controls :poster="poster"></video>
-        </client-only>
+        <video ref="videoPlayer" class="video-js vjs-big-play-centered vjs-fluid" :playsinline="playsinline"
+          preload="auto" controls :poster="poster"></video>
       </div>
-
       <!-- 加载状态指示器 -->
       <div v-if="isLoading" class="loading-overlay">
         <div class="loading-spinner"></div>
         <div class="loading-text">正在连接直播...</div>
       </div>
-
       <!-- 错误状态显示 -->
       <div v-if="hasError" class="error-overlay">
         <div class="error-icon">⚠️</div>
@@ -23,12 +18,11 @@
         </div>
         <button @click="retryConnection" class="retry-button">手动重连</button>
       </div>
-
-      <!-- 聊天层（保持不变） -->
       <section class="chatlayer" ref="section1">
         <div class="chat">
           <div class="goback">
             <div class="back" @click="navigateTo('/')">{{ '主頁' }}</div>
+            <!-- 自定义声音控制按钮 -->
             <div class="custom-sound-control">
               <button @click="toggleMute" class="sound-button" :class="{ 'muted': isMuted }"
                 :title="isMuted ? '打开声音' : '关闭声音'">
@@ -52,15 +46,22 @@
                   </div>
                   :
                 </div>
+                <!-- <div class="chat-item-img">
+              <img src="https://picsum.photos/200/300" alt="">
+            </div> -->
                 <div class="chat-item-text">
                   <div class="chat-text" v-if="true">
                     {{ '哈哈哈，早知道' + item }}
                   </div>
+                  <div class="chat-text-img" v-else>
+                    <img src="https://picsum.photos/200/300" alt=""></img>
+                  </div>
                 </div>
               </div>
+
             </div>
             <div class="chat-input">
-              <input type="text" maxlength="100" placeholder="請遵守社區秩序">
+              <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
             </div>
           </div>
         </div>
