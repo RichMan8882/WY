@@ -321,7 +321,7 @@ const handleError = (message, error = null) => {
   isLoading.value = false;
   hasError.value = true;
   errorMessage.value = message;
-
+  console.waiting('[VideoPlayer] 错误:', error, message);
   if (error) {
     console.error('[VideoPlayer] 错误详情:', error);
 
