@@ -140,7 +140,7 @@ export default {
         sources: this.options.sources?.length
           ? this.options.sources
           : [{ src: this.streamUrl, type: 'video/flv' }],
-        techOrder: ['flvjs', 'html5'], // 优先flvjs
+        techOrder: ['flvjs'],
         flvjs: {
           enableWorker: true,
           enableStashBuffer: false,
@@ -174,7 +174,9 @@ export default {
         // 初始化播放器（添加ready回调）
         this.player = videojs(videoEl, mergedOptions, () => {
           console.log('[VideoPlayer] 播放器初始化完成');
-          this.setupPlayerEvents(); // 绑定事件
+          this.player.ready(() => {
+            this.setupPlayerEvents(); // 确保技术模块就绪后再绑定事件
+          });
         });
       } catch (error) {
         console.error('[VideoPlayer] 初始化失败:', error);
