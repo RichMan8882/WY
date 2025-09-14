@@ -31,7 +31,7 @@ const streamUrl = siteStore.siteData?.logo || ''
         <div class="chat-lis">
           <div class="chat-item">
             <div class="chat-title">
-              用戶656516
+              {{ '用戶656516' }}:
             </div>
             <!-- <div class="chat-item-img">
               <img src="https://picsum.photos/200/300" alt="">
@@ -45,9 +45,10 @@ const streamUrl = siteStore.siteData?.logo || ''
               </div>
             </div>
           </div>
-          <div class="chat-input">
-            <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
-          </div>
+
+        </div>
+        <div class="chat-input">
+          <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
         </div>
       </div>
     </section>
@@ -92,8 +93,11 @@ const streamUrl = siteStore.siteData?.logo || ''
         left: 0
         right: 0
         padding: 20px 20px 45px
-        max-height: calc(100vh - 145px)
+        max-height: calc(100vh - 45px - 40px)
         overflow-y: auto
+        display: flex
+        flex-direction: column-reverse
+        
         .chat-item
           display: flex
           padding: 3px 10px
@@ -101,7 +105,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           color: #fff
           font-size: 12px
           background: rgba(0, 0, 0, .4)
-          borrder-radius: 10px
+          border-radius: 10px
           .chat-title
             color: #00ffff
           .chat-item-img
@@ -116,21 +120,21 @@ const streamUrl = siteStore.siteData?.logo || ''
               height: 100%
               object-fit: cover
           .chat-item-text
-            padding: 10px
+            padding-left: 5px
           .chat-text-img
             height: 80px
             max-width: 50%
             img
               object-fit: contain
               height: 100%s
-        .chat-input
-          input
-            width: 100%
-            height: 40px
-            line-height: 40px
-            background: rgba(0,0,0,0.5)
-            border-radius: 25px
-            border: 1px solid rgba(255,255,255,0.6)
-            padding: 10px
-            color: #fff
+      .chat-input
+        input
+          width: 100%
+          height: 40px
+          line-height: 40px
+          background: rgba(0,0,0,0.5)
+          border-radius: 25px
+          border: 1px solid rgba(255,255,255,0.6)
+          padding: 10px
+          color: #fff
 </style>
