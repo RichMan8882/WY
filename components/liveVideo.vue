@@ -832,6 +832,7 @@ export default {
         .chat-title
           color: #00ffff
           max-width: 40%
+          min-width: 70px
           flex-shrink: 0
           display: flex
           .title-user
@@ -851,7 +852,6 @@ export default {
             object-fit: cover
         .chat-item-text
           padding-left: 5px
-          flex: 1
         .chat-text-img
           height: 80px
           max-width: 50%
