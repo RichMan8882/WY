@@ -787,7 +787,7 @@ export default {
         display: inline-block
         font-size: 12px
         border-radius: 25px
-        padding: 2px 10px
+        padding: 2px 20px
         text-align: center
         color: #fff
         background: rgba(0,0,0,0.5)
