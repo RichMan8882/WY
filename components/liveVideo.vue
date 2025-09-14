@@ -685,11 +685,11 @@ export default {
   transform: scale(1.1);
 }
 
-.sound-button.muted {
+.sound-button.muted .sound-icon {
   color: rgba(255, 0, 0, 0.6);
 }
 
-.sound-button.muted:hover {
+.sound-button.muted:hover .sound-icon {
   color: rgba(255, 0, 0, 0.8);
 }
 
