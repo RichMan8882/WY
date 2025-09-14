@@ -31,8 +31,11 @@ const streamUrl = siteStore.siteData?.logo || ''
           <div class="chat-lis">
             <div class="chat-item">
               <div class="chat-title">
-                {{ '用戶656516' }}
-              </div>:
+                <div class="title">
+                  {{ '用戶656516' }}
+                </div>
+                :
+              </div>
               <!-- <div class="chat-item-img">
               <img src="https://picsum.photos/200/300" alt="">
             </div> -->
@@ -114,17 +117,17 @@ const streamUrl = siteStore.siteData?.logo || ''
           align-items: flex-start
           color: #fff
           font-size: 12px
-          background: rgba(0, 0, 0, .4)
+          background: rgba(0, 0, 0, .2)
           border-radius: 10px
           max-width: 100%
           .chat-title
+            color: #00ffff
             max-width: 40%
             flex-shrink: 0
-            overflow: hidden
-            white-space: nowrap
-            text-overflow: ellipsis
-            color: #00ffff
-            flex-shrink: 0
+            .title
+              overflow: hidden
+              white-space: nowrap
+              text-overflow: ellipsis
           .chat-item-img
             width: 40px
             min-width: 40px
