@@ -77,14 +77,14 @@ import { ref, reactive, onMounted, onBeforeUnmount, getCurrentInstance } from 'v
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import 'videojs-flvjs-es6'; // 自动注册flvjs技术
-
+const siteStore = useSiteStore()
 // ------------------------------
 // 组件属性（保持与 Vue2 兼容）
 // ------------------------------
 const props = defineProps({
   options: { type: Object, default: () => ({}) },
   playsinline: { type: Boolean, default: true },
-  poster: { type: String, default: '' },
+  poster: { type: String, default: siteStore.siteData?.logo || '' },
   streamUrl: { type: String, required: true },
   reconnectInterval: { type: Number, default: 5000 },
   maxReconnectAttempts: { type: Number, default: 5 },
@@ -390,23 +390,66 @@ const navigateTo = (path) => {
   });
 };
 </script>
-
 <style scoped>
-/* 样式部分保持不变（与原始代码一致） */
 .video-player-container-wrapper {
+  /* 模仿抖音/TikTok/YouTube的深色背景风格 */
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
-  height: 100vh;
+  height: 100vh
 }
 
+.video-player-container-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: all .2s ease;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.video-player-container-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.02) 50%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 组件作用域样式 */
 .video-player-container {
   position: relative;
   width: 100%;
   height: 100%;
   background-color: #000;
   overflow: hidden;
+  z-index: 2;
+  /* 确保在装饰层之上 */
+}
+
+/* 竖屏直播模式样式 */
+.video-player-container.portrait-mode {
+  /* 电脑端竖屏显示 */
+  max-width: 400px;
+  /* 电脑端最大宽度限制 */
+  margin: 0 auto;
+  /* 电脑端居中显示 */
+  aspect-ratio: 9/16;
+  /* 竖屏比例 9:16 */
 }
 
 .video-wrapper {
@@ -415,12 +458,19 @@ const navigateTo = (path) => {
   height: 100%;
 }
 
+/* 确保播放器容器有基本尺寸 */
 .video-js {
   width: 100% !important;
   height: 100% !important;
   background-color: #000;
 }
 
+.video-js .vjs-tech {
+  width: 100%;
+  height: 100%;
+}
+
+/* 加载状态覆盖层 */
 .loading-overlay {
   position: absolute;
   top: 0;
@@ -451,6 +501,17 @@ const navigateTo = (path) => {
   font-weight: 500;
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 错误状态覆盖层 */
 .error-overlay {
   position: absolute;
   top: 0;
@@ -496,12 +557,8 @@ const navigateTo = (path) => {
   background-color: #0056b3;
 }
 
-/* 竖屏模式优化 */
-@media (max-width: 768px) {
-  .video-player-container {
-    max-width: 100%;
-    height: 100vh;
-  }
+.retry-button:active {
+  background-color: #004085;
 }
 
 /* 隐藏大播放按钮 */
@@ -518,4 +575,219 @@ const navigateTo = (path) => {
 ::v-deep .vjs-loading-spinner {
   display: none !important;
 }
+
+::v-deep .vjs-loading-spinner:before {
+  display: none !important;
+}
+
+::v-deep .vjs-loading-spinner:after {
+  display: none !important;
+}
+
+/* 隐藏其他加载相关元素 */
+::v-deep .vjs-waiting {
+  display: none !important;
+}
+
+::v-deep .vjs-seeking {
+  display: none !important;
+}
+
+::v-deep .vjs-loading {
+  display: none !important;
+}
+
+/* 自定义声音控制按钮 */
+.custom-sound-control {
+  z-index: 51;
+}
+
+.sound-button {
+  color: rgba(0, 0, 0, 0.6);
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.sound-button:hover {
+  color: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.sound-button.muted .sound-icon {
+  color: rgba(255, 0, 0, 0.6);
+}
+
+.sound-button.muted:hover .sound-icon {
+  color: rgba(255, 0, 0, 0.8);
+}
+
+.sound-icon {
+  width: 20px;
+  height: 20px;
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.sound-button:hover .sound-icon {
+  color: #007bff;
+}
+
+.sound-button.muted:hover .sound-icon {
+  color: #fff;
+}
+
+/* 竖屏直播响应式优化 */
+@media (max-width: 768px) {
+  .video-player-container-wrapper {
+    /* 手机端全屏背景 */
+    background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    height: 100vh;
+  }
+
+  .video-player-container.portrait-mode {
+    max-width: 100%;
+    /* 手机端占满屏幕宽度 */
+    margin: 0;
+    /* 手机端取消居中 */
+    border-radius: 0;
+    /* 手机端取消圆角 */
+    height: 100vh;
+    /* 手机端占满屏幕高度 */
+    aspect-ratio: unset;
+    /* 手机端取消固定比例 */
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .error-text {
+    font-size: 14px;
+  }
+
+  .retry-button {
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  ::v-deep .vjs-big-play-button {
+    width: 60px;
+    height: 60px;
+  }
+
+  ::v-deep .vjs-big-play-button .vjs-icon-placeholder::before {
+    font-size: 20px;
+  }
+}
+</style>
+<style scoped lang="sass">
+
+.chatlayer
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  z-index: 49
+  .chat
+    max-width: 400px
+    height: 100%
+    margin: 0 auto
+    position: relative
+    .goback
+      height: 45px
+      padding: 15px 15px
+      display: flex
+      align-items: center
+      justify-content: space-between
+      .back
+        display: inline-block
+        font-size: 12px
+        border-radius: 25px
+        padding: 2px 10px
+        text-align: center
+        color: #fff
+        background: rgba(0,0,0,0.5)
+        cursor: pointer
+        transition: all .3s ease
+        border: 1px solid rgba(255,255,255,0.6)
+        &:hover
+          background: rgba(0,0,0,0.7)
+    .chat-btm
+      position: absolute
+      bottom: 0
+      left: 0
+      right: 0
+      padding: 20px 10px 45px
+      overflow-y: auto
+    .chat-lis
+      display: flex
+      flex-direction: column-reverse
+      align-items: self-start
+      margin: 10px 0
+      max-height: calc(360px)
+      overflow-y: auto
+      mask-image: -webkit-gradient(linear, left 10%, left top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+      -webkit-mask-image: -webkit-gradient(linear, left 10%, left top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+      .chat-item
+        display: flex
+        padding: 3px 10px
+        margin-block: 2px
+        align-items: flex-start
+        color: #fff
+        font-size: 12px
+        background: rgba(0, 0, 0, .2)
+        border-radius: 10px
+        max-width: 100%
+        .chat-title
+          color: #00ffff
+          max-width: 35%
+          min-width: 70px
+          flex-shrink: 0
+          display: flex
+          .title-user
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+        .chat-item-img
+          width: 40px
+          min-width: 40px
+          height: 40px
+          border-radius: 50%
+          overflow: hidden
+          border: 1px solid #888
+          img
+            width: 100%
+            height: 100%
+            object-fit: cover
+        .chat-item-text
+          padding-left: 5px
+        .chat-text-img
+          height: 80px
+          max-width: 50%
+          img
+            object-fit: contain
+            height: 100%s
+    .chat-input
+      position: sticky
+      bottom: 0
+      input
+        width: 100%
+        height: 40px
+        line-height: 40px
+        background: rgba(0,0,0,0.5)
+        border-radius: 25px
+        border: 1px solid rgba(255,255,255,0.6)
+        padding: 10px
+        color: #fff
 </style>

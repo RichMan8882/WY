@@ -18,12 +18,11 @@ const videoOptions = {
   muted: true,      // 自动播放时必须为true
   techOrder: ['flvjs'] // 明确指定使用flvjs技术
 }
-const streamUrl = siteStore.siteData?.logo || ''
 
 </script>
 <template>
   <div class="cont">
-    <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
+    <liveVideo :options="videoOptions" />
   </div>
 </template>
 <style scoped lang="sass">
