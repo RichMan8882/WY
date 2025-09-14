@@ -184,9 +184,9 @@ const initializePlayer = async () => {
     // 初始化播放器（Vue3 需确保 DOM 已挂载）
     player.value = videojs(videoPlayer.value, mergedOptions, () => {
       console.log('[VideoPlayer] 播放器初始化完成');
-      player.value.ready(() => {
-        setupPlayerEvents(); // 绑定事件
-      });
+      // player.value.ready(() => {
+      //   setupPlayerEvents(); // 绑定事件
+      // });
     });
   } catch (error) {
     console.error('[VideoPlayer] 初始化失败:', error);
