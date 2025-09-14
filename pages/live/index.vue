@@ -31,7 +31,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           <div class="chat-lis">
             <div class="chat-item">
               <div class="chat-title">
-                <div class="title">
+                <div class="title-user">
                   {{ '用戶656516' }}
                 </div>
                 :
@@ -124,7 +124,7 @@ const streamUrl = siteStore.siteData?.logo || ''
             color: #00ffff
             max-width: 40%
             flex-shrink: 0
-            .title
+            .title-user
               overflow: hidden
               white-space: nowrap
               text-overflow: ellipsis
