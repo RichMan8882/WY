@@ -24,7 +24,7 @@
     <section class="chatlayer" ref="section1">
       <div class="chat">
         <div class="goback">
-          <div class="back">{{ '主頁' }}</div>
+          <div class="back" @click="navigateTo('/')">{{ '主頁' }}</div>
           <!-- 自定义声音控制按钮 -->
           <div class="custom-sound-control">
             <button @click="toggleMute" class="sound-button" :class="{ 'muted': isMuted }"
@@ -149,6 +149,12 @@ export default {
     initializePlayer() {
       this.isLoading = true;
       this.hasError = false;
+      const videoElement = this.$refs.videoPlayer;
+      if (!videoElement || !document.contains(videoElement)) {
+        console.error('[VideoPlayer] video 元素未在 DOM 中，无法初始化播放器');
+        this.handleError('播放器初始化失败：元素未找到');
+        return;
+      }
 
       // 2. 采用更安全的配置合并策略
       const defaultOptions = {
@@ -217,10 +223,22 @@ export default {
     // 设置播放器事件监听
     setupPlayerEvents() {
       if (!this.player) return;
+      // 检查 tech_ 和 flvjs_ 是否存在（避免访问未初始化的技术模块）
+      const flvjsInstance = this.player.tech_?.flvjs_;
+      if (!flvjsInstance) {
+        console.warn('[VideoPlayer] flvjs 实例未找到，跳过 flvjs 事件绑定');
+        return;
+      }
 
       // 设置连接超时
       this.setConnectionTimeout();
-
+      // 监听 flv.js 错误（添加可选链）
+      flvjsInstance.on(flvjs.Events.ERROR, (errType, errDetail) => {
+        if (errType === flvjs.ErrorTypes.NETWORK_ERROR && errDetail === flvjs.ErrorDetails.EARLY_EOF) {
+          console.log('[VideoPlayer] 检测到流提前终止（Early EOF），触发重连');
+          this.handleStreamDisconnect();
+        }
+      });
       // 5. 添加详细的错误事件监听
       this.player.on('error', () => {
         const error = this.player.error();
@@ -265,6 +283,18 @@ export default {
       this.player.on('loadstart', () => {
         console.log('[VideoPlayer] 开始加载');
         this.isLoading = true;
+        // 添加 AbortError 捕获（示例）
+        this.player.tech_.flvjs_?.on(flvjs.Events.LOADING_COMPLETE, () => {
+          try {
+            // 加载完成逻辑
+          } catch (error) {
+            if (error.name === 'AbortError') {
+              console.log('[VideoPlayer] 加载被中断（AbortError）');
+            } else {
+              console.error('[VideoPlayer] 加载完成错误:', error);
+            }
+          }
+        });
       });
 
       this.player.on('canplay', () => {
@@ -324,6 +354,7 @@ export default {
       // 监听时间更新，检测长时间无数据（备用方案）
       let lastDataTime = Date.now();
       this.player.on('timeupdate', () => {
+        if (!this.player) return;
         lastDataTime = Date.now();
       });
       setInterval(() => {
@@ -399,14 +430,17 @@ export default {
       this.clearConnectionTimeout();
       this.clearReconnectTimer();
 
-      if (this.player) {
-        this.player.dispose();
-        this.player = null;
-      }
+      // 关键修复：等待前一次销毁完成（使用微任务延迟）
+      Promise.resolve().then(() => {
+        if (this.player) {
+          console.warn('[VideoPlayer] 旧播放器未完全销毁，强制清理');
+          this.cleanup(); // 确保残留播放器被清理
+        }
 
-      // 重新初始化播放器
-      this.$nextTick(() => {
-        this.initializePlayer();
+        // 延迟初始化（避免 DOM 未就绪）
+        setTimeout(() => {
+          this.initializePlayer();
+        }, 300); // 300ms 延迟确保 DOM 稳定
       });
     },
 
@@ -486,14 +520,30 @@ export default {
       // 清理页面可见性监听
       if (this.visibilityChangeHandler) {
         document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+        this.visibilityChangeHandler = null;
       }
 
       // 清理定时器
       this.clearConnectionTimeout();
       this.clearReconnectTimer();
 
-      // 清理播放器
+      // 移除播放器事件监听（关键修复点）
       if (this.player) {
+        // 移除所有自定义事件监听（根据实际情况补充）
+        this.player.off('error');
+        this.player.off('play');
+        this.player.off('pause');
+        this.player.off('ended');
+        this.player.off('loadstart');
+        this.player.off('canplay');
+        this.player.off('waiting');
+        this.player.off('stalled');
+        this.player.off('timeout');
+        this.player.off('disconnect');
+        this.player.off('loaderror');
+        this.player.off('emptied');
+
+        // 销毁播放器实例
         this.player.dispose();
         this.player = null;
       }
@@ -810,7 +860,7 @@ export default {
   left: 0
   width: 100%
   height: 100%
-  z-index: 50
+  z-index: 49
   .chat
     max-width: 400px
     height: 100%
