@@ -124,6 +124,7 @@ const streamUrl = siteStore.siteData?.logo || ''
             color: #00ffff
             max-width: 40%
             flex-shrink: 0
+            display: flex
             .title-user
               overflow: hidden
               white-space: nowrap
