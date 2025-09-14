@@ -14,8 +14,10 @@
       <!-- 错误状态显示 -->
       <div v-if="hasError" class="error-overlay">
         <div class="error-icon">⚠️</div>
-        <div class="error-text">{{ errorMessage }}</div>
-        <button @click="retryConnection" class="retry-button">重新连接</button>
+        <div class="error-text">
+          {{ errorMessage === '直播连接断开，正在重连...' ? '直播暂停，正在尝试恢复...' : errorMessage }}
+        </div>
+        <button @click="retryConnection" class="retry-button">手动重连</button>
       </div>
     </div>
 
@@ -181,27 +183,34 @@ export default {
       const mergedOptions = {
         ...defaultOptions,
         ...this.options,
-        // 确保techOrder不会被父组件的空配置覆盖
         techOrder: this.options.techOrder || defaultOptions.techOrder,
-        // 确保sources不会被父组件的空配置覆盖
-        sources: this.options.sources && this.options.sources.length > 0
-          ? this.options.sources
-          : defaultOptions.sources
+        sources: this.options.sources?.length ? this.options.sources : defaultOptions.sources,
+        flvjs: {
+          ...defaultOptions.flvjs,
+          // 关键配置：优化断流处理
+          autoCleanupSourceBuffer: true,       // 自动清理旧缓冲区
+          stashInitialSize: 1024,              // 减小初始缓冲区（减少内存占用）
+          enableStashBuffer: false,            // 禁用临时缓冲（避免延迟累积）
+          isLive: true,                        // 明确标记为直播流
+          // 新增：捕获flv.js内部错误（修复未处理的Promise）
+          onError: (errType, errDetail) => {
+            console.error('[flv.js] 内部错误:', errType, errDetail);
+            this.handleError('流播放异常', { code: errType, details: errDetail });
+          }
+        }
       };
 
       // 3. 打印最终配置用于调试（完成后可删除）
       console.log('[VideoPlayer] 最终配置:', mergedOptions);
 
       try {
-        // 4. 初始化Video.js播放器
         this.player = videojs(this.$refs.videoPlayer, mergedOptions, () => {
-          console.log('[VideoPlayer] 播放器已准备就绪');
+          console.log('[VideoPlayer] 播放器初始化完成');
           this.setupPlayerEvents();
         });
-
       } catch (error) {
         console.error('[VideoPlayer] 初始化失败:', error);
-        this.handleError('播放器初始化失败', error);
+        this.handleError('播放器启动失败', error);
       }
     },
 
@@ -215,12 +224,24 @@ export default {
       // 5. 添加详细的错误事件监听
       this.player.on('error', () => {
         const error = this.player.error();
-        console.error('[VideoPlayer] 播放错误:');
-        console.error('- 代码:', error.code);
-        console.error('- 消息:', error.message);
-        console.error('- 详细:', error);
+        let errorMsg = '播放异常';
 
-        this.handleError('播放错误', error);
+        // 识别HTTP/2协议错误（关键修复点）
+        if (error?.code === 'HTTP2_PROTOCOL_ERROR' || error.details?.includes('HTTP2')) {
+          errorMsg = '网络连接不稳定，正在重连...';
+          this.handleStreamDisconnect();
+        }
+        // 识别Early EOF错误（补充）
+        else if (error?.details?.includes('Early EOF') || error.code === 'EARLY_EOF') {
+          errorMsg = '直播流中断，正在重连...';
+          this.handleStreamDisconnect();
+        }
+        // 其他错误
+        else {
+          errorMsg = `播放错误: ${error?.message || '未知错误'}`;
+        }
+
+        this.handleError(errorMsg, error);
       });
 
       // 监听其他有用的事件
@@ -285,6 +306,33 @@ export default {
         console.log('[VideoPlayer] 媒体资源清空');
         this.handleStreamDisconnect();
       });
+
+      // 监听流断开（如OBS暂停/停止）
+      this.player.on('disconnect', () => {
+        console.log('[VideoPlayer] 直播流断开（如OBS暂停）');
+        this.handleStreamDisconnect();
+      });
+
+      // 监听flv.js的早期EOF错误（关键修复点）
+      this.player.tech_.flvjs_.on(flvjs.Events.ERROR, (errType, errDetail) => {
+        if (errType === flvjs.ErrorTypes.NETWORK_ERROR && errDetail === flvjs.ErrorDetails.EARLY_EOF) {
+          console.log('[VideoPlayer] 检测到流提前终止（Early EOF），触发重连');
+          this.handleStreamDisconnect();
+        }
+      });
+
+      // 监听时间更新，检测长时间无数据（备用方案）
+      let lastDataTime = Date.now();
+      this.player.on('timeupdate', () => {
+        lastDataTime = Date.now();
+      });
+      setInterval(() => {
+        if (Date.now() - lastDataTime > 8000) { // 8秒无数据更新
+          console.log('[VideoPlayer] 流长时间无数据，判定为中断');
+          this.handleStreamDisconnect();
+        }
+      }, 5000);
+
     },
 
     // 设置连接超时
@@ -327,14 +375,14 @@ export default {
 
     // 增强的重连机制
     scheduleReconnect() {
-      // 检查网络状态
-      if (!this.checkNetworkStatus()) {
-        return;
-      }
+      if (!this.checkNetworkStatus()) return;
 
       this.reconnectAttempts++;
-      const delay = Math.min(this.reconnectInterval * Math.pow(1.5, this.reconnectAttempts - 1), 30000);
-      console.log(`[VideoPlayer] 第${this.reconnectAttempts}次重连尝试，${delay / 1000}秒后重试`);
+      // 动态调整重连间隔：前3次快速重试，之后指数退避（最大30秒）
+      const baseDelay = this.reconnectAttempts <= 3 ? 1000 : 2000;
+      const delay = Math.min(baseDelay * Math.pow(1.5, this.reconnectAttempts - 1), 30000);
+
+      console.log(`[VideoPlayer] 第${this.reconnectAttempts}次重连，${delay / 1000}秒后尝试`);
 
       this.reconnectTimer = setTimeout(() => {
         this.retryConnection();
