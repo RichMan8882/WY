@@ -254,7 +254,7 @@ export default {
         // 媒体资源清空（直播流重置）
         emptied: () => this.handleStreamDisconnect(),
         // 统一错误处理（捕获所有未处理的错误）
-        error: (e) => this.handlePlayerError(e)
+        error: (e) => this.handleError('直播已結束')
       };
 
       // 批量绑定事件（避免遗漏）
@@ -263,29 +263,7 @@ export default {
       });
     },
 
-    /**
-     * 统一处理播放器错误（关键修复点）
-     */
-    handlePlayerError(error) {
-      const code = error?.code;
-      const details = error?.details;
-      let msg = '播放异常，请稍后重试';
 
-      // 识别HTTP2协议错误
-      if (code === 'HTTP2_PROTOCOL_ERROR' || details?.includes('HTTP2')) {
-        msg = '网络不稳定，正在重连...';
-      }
-      // 识别Early EOF错误（流提前终止）
-      else if (code === 'EARLY_EOF' || details?.includes('Early EOF')) {
-        msg = '直播流中断，正在重连...';
-      }
-      // 其他错误（如404、500等）
-      else if (details?.includes('404') || details?.includes('500')) {
-        msg = `资源加载失败（${details}），正在重连...`;
-      }
-
-      this.handleError(msg, error);
-    },
 
     /**
      * 处理重连逻辑（优化版）
