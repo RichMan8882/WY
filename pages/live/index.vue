@@ -73,9 +73,11 @@ const streamUrl = siteStore.siteData?.logo || ''
       margin: 0 auto
       position: relative
       .goback
-        max-width: 50%
         height: 45px
-        padding: 15px 0 0 15px
+        padding: 15px 15px
+        display: flex
+        align-items: center
+        justify-content: space-between
         .back
           display: inline-block
           font-size: 12px
@@ -95,14 +97,17 @@ const streamUrl = siteStore.siteData?.logo || ''
         left: 0
         right: 0
         padding: 20px 20px 45px
-        max-height: calc(100vh - 45px - 40px)
         overflow-y: auto
       .chat-lis
         display: flex
         flex-direction: column-reverse
+        align-items: self-start
+        margin: 10px 0
+        max-height: calc(360px)
         .chat-item
           display: flex
           padding: 3px 10px
+          margin-block: 2px
           align-items: flex-start
           color: #fff
           font-size: 12px
@@ -110,6 +115,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           border-radius: 10px
           .chat-title
             max-width: 40%
+            flex-shrink: 0
             overflow: hidden
             white-space: nowrap
             text-overflow: ellipsis
@@ -127,6 +133,7 @@ const streamUrl = siteStore.siteData?.logo || ''
               object-fit: cover
           .chat-item-text
             padding-left: 5px
+            flex: 1
           .chat-text-img
             height: 80px
             max-width: 50%
