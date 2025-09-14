@@ -85,7 +85,7 @@ const siteStore = useSiteStore()
 const props = defineProps({
   options: { type: Object, default: () => ({}) },
   playsinline: { type: Boolean, default: true },
-  poster: { type: String, default: siteStore.siteData?.logo || '' },
+  poster: { type: String, default: '' },
   streamUrl: { type: String, required: true },
   reconnectInterval: { type: Number, default: 5000 },
   maxReconnectAttempts: { type: Number, default: 5 },
