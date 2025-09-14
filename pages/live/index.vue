@@ -19,43 +19,10 @@ const videoOptions = {
   techOrder: ['flvjs'] // 明确指定使用flvjs技术
 }
 const streamUrl = siteStore.siteData?.logo || ''
+
 </script>
 <template>
   <div class="cont">
-    <section class="chatlayer" ref="section1">
-      <div class="chat">
-        <div class="goback">
-          <div class="back">{{ '主頁' }}</div>
-        </div>
-        <div class="chat-btm">
-          <div class="chat-lis">
-            <div class="chat-item" v-for="item in 9">
-              <div class="chat-title">
-                <div class="title-user">
-                  {{ '用戶656516' }}
-                </div>
-                :
-              </div>
-              <!-- <div class="chat-item-img">
-              <img src="https://picsum.photos/200/300" alt="">
-            </div> -->
-              <div class="chat-item-text">
-                <div class="chat-text" v-if="true">
-                  {{ '哈哈哈，早知道' + item }}
-                </div>
-                <div class="chat-text-img" v-else>
-                  <img src="https://picsum.photos/200/300" alt=""></img>
-                </div>
-              </div>
-            </div>
-
-          </div>
-          <div class="chat-input">
-            <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
-          </div>
-        </div>
-      </div>
-    </section>
     <liveVideo :options="videoOptions" :streamUrl="streamUrl" />
   </div>
 </template>

@@ -20,9 +20,9 @@
 
       <!-- 自定义声音控制按钮 -->
       <div class="custom-sound-control">
-        <button @click="toggleMute" class="sound-button" :class="{ 'muted': isMuted }"
-          :title="isMuted ? '打开声音' : '关闭声音'">
-          <svg v-if="isMuted" class="sound-icon" viewBox="0 0 24 24" fill="currentColor">
+        <button @click="toggleMute" class="sound-button" :class="{ 'muted': props.isMuted }"
+          :title="props.isMuted ? '打开声音' : '关闭声音'">
+          <svg v-if="props.isMuted" class="sound-icon" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
           </svg>
@@ -33,6 +33,41 @@
         </button>
       </div>
     </div>
+
+    <section class="chatlayer" ref="section1">
+      <div class="chat">
+        <div class="goback">
+          <div class="back">{{ '主頁' }}</div>
+        </div>
+        <div class="chat-btm">
+          <div class="chat-lis">
+            <div class="chat-item" v-for="item in 9">
+              <div class="chat-title">
+                <div class="title-user">
+                  {{ '用戶656516' }}
+                </div>
+                :
+              </div>
+              <!-- <div class="chat-item-img">
+              <img src="https://picsum.photos/200/300" alt="">
+            </div> -->
+              <div class="chat-item-text">
+                <div class="chat-text" v-if="true">
+                  {{ '哈哈哈，早知道' + item }}
+                </div>
+                <div class="chat-text-img" v-else>
+                  <img src="https://picsum.photos/200/300" alt=""></img>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="chat-input">
+            <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
@@ -75,6 +110,10 @@ export default {
     portraitMode: {
       type: Boolean,
       default: true
+    },
+    isMuted: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -87,7 +126,7 @@ export default {
       reconnectTimer: null,
       isPageVisible: true,
       connectionTimeout: null,
-      isMuted: true // 默认静音状态
+
     }
   },
   mounted() {
@@ -364,14 +403,7 @@ export default {
       this.visibilityChangeHandler = handleVisibilityChange;
     },
 
-    // 切换静音状态
-    toggleMute() {
-      if (this.player) {
-        this.isMuted = !this.isMuted;
-        this.player.muted(this.isMuted);
-        console.log(`[VideoPlayer] 声音${this.isMuted ? '关闭' : '打开'}`);
-      }
-    },
+
 
     // 处理直播结束
     handleStreamEnd() {
@@ -741,4 +773,105 @@ export default {
     font-size: 20px;
   }
 }
+</style>
+<style scoped lang="sass">
+
+.chatlayer
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  z-index: 50
+  .chat
+    max-width: 400px
+    height: 100%
+    margin: 0 auto
+    position: relative
+    .goback
+      height: 45px
+      padding: 15px 15px
+      display: flex
+      align-items: center
+      justify-content: space-between
+      .back
+        display: inline-block
+        font-size: 12px
+        border-radius: 25px
+        padding: 2px 10px
+        text-align: center
+        color: #fff
+        background: rgba(0,0,0,0.5)
+        cursor: pointer
+        transition: all .3s ease
+        border: 1px solid rgba(255,255,255,0.6)
+        &:hover
+          background: rgba(0,0,0,0.7)
+    .chat-btm
+      position: absolute
+      bottom: 0
+      left: 0
+      right: 0
+      padding: 20px 10px 45px
+      overflow-y: auto
+    .chat-lis
+      display: flex
+      flex-direction: column-reverse
+      align-items: self-start
+      margin: 10px 0
+      max-height: calc(360px)
+      overflow-y: auto
+      mask-image: -webkit-gradient(linear, left 10%, left top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+      -webkit-mask-image: -webkit-gradient(linear, left 10%, left top, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+      .chat-item
+        display: flex
+        padding: 3px 10px
+        margin-block: 2px
+        align-items: flex-start
+        color: #fff
+        font-size: 12px
+        background: rgba(0, 0, 0, .2)
+        border-radius: 10px
+        max-width: 100%
+        .chat-title
+          color: #00ffff
+          max-width: 40%
+          flex-shrink: 0
+          display: flex
+          .title-user
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+        .chat-item-img
+          width: 40px
+          min-width: 40px
+          height: 40px
+          border-radius: 50%
+          overflow: hidden
+          border: 1px solid #888
+          img
+            width: 100%
+            height: 100%
+            object-fit: cover
+        .chat-item-text
+          padding-left: 5px
+          flex: 1
+        .chat-text-img
+          height: 80px
+          max-width: 50%
+          img
+            object-fit: contain
+            height: 100%s
+    .chat-input
+      position: sticky
+      bottom: 0
+      input
+        width: 100%
+        height: 40px
+        line-height: 40px
+        background: rgba(0,0,0,0.5)
+        border-radius: 25px
+        border: 1px solid rgba(255,255,255,0.6)
+        padding: 10px
+        color: #fff
 </style>
