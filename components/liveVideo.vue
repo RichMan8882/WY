@@ -71,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css'
 import 'videojs-flvjs-es6'
@@ -107,68 +107,52 @@ const state = reactive({
   player: null,
   isLoading: false,
   hasError: false,
-  errorMessage: '',
   reconnectAttempts: 0,
-  reconnectTimer: null,
-  isPageVisible: true,
   connectionTimeout: null,
-  isMuted: true,
-  lastStreamTime: 0,
-  heartbeatInterval: null
+  isPageVisible: true
 })
 
 const videoRef = ref(null)
 const sectionRef = ref(null)
 
 // 初始化播放器
-const initializePlayer = () => {
-  state.isLoading = true
-  state.hasError = false
+const initializePlayer = async () => {
+  try {
+    await nextTick() // 确保DOM更新完成
+    if (!videoRef.value) throw new Error('Video element not found')
 
-  const defaultOptions = {
-    controls: false,
-    autoplay: true,
-    muted: true,
-    preload: 'auto',
-    fluid: true,
-    playbackRates: [0.5, 1, 1.5, 2],
-    sources: [{
-      src: props.streamUrl,
-      type: 'video/flv'
-    }],
-    techOrder: ['flvjs', 'html5'],
-    flvjs: {
-      enableWorker: true,
-      enableStashBuffer: false,
-      autoCleanupSourceBuffer: true,
-      autoCleanupMaxBackwardDuration: 5,
-      autoCleanupMinBackwardDuration: 2,
-      stashInitialSize: 128,
-      isLive: true,
-      hasAudio: false,
-      hasVideo: true,
-      cors: true,
-      withCredentials: false,
-      onMediaData: (data) => {
-        if (data.type === 'video' && data.length === 0) {
-          handleStreamDisconnect()
-        }
+    state.isLoading = true
+    state.hasError = false
+
+    const defaultOptions = {
+      controls: false,
+      autoplay: true,
+      muted: true,
+      preload: 'auto',
+      fluid: true,
+      playbackRates: [0.5, 1, 1.5, 2],
+      sources: [{
+        src: props.streamUrl,
+        type: 'video/flv'
+      }],
+      techOrder: ['flvjs', 'html5'],
+      flvjs: {
+        enableWorker: true,
+        enableStashBuffer: false,
+        autoCleanupSourceBuffer: true,
+        isLive: true,
+        hasVideo: true,
+        hasAudio: false
       }
     }
-  }
 
-  const mergedOptions = {
-    ...defaultOptions,
-    ...props,
-    techOrder: props.techOrder || defaultOptions.techOrder,
-    sources: props.sources?.length > 0
-      ? props.sources
-      : defaultOptions.sources
-  }
+    const mergedOptions = {
+      ...defaultOptions,
+      ...props
+    }
 
-  try {
     state.player = videojs(videoRef.value, mergedOptions, () => {
-      console.log('[VideoPlayer] 播放器初始化完成')
+      console.log('[VideoPlayer] 播放器初始化成功')
       state.isLoading = false
       checkNetworkStatus()
     })
@@ -179,6 +163,45 @@ const initializePlayer = () => {
   }
 }
 
+// 生命周期钩子
+onMounted(() => {
+  setupPageVisibilityListener()
+  initializePlayer()
+})
+
+onBeforeUnmount(() => {
+  cleanupPlayer()
+})
+
+// 监听推流地址变化
+watch(() => props.streamUrl, async (newUrl) => {
+  if (newUrl && state.player) {
+    await cleanupPlayer()
+    initializePlayer()
+  }
+})
+
+// 清理播放器资源
+const cleanupPlayer = () => {
+  if (state.player) {
+    state.player.dispose()
+    state.player = null
+  }
+  // 清理DOM残留
+  if (videoRef.value) {
+    videoRef.value.pause()
+    videoRef.value.removeAttribute('src')
+    videoRef.value.load()
+  }
+}
+
+// 网络状态检查
+const checkNetworkStatus = () => {
+  if (!navigator.onLine) {
+    state.hasError = true
+    state.errorMessage = '网络连接已断开'
+  }
+}
 // 事件监听
 const setupPlayerEvents = () => {
   if (!state.player) return
@@ -289,34 +312,6 @@ const scheduleReconnect = () => {
     cleanupPlayer()
     initializePlayer()
   }, delay)
-}
-
-// 资源管理
-const cleanupPlayer = () => {
-  if (state.player) {
-    state.player.pause()
-    state.player.unload()
-    state.player.detachMediaElement()
-    state.player.destroy()
-    state.player = null
-  }
-
-  const videoEl = videoRef.value
-  if (videoEl) {
-    videoEl.pause()
-    videoEl.removeAttribute('src')
-    videoEl.load()
-  }
-}
-
-// 网络监控
-const checkNetworkStatus = () => {
-  if (!navigator.onLine) {
-    state.hasError = true
-    state.errorMessage = '网络连接已断开'
-    return false
-  }
-  return true
 }
 
 // 生命周期
