@@ -204,7 +204,7 @@ export default {
         this.handleError('播放器初始化失败', error);
       }
     },
-  
+
     // 设置播放器事件监听
     setupPlayerEvents() {
       if (!this.player) return;
@@ -709,13 +709,13 @@ export default {
 }
 
 /* 响应式设计 - 声音按钮 */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .custom-sound-control {
     top: 15px;
     right: 15px;
   }
 
-}
+} */
 
 /* 竖屏直播响应式优化 */
 @media (max-width: 768px) {
