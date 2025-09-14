@@ -519,7 +519,7 @@ const handleStreamDisconnect = () => {
 }
 
 .loading-text {
-  color: #fff;
+  color: #ffcc00aa;
   font-size: 14px;
   font-weight: 500;
 }
@@ -721,7 +721,7 @@ const handleStreamDisconnect = () => {
   left: 0
   width: 100%
   height: 100%
-  z-index: 49
+  z-index: 50
   .chat
     max-width: 400px
     height: 100%
