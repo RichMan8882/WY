@@ -196,41 +196,6 @@ export default {
 
       // 延迟检查flvjs实例（解决"flvjs实例未找到"警告）
       setTimeout(() => {
-        const flvjsInstance = this.player.tech_?.flvjs_;
-        if (!flvjsInstance) {
-          console.warn('[VideoPlayer] flvjs实例未找到，无备用方案');
-          return;
-        }
-
-        // 监听flv.js核心错误（关键：捕获Early EOF）
-        flvjsInstance.on(flvjs.Events.ERROR, (errType, errDetail) => {
-          console.error('[flv.js] 错误:', errType, errDetail);
-          if (errType === flvjs.ErrorTypes.NETWORK_ERROR) {
-            if (errDetail === flvjs.ErrorDetails.EARLY_EOF) {
-              // 检测到流提前终止（OBS暂停/断开）
-              this.handleError('直播流中断，正在重连...');
-              this.handleStreamDisconnect();
-            } else if (errDetail.includes('HTTP2_PROTOCOL_ERROR')) {
-              // 处理HTTP2协议错误
-              this.handleError('网络连接异常，正在重连...');
-              this.handleStreamDisconnect();
-            }
-          }
-        });
-
-        // 监听播放器通用错误（兜底）
-        this.player.on('error', () => {
-          const error = this.player.error();
-          if (error?.code === 'EARLY_EOF' || error.details?.includes('Early EOF')) {
-            this.handleError('直播流中断，正在重连...');
-            this.handleStreamDisconnect();
-          } else if (error?.details?.includes('HTTP2_PROTOCOL_ERROR')) {
-            this.handleError('网络连接异常，正在重连...');
-            this.handleStreamDisconnect();
-          } else {
-            this.handleError(`播放错误: ${error?.message || '未知错误'}`);
-          }
-        });
 
         // 监听直播断开（如OBS关闭推流）
         this.player.on('disconnect', () => {
