@@ -13,7 +13,7 @@
       </div>
       <!-- 错误状态显示 -->
       <div v-if="hasError" class="error-overlay">
-        <div class="error-icon">⚠️</div>
+        <div class="error-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
         <div class="error-text">
           {{ errorMessage === '直播连接断开，正在重连...' ? '直播暂停，正在尝试恢复...' : errorMessage }}
         </div>
@@ -360,15 +360,6 @@ export default {
       this.reconnectTimer = setTimeout(() => {
         this.initializePlayer(); // 重新初始化播放器
       }, delay);
-    },
-
-    /**
-     * 切换为HTML5技术播放（备用方案）
-     */
-    handleFallbackToHtml5() {
-      console.log('[VideoPlayer] 切换为HTML5技术播放');
-      this.options.techOrder = ['html5']; // 强制使用HTML5
-      this.retryConnection(); // 重新初始化
     },
 
     /**
@@ -789,7 +780,7 @@ export default {
         align-items: flex-start
         color: #fff
         font-size: 12px
-        background: rgba(0, 0, 0, .2)
+        background: rgba(0, 0, 0, .32)
         border-radius: 10px
         max-width: 100%
         .chat-title
@@ -831,6 +822,6 @@ export default {
         background: rgba(0,0,0,0.5)
         border-radius: 25px
         border: 1px solid rgba(255,255,255,0.6)
-        padding: 10px
+        padding: 10px 20px
         color: #fff
 </style>
