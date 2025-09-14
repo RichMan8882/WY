@@ -261,6 +261,8 @@ const setupPlayerEvents = () => {
 };
 
 const retryConnection = async () => {
+  console.log(!isClient, isPlayerDestroyed.value, !isPageVisible.value);
+
   if (!isClient || isPlayerDestroyed.value || !isPageVisible.value) return;
 
   cleanup(); // 清理旧实例
