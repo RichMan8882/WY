@@ -30,6 +30,9 @@ const streamUrl = siteStore.siteData?.logo || ''
         </div>
         <div class="chat-lis">
           <div class="chat-item">
+            <div class="chat-title">
+              用戶656516
+            </div>
             <div class="chat-item-img">
               <img src="https://picsum.photos/200/300" alt="">
             </div>
@@ -124,4 +127,5 @@ const streamUrl = siteStore.siteData?.logo || ''
             border-radius: 25px
             border: 1px solid rgba(255,255,255,0.6)
             padding: 10px
+            color: #fff
 </style>
