@@ -90,7 +90,7 @@ const streamUrl = siteStore.siteData?.logo || ''
           &:hover
             background: rgba(0,0,0,0.7)
       .chat-btm
-         position: absolute
+        position: absolute
         bottom: 0
         left: 0
         right: 0
