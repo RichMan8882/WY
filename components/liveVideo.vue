@@ -1,3 +1,4 @@
+<!-- components/VideoPlayer.vue -->
 <template>
   <div class="video-player-container-wrapper">
     <div class="video-player-container" :class="{ 'portrait-mode': portraitMode }">
@@ -70,331 +71,368 @@
   </div>
 </template>
 
-<script setup>
-// ------------------------------
-// 依赖导入（Vue3/Nuxt3 兼容写法）
-// ------------------------------
-import { ref, reactive, onMounted, onBeforeUnmount, getCurrentInstance } from 'vue';
+<script>
+// 1. 引入video.js和flvjs插件（确保flvjs技术正确注册）
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
 import 'videojs-flvjs-es6'; // 自动注册flvjs技术
-const siteStore = useSiteStore()
-// ------------------------------
-// 组件属性（保持与 Vue2 兼容）
-// ------------------------------
-const props = defineProps({
-  options: { type: Object, default: () => ({}) },
-  playsinline: { type: Boolean, default: true },
-  poster: { type: String, default: '' },
-  streamUrl: { type: String, required: true },
-  reconnectInterval: { type: Number, default: 5000 },
-  maxReconnectAttempts: { type: Number, default: 5 },
-  portraitMode: { type: Boolean, default: true }
-});
 
-// ------------------------------
-// 响应式状态（Vue3 组合式 API）
-// ------------------------------
-const videoPlayer = ref(null); // 视频元素引用
-const player = ref(null); // Video.js 播放器实例
-const isLoading = ref(false); // 加载状态
-const hasError = ref(false); // 错误状态
-const errorMessage = ref(''); // 错误信息
-const reconnectAttempts = ref(0); // 当前重连次数
-const reconnectTimer = ref(null); // 重连定时器
-const isPageVisible = ref(true); // 页面可见性
-const connectionTimeout = ref(null); // 连接超时定时器
-const isMuted = ref(true); // 是否静音
-const isPlayerDestroyed = ref(false); // 播放器是否已销毁
-
-// ------------------------------
-// 生命周期钩子（Vue3 替换方案）
-// ------------------------------
-onMounted(() => {
-  setupPageVisibilityListener();
-  // 延迟初始化（确保 DOM 就绪）
-  setTimeout(initializePlayer, 0);
-});
-
-onBeforeUnmount(() => {
-  cleanup(); // 组件卸载前清理资源
-});
-
-// ------------------------------
-// 客户端仅执行（避免 SSR 错误）
-// ------------------------------
-const isClient = process.client;
-
-// ------------------------------
-// 核心方法（播放器初始化、重连等）
-// ------------------------------
-const initializePlayer = async () => {
-  if (!isClient || isPlayerDestroyed.value) return;
-
-  isLoading.value = true;
-  hasError.value = false;
-  reconnectAttempts.value = 0;
-
-  // 检查视频元素是否存在（SSR 避免服务端报错）
-  if (!videoPlayer.value || !document.contains(videoPlayer.value)) {
-    handleError('播放器初始化失败：视频元素不存在');
-    return;
-  }
-
-  // 合并配置（优化 flvjs 配置）
-  const defaultOptions = {
-    controls: false,
-    autoplay: true,
-    muted: isMuted.value,
-    preload: 'auto',
-    fluid: true,
-    playbackRates: [0.5, 1, 1.5, 2],
-    sources: props.options.sources?.length
-      ? props.options.sources
-      : [{ src: props.streamUrl, type: 'video/flv' }],
-    techOrder: ['flvjs'],
-    flvjs: {
-      enableWorker: true,
-      enableStashBuffer: false,
-      autoCleanupSourceBuffer: true,
-      autoCleanupMaxBackwardDuration: 30,
-      autoCleanupMinBackwardDuration: 10,
-      stashInitialSize: 1024,
-      isLive: true,
-      cors: true,
-      withCredentials: false,
-      onReady: () => {
-        console.log('[VideoPlayer] flvjs 技术已就绪');
-      }
+export default {
+  name: 'VideoPlayer',
+  props: {
+    options: { type: Object, default: () => ({}) },       // 父组件自定义配置
+    playsinline: { type: Boolean, default: true },         // iOS内联播放
+    poster: { type: String, default: '' },                 // 封面图
+    streamUrl: { type: String, required: true },           // 直播流地址（必传）
+    reconnectInterval: { type: Number, default: 5000 },    // 重连基础间隔（ms）
+    maxReconnectAttempts: { type: Number, default: 5 },    // 最大重连次数
+    portraitMode: { type: Boolean, default: true }         // 竖屏模式
+  },
+  data() {
+    return {
+      player: null,                  // Video.js播放器实例
+      isLoading: false,              // 加载状态
+      hasError: false,               // 错误状态
+      errorMessage: '',              // 错误信息
+      reconnectAttempts: 0,          // 当前重连次数
+      reconnectTimer: null,          // 重连定时器
+      isPageVisible: true,           // 页面可见性
+      connectionTimeout: null,       // 连接超时定时器
+      isMuted: true                  // 是否静音（自动播放必须）
+    };
+  },
+  mounted() {
+    this.setupPageVisibilityListener(); // 监听页面可见性
+    this.$nextTick(() => this.initializePlayer()); // DOM就绪后初始化播放器
+  },
+  beforeDestroy() {
+    this.cleanup(); // 组件销毁前清理资源
+  },
+  watch: {
+    // 监听直播流地址变化，自动重连
+    streamUrl(newUrl) {
+      newUrl && this.player && this.retryConnection();
     }
-  };
+  },
+  methods: {
+    /**
+     * 初始化播放器（核心方法）
+     */
+    initializePlayer() {
+      this.isLoading = true;
+      this.hasError = false;
 
-  // 安全合并配置
-  const mergedOptions = {
-    ...defaultOptions,
-    ...props.options,
-    techOrder: props.options.techOrder || defaultOptions.techOrder,
-    sources: props.options.sources?.length
-      ? props.options.sources
-      : defaultOptions.sources,
-    flvjs: { ...defaultOptions.flvjs, ...props.options.flvjs }
-  };
+      // 检查视频元素是否存在（修复"元素未在DOM中"警告）
+      const videoEl = this.$refs.videoPlayer;
+      if (!videoEl || !document.contains(videoEl)) {
+        this.handleError('播放器初始化失败：视频元素不存在');
+        return;
+      }
 
-  try {
-    // 初始化播放器（Vue3 需确保 DOM 已挂载）
-    player.value = videojs(videoPlayer.value, mergedOptions, () => {
-      console.log('[VideoPlayer] 播放器初始化完成');
-      // player.value.ready(() => {
-      //   setupPlayerEvents(); // 绑定事件
-      // });
-    });
-  } catch (error) {
-    console.error('[VideoPlayer] 初始化失败:', error);
-    handleError('播放器启动失败');
-  }
-};
-
-const setupPlayerEvents = () => {
-  if (!player.value || isPlayerDestroyed.value) return;
-
-  // 延迟检查 flvjs 实例（解决 "flvjs 实例未找到" 警告）
-  setTimeout(() => {
-
-
-    const flvjsInstance = player.value.tech_?.flvjs_;
-    // if (!flvjsInstance) {
-    //   console.warn('[VideoPlayer] flvjs 实例未找到');
-    //   // handleError('播放器初始化失败：flvjs 不可用');
-    //   return;
-    // }
-
-    // 监听 flv.js 核心错误
-    flvjsInstance.on(flvjs.Events.ERROR, (errType, errDetail) => {
-      if (isPlayerDestroyed.value) return;
-      console.error('[flv.js] 错误:', errType, errDetail);
-
-      if (errType === flvjs.ErrorTypes.NETWORK_ERROR) {
-        if (errDetail === flvjs.ErrorDetails.EARLY_EOF) {
-          handleError('直播流中断，正在重连...');
-          handleStreamDisconnect();
-        } else if (errDetail.includes('HTTP2_PROTOCOL_ERROR')) {
-          handleError('网络连接异常，正在重连...');
-          handleStreamDisconnect();
+      // 合并配置（优化flvjs配置）
+      const defaultOptions = {
+        controls: false,
+        autoplay: true,
+        muted: this.isMuted,
+        preload: 'auto',
+        fluid: true,
+        playbackRates: [0.5, 1, 1.5, 2],
+        sources: this.options.sources?.length
+          ? this.options.sources
+          : [{ src: this.streamUrl, type: 'video/flv' }],
+        techOrder: ['flvjs'],
+        flvjs: {
+          enableWorker: true,
+          enableStashBuffer: false,
+          autoCleanupSourceBuffer: true,
+          autoCleanupMaxBackwardDuration: 30,
+          autoCleanupMinBackwardDuration: 10,
+          stashInitialSize: 1024,
+          isLive: true,
+          cors: true,
+          withCredentials: false,
+          // 关键：flvjs就绪后触发回调
+          onReady: () => {
+            console.log('[VideoPlayer] flvjs技术已就绪');
+            this.flvjsReady = true; // 标记flvjs就绪
+          }
         }
+      };
+
+      // 安全合并配置
+      const mergedOptions = {
+        ...defaultOptions,
+        ...this.options,
+        techOrder: this.options.techOrder || defaultOptions.techOrder,
+        sources: this.options.sources?.length
+          ? this.options.sources
+          : defaultOptions.sources,
+        flvjs: { ...defaultOptions.flvjs, ...this.options.flvjs }
+      };
+
+      try {
+        // 初始化播放器（添加ready回调）
+        this.player = videojs(videoEl, mergedOptions, () => {
+          console.log('[VideoPlayer] 播放器初始化完成');
+          this.player.ready(() => {
+            this.setupPlayerEvents(); // 确保技术模块就绪后再绑定事件
+          });
+        });
+      } catch (error) {
+        console.error('[VideoPlayer] 初始化失败:', error);
+        this.handleError('播放器启动失败');
       }
-    });
+    },
 
-    // 监听播放器通用错误
-    player.value.on('error', (error) => {
-      if (isPlayerDestroyed.value) return;
-      console.error('[VideoPlayer] 播放器错误:', error);
-
-      if (error.code === 'HTTP2_PROTOCOL_ERROR' || error.details?.includes('HTTP2_PROTOCOL_ERROR')) {
-        handleError('网络连接异常，正在重连...');
-        handleStreamDisconnect();
-      } else if (error.code === 'EARLY_EOF' || error.details?.includes('Early EOF')) {
-        handleError('直播流中断，正在重连...');
-        handleStreamDisconnect();
-      } else {
-        handleError(`播放错误: ${error.message || '未知错误'}`);
+    clearConnectionTimeout() {
+      if (this.connectionTimeout) {
+        clearTimeout(this.connectionTimeout);
+        this.connectionTimeout = null;
       }
-    });
+    },
+    /**
+     * 绑定播放器事件（优化版）
+     */
+    setupPlayerEvents() {
+      if (!this.player) return;
 
-    // 监听直播断开
-    player.value.on('disconnect', () => {
-      if (isPlayerDestroyed.value) return;
-      console.log('[VideoPlayer] 直播流断开（OBS 暂停/关闭）');
-      handleError('直播连接断开，正在重连...');
-      handleStreamDisconnect();
-    });
+      // 延迟检查flvjs实例（解决"flvjs实例未找到"警告）
+      setTimeout(() => {
 
-    // 监听加载状态
-    player.value.on('waiting', () => isLoading.value = true);
-    player.value.on('canplay', () => {
-      isLoading.value = false;
-      hasError.value = false;
-    });
-    player.value.on('play', () => {
-      isLoading.value = false;
-      hasError.value = false;
-      reconnectAttempts.value = 0; // 播放成功时重置重连次数
-    });
-  }, 100);
-};
+        // 监听直播断开（如OBS关闭推流）
+        this.player.on('disconnect', () => {
+          console.log('[VideoPlayer] 直播流断开（OBS暂停/关闭）');
+          this.handleError('直播连接断开，正在重连...');
+          this.handleStreamDisconnect();
+        });
 
-const retryConnection = async () => {
-  console.log(!isClient, isPlayerDestroyed.value, !isPageVisible.value);
+        // 监听加载状态（确保加载遮罩关闭）
+        this.player.on('waiting', () => this.isLoading = true);
+        this.player.on('canplay', () => {
+          this.isLoading = false;
+          this.hasError = false;
+        });
+        this.player.on('play', () => {
+          this.isLoading = false;
+          this.hasError = false;
+          this.reconnectAttempts = 0; // 播放成功时重置重连次数
+        });
+      }, 100);
 
-  if (!isClient || isPlayerDestroyed.value || !isPageVisible.value) return;
 
-  cleanup(); // 清理旧实例
+      // 通用事件监听（统一管理）
+      const eventHandlers = {
+        // 播放事件：隐藏加载状态，重置重连次数
+        play: () => {
+          this.isLoading = false;
+          this.hasError = false;
+          this.reconnectAttempts = 0;
+          this.clearConnectionTimeout();
+        },
+        // 暂停事件（如OBS暂停）
+        pause: () => console.log('[VideoPlayer] 播放暂停'),
+        // 播放结束（直播流正常结束）
+        ended: () => this.handleStreamEnd(),
+        // 开始加载：显示加载状态
+        loadstart: () => {
+          this.isLoading = true;
+          this.clearConnectionTimeout();
+        },
+        // 可以播放：隐藏加载状态
+        canplay: () => {
+          this.isLoading = false;
+          this.hasError = false;
+        },
+        // 等待数据：显示加载状态
+        waiting: () => this.isLoading = true,
+        // 数据停滞：提示加载问题
+        stalled: () => this.handleError('数据加载停滞'),
+        // 连接超时：提示超时
+        timeout: () => this.handleError('连接超时'),
+        // 直播断开（如OBS关闭推流）
+        disconnect: () => this.handleStreamDisconnect(),
+        // 网络加载错误
+        loaderror: () => this.handleError('网络连接失败'),
+        // 媒体资源清空（直播流重置）
+        emptied: () => this.handleStreamDisconnect(),
+        // 统一错误处理（捕获所有未处理的错误）
+        error: (e) => this.handleError('直播已結束')
+      };
 
-  try {
-    await new Promise(resolve => setTimeout(resolve, 300)); // 延迟重试
-    await initializePlayer(); // 重新初始化
-  } catch (error) {
-    console.error('[VideoPlayer] 重连初始化失败:', error);
-    if (reconnectAttempts.value < props.maxReconnectAttempts) {
-      scheduleReconnect();
-    }
-  }
-};
-
-const handleStreamDisconnect = () => {
-  isLoading.value = false;
-  hasError.value = true;
-  errorMessage.value = '直播连接断开，正在重连...';
-
-  if (player.value) {
-    cleanup(); // 销毁旧实例
-    player.value = null;
-  }
-
-  scheduleReconnect();
-};
-
-const scheduleReconnect = () => {
-  if (reconnectAttempts.value >= props.maxReconnectAttempts || isPlayerDestroyed.value) {
-    errorMessage.value = '直播连接失败，请检查网络或稍后重试';
-    hasError.value = true;
-    isLoading.value = false;
-    return;
-  }
-
-  reconnectAttempts.value++;
-  const baseDelay = reconnectAttempts.value <= 3 ? 2000 : 5000;
-  const delay = Math.min(baseDelay * Math.pow(1.5, reconnectAttempts.value - 1), 30000);
-
-  console.log(`[VideoPlayer] 第${reconnectAttempts.value}次重连，${delay / 1000}秒后尝试`);
-  reconnectTimer.value = setTimeout(() => {
-    retryConnection();
-  }, delay);
-};
-
-const cleanup = () => {
-  if (player.value) {
-    // 清理 flvjs 实例（若存在）
-    const flvjsInstance = player.value.tech_?.flvjs_;
-    if (flvjsInstance) {
-      flvjsInstance.destroy();
-      player.value.tech_.flvjs_ = null;
-    }
-
-    // 移除事件监听
-    const events = [
-      'play', 'pause', 'ended', 'loadstart', 'canplay',
-      'waiting', 'stalled', 'timeout', 'disconnect',
-      'loaderror', 'emptied', 'error'
-    ];
-    events.forEach(event => player.value.off(event));
-
-    player.value.dispose(); // 销毁播放器
-    player.value = null;
-  }
-
-  // 清理定时器
-  clearTimeout(connectionTimeout.value);
-  clearTimeout(reconnectTimer.value);
-  connectionTimeout.value = null;
-  reconnectTimer.value = null;
-
-  // 标记状态
-  isPlayerDestroyed.value = true;
-  reconnectAttempts.value = 0;
-};
-
-const handleError = (message) => {
-  isLoading.value = false;
-  hasError.value = true;
-  errorMessage.value = message;
-
-  if (reconnectAttempts.value < props.maxReconnectAttempts && !isPlayerDestroyed.value) {
-    scheduleReconnect();
-  }
-};
-
-// ------------------------------
-// 辅助方法（页面可见性、静音切换等）
-// ------------------------------
-const setupPageVisibilityListener = () => {
-  if (!isClient) return;
-
-  const handleVisibilityChange = () => {
-    isPageVisible.value = !document.hidden;
-
-    if (isPageVisible.value && player.value && !isPlayerDestroyed.value) {
-      console.log('[VideoPlayer] 页面变为可见，恢复播放');
-      player.value.play().catch(err => {
-        console.log('[VideoPlayer] 自动播放失败（需要用户交互）:', err);
+      // 批量绑定事件（避免遗漏）
+      Object.entries(eventHandlers).forEach(([event, handler]) => {
+        this.player.on(event, handler);
       });
-    } else if (!isPageVisible.value && player.value && !isPlayerDestroyed.value) {
-      console.log('[VideoPlayer] 页面变为隐藏，暂停播放');
-      player.value.pause();
+    },
+
+
+
+    /**
+     * 处理重连逻辑（优化版）
+     */
+    retryConnection() {
+      if (!this.isPageVisible) {
+        console.log('[VideoPlayer] 页面不可见，跳过重连');
+        return;
+      }
+
+      this.clearTimers(); // 清理所有定时器
+
+      // 确保旧播放器实例完全销毁
+      if (this.player) {
+        this.cleanup();
+        this.player = null;
+      }
+
+      // 延迟初始化（避免DOM未就绪或网络波动）
+      setTimeout(() => {
+        console.log('[VideoPlayer] 尝试重连...');
+        this.initializePlayer();
+      }, 300);
+    },
+
+    /**
+     * 清理资源（关键修复点）
+     */
+    cleanup() {
+      if (this.player) {
+        // 移除所有事件监听（避免内存泄漏）
+        const events = [
+          'play', 'pause', 'ended', 'loadstart', 'canplay',
+          'waiting', 'stalled', 'timeout', 'disconnect',
+          'loaderror', 'emptied', 'error'
+        ];
+        events.forEach(event => this.player.off(event));
+
+        this.player.dispose(); // 销毁播放器
+        this.player = null;
+      }
+
+      // 清理定时器
+      this.clearTimers();
+
+      // 重置flvjs状态
+      this.flvjsReady = false;
+    },
+
+    /**
+     * 清理所有定时器
+     */
+    clearTimers() {
+      clearTimeout(this.connectionTimeout);
+      clearTimeout(this.reconnectTimer);
+      this.connectionTimeout = null;
+      this.reconnectTimer = null;
+    },
+
+    /**
+     * 处理错误状态（关键修复点：确保遮罩关闭）
+     */
+    handleError(message, error = null) {
+      this.isLoading = false; // 关键：强制关闭加载状态
+      this.hasError = true;
+      this.errorMessage = message;
+
+      // 触发重连（未超过最大次数时）
+      if (this.reconnectAttempts < this.maxReconnectAttempts) {
+        this.scheduleReconnect();
+      }
+    },
+
+    /**
+     * 安排重连（指数退避算法）
+     */
+    scheduleReconnect() {
+      if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+        // 达到最大重连次数，显示直播结束
+        this.errorMessage = '直播连接失败，请检查网络或稍后重试';
+        this.hasError = true;
+        this.isLoading = false;
+        console.log('[VideoPlayer] 重连失败，已达最大次数');
+        return;
+      }
+
+      this.reconnectAttempts++;
+      const baseDelay = this.reconnectAttempts <= 3 ? 2000 : 5000; // 前3次2秒，之后5秒
+      const delay = Math.min(baseDelay * Math.pow(1.5, this.reconnectAttempts - 1), 30000); // 最大30秒
+
+      console.log(`[VideoPlayer] 第${this.reconnectAttempts}次重连，${delay / 1000}秒后尝试`);
+      this.reconnectTimer = setTimeout(() => {
+        this.initializePlayer(); // 重新初始化播放器
+      }, delay);
+    },
+
+    /**
+     * 切换为HTML5技术播放（备用方案）
+     */
+    handleFallbackToHtml5() {
+      console.log('[VideoPlayer] 切换为HTML5技术播放');
+      this.options.techOrder = ['html5']; // 强制使用HTML5
+      this.retryConnection(); // 重新初始化
+    },
+
+    /**
+     * 监听页面可见性变化（优化性能）
+     */
+    setupPageVisibilityListener() {
+      const handleVisibilityChange = () => {
+        this.isPageVisible = !document.hidden;
+
+        if (this.isPageVisible) {
+          console.log('[VideoPlayer] 页面变为可见，恢复播放');
+          this.player?.play().catch(err => {
+            console.log('[VideoPlayer] 自动播放失败（需要用户交互）:', err);
+          });
+        } else {
+          console.log('[VideoPlayer] 页面变为隐藏，暂停播放');
+          this.player?.pause();
+        }
+      };
+
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      this.visibilityChangeHandler = handleVisibilityChange; // 存储监听器以便清理
+    },
+
+    /**
+     * 切换静音状态
+     */
+    toggleMute() {
+      if (this.player) {
+        this.isMuted = !this.isMuted;
+        this.player.muted(this.isMuted);
+      }
+    },
+
+    /**
+     * 处理直播结束（非重连场景）
+     */
+    handleStreamEnd() {
+      this.isLoading = false;
+      this.hasError = true;
+      this.errorMessage = '直播已结束';
+      this.clearTimers(); // 清理重连定时器
+    },
+
+    /**
+     * 处理直播断开（触发重连）
+     */
+    handleStreamDisconnect() {
+      this.isLoading = false;
+      this.hasError = true;
+      this.errorMessage = '直播连接断开，正在重连...';
+      // 清理旧播放器（避免残留）
+      if (this.player) {
+        this.cleanup(); // 销毁旧实例
+        this.player = null;
+      }
+
+      // 延迟重连（避免频繁请求）
+      this.scheduleReconnect();
     }
-  };
-
-  document.addEventListener('visibilitychange', handleVisibilityChange);
-  // 存储监听器以便清理（Nuxt3 需手动管理）
-  const instance = getCurrentInstance();
-  if (instance) {
-    instance.appContext.config.globalProperties.$visibilityHandler = handleVisibilityChange;
   }
-};
-
-const toggleMute = () => {
-  if (player.value && !isPlayerDestroyed.value) {
-    isMuted.value = !isMuted.value;
-    player.value.muted(isMuted.value);
-  }
-};
-
-const navigateTo = (path) => {
-  // Nuxt3 路由跳转（需安装 @nuxtjs/router）
-  import('vue-router').then(({ useRouter }) => {
-    useRouter().push(path);
-  });
 };
 </script>
+
 <style scoped>
 .video-player-container-wrapper {
   /* 模仿抖音/TikTok/YouTube的深色背景风格 */
