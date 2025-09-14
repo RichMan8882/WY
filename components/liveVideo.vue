@@ -17,8 +17,6 @@
         <div class="error-text">{{ errorMessage }}</div>
         <button @click="retryConnection" class="retry-button">重新连接</button>
       </div>
-
-
     </div>
 
     <section class="chatlayer" ref="section1">
@@ -206,7 +204,7 @@ export default {
         this.handleError('播放器初始化失败', error);
       }
     },
-
+  
     // 设置播放器事件监听
     setupPlayerEvents() {
       if (!this.player) return;
@@ -399,8 +397,14 @@ export default {
       // 存储事件监听器以便清理
       this.visibilityChangeHandler = handleVisibilityChange;
     },
-
-
+    // 切换静音状态
+    toggleMute() {
+      if (this.player) {
+        this.isMuted = !this.isMuted;
+        this.player.muted(this.isMuted);
+        console.log(`[VideoPlayer] 声音${this.isMuted ? '关闭' : '打开'}`);
+      }
+    },
 
     // 处理直播结束
     handleStreamEnd() {
