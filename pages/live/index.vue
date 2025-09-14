@@ -22,33 +22,34 @@ const streamUrl = siteStore.siteData?.logo || ''
 </script>
 <template>
   <div class="cont">
-
     <section class="chatlayer" ref="section1">
       <div class="chat">
         <div class="goback">
           <div class="back">{{ '主頁' }}</div>
         </div>
-        <div class="chat-lis">
-          <div class="chat-item">
-            <div class="chat-title">
-              {{ '用戶656516' }}:
-            </div>
-            <!-- <div class="chat-item-img">
+        <div class="chat-btm">
+          <div class="chat-lis">
+            <div class="chat-item">
+              <div class="chat-title">
+                {{ '用戶656516' }}:
+              </div>
+              <!-- <div class="chat-item-img">
               <img src="https://picsum.photos/200/300" alt="">
             </div> -->
-            <div class="chat-item-text">
-              <div class="chat-text" v-if="true">
-                {{ '哈哈哈，早知道' }}
-              </div>
-              <div class="chat-text-img" v-else>
-                <img src="https://picsum.photos/200/300" alt=""></img>
+              <div class="chat-item-text">
+                <div class="chat-text" v-if="true">
+                  {{ '哈哈哈，早知道' }}
+                </div>
+                <div class="chat-text-img" v-else>
+                  <img src="https://picsum.photos/200/300" alt=""></img>
+                </div>
               </div>
             </div>
-          </div>
 
-        </div>
-        <div class="chat-input">
-          <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
+          </div>
+          <div class="chat-input">
+            <input type="text" maxlength="100" placeholder="請遵守社區秩序"></input>
+          </div>
         </div>
       </div>
     </section>
@@ -72,8 +73,9 @@ const streamUrl = siteStore.siteData?.logo || ''
       margin: 0 auto
       position: relative
       .goback
+        max-width: 50%
         height: 45px
-        padding: 15px 15px
+        padding: 15px 0 0 15px
         .back
           display: inline-block
           font-size: 12px
@@ -87,17 +89,17 @@ const streamUrl = siteStore.siteData?.logo || ''
           border: 1px solid rgba(255,255,255,0.6)
           &:hover
             background: rgba(0,0,0,0.7)
-      .chat-lis
-        position: absolute
+      .chat-btm
+         position: absolute
         bottom: 0
         left: 0
         right: 0
         padding: 20px 20px 45px
         max-height: calc(100vh - 45px - 40px)
         overflow-y: auto
+      .chat-lis
         display: flex
         flex-direction: column-reverse
-        
         .chat-item
           display: flex
           padding: 3px 10px
@@ -128,6 +130,8 @@ const streamUrl = siteStore.siteData?.logo || ''
               object-fit: contain
               height: 100%s
       .chat-input
+        position: sticky
+        bottom: 0
         input
           width: 100%
           height: 40px
