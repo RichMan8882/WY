@@ -122,7 +122,7 @@ export default {
       reconnectTimer: null,
       isPageVisible: true,
       connectionTimeout: null,
-
+      isMuted: true
     }
   },
   mounted() {
