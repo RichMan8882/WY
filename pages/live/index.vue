@@ -33,9 +33,9 @@ const streamUrl = siteStore.siteData?.logo || ''
             <div class="chat-title">
               用戶656516
             </div>
-            <div class="chat-item-img">
+            <!-- <div class="chat-item-img">
               <img src="https://picsum.photos/200/300" alt="">
-            </div>
+            </div> -->
             <div class="chat-item-text">
               <div class="chat-text" v-if="true">
                 {{ '哈哈哈，早知道' }}
@@ -96,9 +96,14 @@ const streamUrl = siteStore.siteData?.logo || ''
         overflow-y: auto
         .chat-item
           display: flex
-          padding: 10px
+          padding: 3px 10px
           align-items: flex-start
           color: #fff
+          font-size: 12px
+          background: rgba(0, 0, 0, .4)
+          borrder-radius: 10px
+          .chat-title
+            color:
           .chat-item-img
             width: 40px
             min-width: 40px
