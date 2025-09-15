@@ -205,13 +205,46 @@ const clearConnectionTimeout = () => {
     connectionTimeout.value = null;
   }
 };
-
+// 新增：处理 Early-EOF 的紧急重连
+const handleEarlyEofReconnect = () => {
+  console.log('[VideoPlayer] 执行 Early-EOF 紧急重连');
+  clearTimers(); // 清除所有定时器
+  cleanup(); // 销毁当前播放器实例
+  reconnectAttempts.value = 0; // 重置重连计数器（可选）
+  initializePlayer(); // 立即重新初始化播放器
+};
 const setupPlayerEvents = () => {
   if (!player.value) return;
-  // 添加错误事件监听
+  // 获取 flv.js 实例（关键！）
+  const flvTech = player.value.tech({ IWillNotUseThisInPlugins });
+  const flvInstance = flvTech?.flvjs;
+  if (flvInstance) {
+    // 监听 flv.js 内部错误事件
+    flvInstance.on(flvjs.Events.ERROR, (errType, errDetail) => {
+      console.error('[flv.js] 内部错误:', errType, errDetail);
+      // 检测 Early-EOF 错误码（flvjs.ErrorCodes.EARLY_EOF）
+      if (errDetail.code === flvjs.ErrorCodes.EARLY_EOF) {
+        console.log('[VideoPlayer] 检测到 Early-EOF，触发紧急重连');
+        handleEarlyEofReconnect(); // 立即重连
+      }
+    });
+  }
+
+  // 原有的 video.js 错误监听（保留并增强）
   player.value.on('error', (e) => {
-    console.error('[VideoPlayer] 播放器错误:', e);
-    handleError('播放错误', e);
+    const error = e.target?.error;
+    console.error('[VideoPlayer] 播放器错误:', error);
+    if (error) {
+      // 检测 HTTP2_PROTOCOL_ERROR 或 Early-EOF 相关信息
+      if (error.message?.includes('HTTP2_PROTOCOL_ERROR') ||
+        error.message?.includes('Early-EOF') ||
+        error.message?.includes('UnrecoverableEarlyEof')) {
+        console.log('[VideoPlayer] 检测到网络/流中断错误，触发重连');
+        handleStreamDisconnect(); // 通用断开处理
+      } else {
+        handleError('播放错误', error); // 其他错误
+      }
+    }
   });
   // 延迟检查flvjs实例
   setTimeout(() => {
@@ -358,12 +391,11 @@ const scheduleReconnect = () => {
   }
 
   reconnectAttempts.value++;
-  const baseDelay = Math.min(1000 * Math.pow(2, reconnectAttempts.value), 10000);
-
-  console.log(`[VideoPlayer] 第${reconnectAttempts.value}次重连，${baseDelay / 1000}秒后尝试`);
-  reconnectTimer.value = setTimeout(() => {
-    initializePlayer();
-  }, baseDelay);
+  // 指数退避：前3次快速重连（3s → 6s → 12s），之后固定10s
+  const baseDelay = 3000 * Math.pow(2, Math.min(reconnectAttempts.value - 1, 2)); // 前3次指数增长
+  const actualDelay = Math.min(baseDelay, 10000); // 最大不超过10秒
+  console.log(`[VideoPlayer] 第${reconnectAttempts.value}次重连，${actualDelay / 1000}秒后尝试`);
+  reconnectTimer.value = setTimeout(() => initializePlayer(), actualDelay);
 };
 
 const setupPageVisibilityListener = () => {
@@ -372,9 +404,13 @@ const setupPageVisibilityListener = () => {
 
     if (isPageVisible.value) {
       console.log('[VideoPlayer] 页面变为可见，恢复播放');
-      player.value?.play().catch(err => {
+      player.value?.play().then(() => {
+        console.log('[VideoPlayer] 恢复播放成功');
+
+      }).catch(err => {
         console.log('[VideoPlayer] 自动播放失败（需要用户交互）:', err);
       });
+
     } else {
       console.log('[VideoPlayer] 页面变为隐藏，暂停播放');
       player.value?.pause();
